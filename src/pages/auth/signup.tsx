@@ -3,6 +3,11 @@ import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import Link from "next/link";
 
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
@@ -10,18 +15,35 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { LoginSchema } from "@/utils/schema/login";
 import { useSignup } from "@/utils/hooks/auth";
 
+
 type Inputs = z.infer<typeof LoginSchema>;
 
-const SignInPage = () => {
-  const { mutate } = useSignup()
+const SignUp = () => {
+  const { mutate, status, error, isError } = useSignup()
+  const router = useRouter();
+
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    mutate(data)
+    try {
+      mutate(data)
+    } catch (error) {
+      toast.error("Something went wrong, please try again");
+    }
   };
+  useEffect(() => {
+    if (status === "error") {
+      toast.error((error as AxiosError).message);
+    }
+
+    if (status === "success") {
+      toast.success("Sign up successful");
+      router.push("/auth/login");
+    }
+  }, [ status, error ])
+
 
   const unWrapErrors = (key: keyof Inputs) => {
     return formState.errors[ key ]?.message;
@@ -42,7 +64,7 @@ const SignInPage = () => {
         />
         <div className="max-w-screen-xs w-full my-auto">
           <div className="text-left text-custom-black mb-8">
-            <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Sign in</h1>
+            <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Sign Up</h1>
             <p className="sm:text-xl">Fill the form to sign up </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-custom-black">
@@ -64,7 +86,10 @@ const SignInPage = () => {
                 hint={unWrapErrors("password") || "Must be 8 characters contain at least one uppercase and digit "}
               />
               <div className="text-sm">
-                Already have an account?  <a className="underline"> Login</a>
+                Already have an account?
+                <Link href="/auth/login" className="underline">
+                  Login
+                </Link>
               </div>
               <div>
                 <Button primary>Login</Button>
@@ -82,4 +107,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUp;

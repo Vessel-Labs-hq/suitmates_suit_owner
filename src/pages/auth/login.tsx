@@ -3,25 +3,45 @@ import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
 
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { LoginSchema } from "@/utils/schema/login";
-import { useSignup } from "@/utils/hooks/auth";
+import { useLogin } from "@/utils/hooks/auth";
+import Link from "next/link";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
 const SignUpPage = () => {
-  const { mutate } = useSignup()
+  const router = useRouter();
+  const { mutate, status, error, isError } = useLogin()
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    mutate(data)
+    try {
+      mutate(data)
+    } catch (error) {
+      toast.error("Something went wrong, please try again");
+    }
   };
+
+  useEffect(() => {
+    if (status === "error") {
+      toast.error((error as AxiosError<{message: string}>).response?.data?.message);
+    }
+
+    if (status === "success") {
+      toast.success("Login successful");
+      router.push("/auth/login");
+    }
+  }, [ status, error ])
 
   const unWrapErrors = (key: keyof Inputs) => {
     return formState.errors[ key ]?.message;
@@ -64,7 +84,7 @@ const SignUpPage = () => {
                 hint={unWrapErrors("password") || "Must be 8 characters contain at least one uppercase and digit "}
               />
               <div className="text-sm">
-                Already have an account?  <a className="underline"> Login</a>
+                Don&apos;t have an account?  <Link href="/auth/signup" className="underline"> SignUp</Link>
               </div>
               <div>
                 <Button primary>Login</Button>
