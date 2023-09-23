@@ -2,20 +2,24 @@ import { useQuery, useQueryClient, useMutation } from "react-query";
 import authService from "../apis/auth";
 import { LoginType } from "../schema/login";
 
-const useSignup = () => {
+export const useSignup = () => {
     const queryClient = useQueryClient();
-    return useMutation(
-        (data: LoginType) => {
-            return authService.signup(data);
-        },
+    return useMutation({
+        mutationFn: async (data: LoginType) => {
+            return await authService.signup(data);
+        }
         // {
         //     onSuccess: () => {
         //         queryClient.invalidateQueries("posts");
         //     },
         // }
-    );
+    });
 };
 
-export {
-    useSignup
+export const useLogin = () => {
+    return useMutation({
+        mutationFn: async (data: LoginType) => {
+            return await authService.login(data);
+        }
+    });
 };
