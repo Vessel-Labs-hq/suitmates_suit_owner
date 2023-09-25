@@ -20,11 +20,14 @@ type ComponentProps<
  * basically trick the compiler to allow other types to be passed
  *
  * `Type` the type to be loosened
- * `By` the type to be allowed, normally a primitive or another type
  *
  * @example
  * ```tsx
  * type NewName = Loosen<"age" | "name"| "days"> // would allow strings to be passed
  * ```
  */
-type Loosen<Type, By = string> = Type | ({} & By);
+type LoosenString<Type> = Type | ({} & string);
+
+type FindAndSeparate<Values, Pattern> = Values extends `${Pattern}${infer A}`
+  ? `${Capitalize<Pattern>} ${Capitalize<A>}`
+  : Values;

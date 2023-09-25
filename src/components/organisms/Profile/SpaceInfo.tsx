@@ -25,14 +25,14 @@ type Label = Name extends `space${infer A}` ? `Space ${A}` : Name;
 
 type Field = {
   name: Name;
-  label: Loosen<Label>;
-  placeholder: Loosen<`Enter ${Lowercase<Label>}`>;
+  label: LoosenString<Label>;
+  placeholder: LoosenString<`Enter ${Lowercase<Label>}`>;
 };
 
 const fields: Field[] = [
   {
     name: "spaceName",
-    label: "Name",
+    label: "Space Name",
     placeholder: "Enter space name",
   },
   {
@@ -58,11 +58,6 @@ const SpaceInformation = ({ onSubmit }: Props) => {
   };
 
   const getFormError = (key: keyof Inputs) => {
-    const err = formState.errors[key]?.message;
-    return err ? String(err) : undefined;
-  };
-
-  const unWrapErrors = (key: keyof Inputs) => {
     const err = formState.errors[key]?.message;
     return err ? String(err) : undefined;
   };
@@ -108,7 +103,7 @@ const SpaceInformation = ({ onSubmit }: Props) => {
                   value={value}
                   isError={assertError("spaceAmenities")}
                   hint={
-                    unWrapErrors("spaceAmenities") ??
+                    getFormError("spaceAmenities") ??
                     "Select all that is offered"
                   }
                 />

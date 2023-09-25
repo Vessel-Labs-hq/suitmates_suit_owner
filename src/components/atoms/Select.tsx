@@ -42,6 +42,7 @@ const Select = (props: SelectProps) => {
               "px-4 py-2",
               state.isFocused && "cursor-pointer bg-[#D9D9D9] text-black"
             ),
+          noOptionsMessage: (state) => `py-3`,
           ...props.classNames,
         }}
         classNamePrefix="sm"

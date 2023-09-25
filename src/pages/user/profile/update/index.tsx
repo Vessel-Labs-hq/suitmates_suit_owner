@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { formatWord } from "@/utils";
 import PersonalInformation from "@/components/organisms/Profile/PersonalInfo";
 import SpaceInfo from "@/components/organisms/Profile/SpaceInfo";
-import PaymentInformation from "@/components/organisms/Profile/PaymentInformation";
+import SuiteInformation from "@/components/organisms/Profile/SuiteInformation";
 
 const AllSteps = [
   "personal-information",
@@ -32,9 +32,9 @@ const SigUpPage = () => {
       case "space-information":
         return <SpaceInfo onSubmit={handleQueryUpdate} />;
       case "suite-information":
-        return <PaymentInformation onSubmit={() => console.log("...")} />;
+        return <SuiteInformation onSubmit={() => handleQueryUpdate} />;
       case "account-information":
-        return <PaymentInformation onSubmit={() => console.log("...")} />;
+        return <SuiteInformation onSubmit={() => console.log("Submitted")} />;
       default:
         throw new Error(
           `${step} is invalid, step should be of either ${AllSteps.join(", ")}`

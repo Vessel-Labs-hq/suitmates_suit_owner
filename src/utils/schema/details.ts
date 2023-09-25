@@ -26,15 +26,16 @@ export const SpaceInfoSchema = z.object({
   ),
 });
 
-export const BusinessInfoSchema = z.object({
-  businessName: createStringSchema("Business Name"),
-  openHours: createStringSchema("Open Hour(s)"),
-  closeHours: createStringSchema("Closing Hour(s)"),
-  workingDays: createStringSchema("Working day(s)"),
-  occupation: createStringSchema("Occupation", 0).optional(),
-  website: createStringSchema("Website", 0).optional(),
-  license: createFileSchema({ key: "License" }).optional(),
+export const SuiteDetailSchema = z.object({
+  suiteNumber: createStringSchema("Number"),
+  suiteSize: createStringSchema("Size"),
+  suiteType: createStringSchema("Type"),
+  suiteCost: createStringSchema("Cost"),
 });
+
+export const SuiteInfoSchema = z
+  .array(SuiteDetailSchema)
+  .min(1, "Suite Info is required");
 
 export const PaymentInfoSchema = z.object({
   cardNumber: createStringSchema("Card Number"),
