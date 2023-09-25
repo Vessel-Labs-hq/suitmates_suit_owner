@@ -16,6 +16,7 @@ type SelectProps = Omit<RProps, "options"> & {
   wrapperStyles?: string;
   labelClass?: string;
   value?: Options;
+  defaultValue?: Options;
 };
 
 const Select = (props: SelectProps) => {

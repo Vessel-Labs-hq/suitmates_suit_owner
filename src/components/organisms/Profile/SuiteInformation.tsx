@@ -35,7 +35,7 @@ const SuiteInformation = ({ onSubmit }: Props) => {
       suiteInfo: [DefaultValues],
     },
   });
-  const { fields, append } = useFieldArray<Inputs>({
+  const { fields, append, remove } = useFieldArray<Inputs>({
     control,
     name: "suiteInfo",
   });
@@ -48,7 +48,7 @@ const SuiteInformation = ({ onSubmit }: Props) => {
     <div className="mx-auto my-4 mt-16 max-w-[1200px] pt-10">
       <form
         onSubmit={handleSubmit(onFormSubmit, (err) => {
-          console.log(err);
+          console.log(err, "...");
         })}
       >
         <div className="ml-4 sm:ml-8">
@@ -60,21 +60,33 @@ const SuiteInformation = ({ onSubmit }: Props) => {
           </Text>
         </div>
         <div className="rounded-2xl bg-[#F3F3F3] p-5 pt-8">
-          <div className="space-y-10 ">
-            {fields.map((field, idx) => (
-              <SuiteInfoInputRow
-                idx={idx}
-                key={field.id}
-                register={register}
-                formState={formState}
-                control={control}
-              />
-            ))}
+          <div className="relative">
+            <div className="space-y-10 ">
+              {fields.map((field, idx) => (
+                <div key={field.id}>
+                  <SuiteInfoInputRow
+                    idx={idx}
+                    register={register}
+                    formState={formState}
+                    control={control}
+                  />
+                  {idx > 0 && (
+                    <button
+                      type="button"
+                      className="-mt-1 ml-auto block w-fit text-right text-xs text-red-600"
+                      onClick={() => remove(idx)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
           <Button
             type="button"
             dark
-            className="mt-4 flex max-w-[140px] items-center justify-center gap-4 bg-[#333333]"
+            className="mt-4 flex max-w-[140px] items-center justify-center gap-4 bg-[#333333] max-sm:py-3 max-sm:text-sm"
             onClick={() => append(DefaultValues)}
           >
             {Icons.Plus} Add Field

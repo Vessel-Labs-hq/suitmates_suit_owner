@@ -36,9 +36,8 @@ export const SuiteInfoSchema = z.object(
   { ...createDefaultError("Suite Info") }
 );
 
-export const PaymentInfoSchema = z.object({
-  cardNumber: createStringSchema("Card Number"),
-  expiryDate: createStringSchema("Expiry Date"),
-  cvv: createStringSchema("CVV"),
-  nameOfCard: createStringSchema("Name"),
+export const AccountInoSchema = z.object({
+  accountNumber: createStringSchema("Account Number"),
+  accountName: createStringSchema("Account Name"),
+  routingNumber: createStringSchema("Routing Number"),
 });

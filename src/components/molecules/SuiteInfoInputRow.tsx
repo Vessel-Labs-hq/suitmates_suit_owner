@@ -70,8 +70,8 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-8 max-md:text-sm xs:gap-x-10 lg:grid-cols-4">
-      {fields.map(({ name, label, ...ele }) => (
+    <div className="grid grid-cols-2 gap-x-4 gap-y-8 max-md:text-sm xs:gap-x-10 md:grid-cols-4">
+      {fields.slice(0, 2).map(({ name, label, ...ele }) => (
         <Input
           {...ele}
           key={name}
@@ -82,29 +82,40 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
           isError={Boolean(getFormError(name))}
         />
       ))}
+      <Controller
+        control={control}
+        name={`suiteInfo.${idx}.suiteType`}
+        render={({ field: { name, onChange, value } }) => (
+          <Select
+            label="Suite Type"
+            data={[
+              { label: "House", value: "House" },
+              { label: "Store", value: "Store" },
+            ]}
+            onChange={onChange}
+            value={value}
+            name={name}
+            hint={getFormError("suiteType")}
+            isError={Boolean(getFormError("suiteType"))}
+            className="max-md:text-sm"
+            /** https://onebite.dev/how-to-add-word-space-in-tailwind-css/ */
+            labelClass="max-xs:[word-spacing:-0.3ch]"
+          />
+        )}
+      />
       <div className="relative flex items-start">
         <div className="w-full">
-          <Controller
-            control={control}
-            name={`suiteInfo.${idx}.suiteType`}
-            render={({ field: { name, onChange, value } }) => (
-              <Select
-                label="Suite Type"
-                data={[
-                  { label: "House", value: "House" },
-                  { label: "Store", value: "Store" },
-                ]}
-                onChange={onChange}
-                value={value}
-                name={name}
-                hint={getFormError("suiteType")}
-                isError={Boolean(getFormError("suiteType"))}
-                className="max-md:text-sm"
-                /** https://onebite.dev/how-to-add-word-space-in-tailwind-css/ */
-                labelClass="max-xs:[word-spacing:-0.3ch]"
-              />
-            )}
-          />
+          {fields.slice(2).map(({ name, label, ...ele }) => (
+            <Input
+              {...ele}
+              key={name}
+              label={label}
+              className="py-3"
+              {...register(`suiteInfo.${idx}.${name}`)}
+              hint={getFormError(name)}
+              isError={Boolean(getFormError(name))}
+            />
+          ))}
         </div>
         <div className="absolute -top-5 right-0 w-full max-w-fit md:max-w-[100px]">
           <Controller
@@ -125,9 +136,10 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
                   placeholder: () => cn("text-[10px] xs:text-xs md:text-sm"),
                   dropdownIndicator: (state) => cn("max-md:w-"),
                 }}
-                placeholder="Weekly"
+                placeholder="Range"
                 onChange={onChange}
                 value={value}
+                // defaultValue={{ label: "Weekly", value: "Weekly" }}
                 name={name}
                 isError={Boolean(getFormError("suiteDuration"))}
               />

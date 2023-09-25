@@ -6,6 +6,7 @@ import { formatWord } from "@/utils";
 import PersonalInformation from "@/components/organisms/Profile/PersonalInfo";
 import SpaceInfo from "@/components/organisms/Profile/SpaceInfo";
 import SuiteInformation from "@/components/organisms/Profile/SuiteInformation";
+import AccountInformation from "@/components/organisms/Profile/AccountInfo";
 
 const AllSteps = [
   "personal-information",
@@ -32,9 +33,9 @@ const SigUpPage = () => {
       case "space-information":
         return <SpaceInfo onSubmit={handleQueryUpdate} />;
       case "suite-information":
-        return <SuiteInformation onSubmit={() => handleQueryUpdate} />;
+        return <SuiteInformation onSubmit={handleQueryUpdate} />;
       case "account-information":
-        return <SuiteInformation onSubmit={() => console.log("Submitted")} />;
+        return <AccountInformation onSubmit={() => console.log("Submitted")} />;
       default:
         throw new Error(
           `${step} is invalid, step should be of either ${AllSteps.join(", ")}`
