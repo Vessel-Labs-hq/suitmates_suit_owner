@@ -55,6 +55,41 @@ const Icons = {
       </g>
     </svg>
   ),
+  Plus: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="24"
+      viewBox="0 0 25 24"
+      fill="none"
+    >
+      <path
+        d="M19.5 13H13.5V19H11.5V13H5.5V11H11.5V5H13.5V11H19.5V13Z"
+        fill="white"
+      />
+    </svg>
+  ),
+  HintTiny: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      fill="none"
+    >
+      <g clip-path="url(#clip0_1033_52756)">
+        <path
+          d="M4.99967 0.833252C2.69967 0.833252 0.833008 2.69992 0.833008 4.99992C0.833008 7.29992 2.69967 9.16658 4.99967 9.16658C7.29967 9.16658 9.16634 7.29992 9.16634 4.99992C9.16634 2.69992 7.29967 0.833252 4.99967 0.833252ZM5.41634 7.08325H4.58301V4.58325H5.41634V7.08325ZM5.41634 3.74992H4.58301V2.91659H5.41634V3.74992Z"
+          fill="#959595"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_1033_52756">
+          <rect width="10" height="10" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
 };
 
 export default Icons;

@@ -2,7 +2,8 @@ import { z } from "zod";
 import {
   createFileSchema,
   createStringSchema,
-  createObjectError,
+  createDefaultError,
+  createSelectSchema,
 } from "./helpers";
 
 export const PersonalInfoSchema = z.object({
@@ -17,25 +18,23 @@ export const SpaceInfoSchema = z.object({
   spaceName: createStringSchema("Name"),
   spaceAddress: createStringSchema("Address"),
   spaceSize: createStringSchema("Size"),
-  spaceAmenities: z.object(
-    {
-      label: createStringSchema("Label"),
-      value: createStringSchema("Value"),
-    },
-    { ...createObjectError("Amenities") }
-  ),
+  spaceAmenities: createSelectSchema("Amenities"),
 });
 
 export const SuiteDetailSchema = z.object({
   suiteNumber: createStringSchema("Number"),
   suiteSize: createStringSchema("Size"),
-  suiteType: createStringSchema("Type"),
   suiteCost: createStringSchema("Cost"),
+  suiteType: createSelectSchema("Type"),
+  suiteDuration: createSelectSchema("Duration"),
 });
 
-export const SuiteInfoSchema = z
-  .array(SuiteDetailSchema)
-  .min(1, "Suite Info is required");
+export const SuiteInfoSchema = z.object(
+  {
+    suiteInfo: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
+  },
+  { ...createDefaultError("Suite Info") }
+);
 
 export const PaymentInfoSchema = z.object({
   cardNumber: createStringSchema("Card Number"),

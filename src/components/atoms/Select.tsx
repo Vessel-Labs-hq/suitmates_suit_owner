@@ -13,24 +13,39 @@ type SelectProps = Omit<RProps, "options"> & {
   hint?: string;
   isError?: boolean;
   label: string;
+  wrapperStyles?: string;
+  labelClass?: string;
+  value?: Options;
 };
 
 const Select = (props: SelectProps) => {
-  const { data, hint, isError, label, ...prop } = props;
+  const {
+    data,
+    hint,
+    isError,
+    label,
+    wrapperStyles,
+    labelClass,
+    className,
+    ...prop
+  } = props;
 
   return (
-    <div className={cn("grid grid-cols-1 gap-1 text-base", props.className)}>
-      <label>{label}</label>
+    <div className={cn("grid grid-cols-1 gap-1 text-base", className)}>
+      <label className={labelClass}>{label}</label>
       <ReactSelect
         options={data}
+        placeholder="Select..."
         {...prop}
+        value={props?.value?.value === "" ? undefined : props.value}
         classNames={{
           control: (state) =>
             cn(
               "h-[48px] rounded-lg border-2 border-[#D9D9D9] bg-[#D9D9D9] px-4 text-[#757575]",
               state.isFocused && "border-black text-black",
               state.hasValue && "text-black",
-              isError && "border-dark-red border-2"
+              isError && "border-dark-red border-2",
+              wrapperStyles
             ),
           valueContainer: (style) => "flex gap-1 !flex-nowrap overflow-x-auto",
           input: (state) => "flex items-center cursor-pointer",

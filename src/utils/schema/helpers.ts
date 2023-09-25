@@ -83,7 +83,13 @@ export const createStringSchema = (args: TCreateString, min = 1) => {
 
 export type InferSchema<T extends ZodType<any, any, any>> = z.infer<T>;
 
-export const createObjectError = (key: string) => ({
+export const createDefaultError = (key: string) => ({
   required_error: `${key} cannot be blank`,
   invalid_type_error: `Invalid type provided for ${key}`,
 });
+
+export const createSelectSchema = (key: string) =>
+  z.object(
+    { label: createStringSchema("Label"), value: createStringSchema("Value") },
+    { ...createDefaultError(key) }
+  );
