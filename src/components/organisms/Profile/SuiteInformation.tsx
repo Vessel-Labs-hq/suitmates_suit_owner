@@ -46,11 +46,7 @@ const SuiteInformation = ({ onSubmit }: Props) => {
 
   return (
     <div className="mx-auto my-4 mt-16 max-w-[1200px] pt-10">
-      <form
-        onSubmit={handleSubmit(onFormSubmit, (err) => {
-          console.log(err, "...");
-        })}
-      >
+      <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="ml-4 sm:ml-8">
           <Title weight="bold" level={2}>
             Tell us about the suites in this space

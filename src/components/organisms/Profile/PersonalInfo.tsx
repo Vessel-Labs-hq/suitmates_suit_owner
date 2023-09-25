@@ -52,7 +52,6 @@ const PersonalInformation = ({ onSubmit }: Props) => {
   const selectedFile = watch("profileImage");
 
   const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     onSubmit();
   };
 
@@ -97,7 +96,6 @@ const PersonalInformation = ({ onSubmit }: Props) => {
                       className="absolute inset-0 z-[1] hidden opacity-0"
                       type="file"
                       onChange={(e) => {
-                        console.log(value);
                         onChange(e.target.files?.[0]);
                       }}
                     />
