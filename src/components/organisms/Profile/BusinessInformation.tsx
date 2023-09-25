@@ -1,4 +1,5 @@
 import Icons from "@/assets/icons";
+import Select from "@/components/atoms/Select";
 import { DaysOfTheWeek, SalonOccupations, WorkingHours } from "@/constants";
 import { formatWord } from "@/utils";
 import { BusinessInfoSchema } from "@/utils/schema/details";
@@ -32,7 +33,6 @@ const BusinessInformation = ({ onSubmit }: Props) => {
 
   const unWrapErrors = (key: keyof Inputs) => {
     const err = formState.errors[key]?.message;
-    console.log(err);
     return err ? String(err) : undefined;
   };
 
@@ -63,41 +63,42 @@ const BusinessInformation = ({ onSubmit }: Props) => {
               control={control}
               name="openHours"
               render={({ field: { value, onChange, ...rest } }) => (
-                <SelectField
+                <Select
                   {...rest}
                   data={WorkingHours.map((time) => ({
-                    name: time.label,
+                    label: time.label,
                     value: String(time.value),
                   }))}
                   label="Hours of business"
                   placeholder="Select..."
-                  onSelect={onChange}
+                  onChange={onChange}
                   defaultValue={value}
                   isError={assertError("openHours")}
                   hint={unWrapErrors("openHours") ?? "Select when you open"}
                 />
               )}
             />
-            <SelectField
+            <Select
               data={WorkingHours.map((time) => ({
-                name: time.label,
+                label: time.label,
                 value: String(time.value),
               }))}
               label="Hours of business"
               placeholder="Select..."
-              {...register("closeHours")}
+              isMulti
+              // {...register("closeHours")}
               isError={assertError("closeHours")}
               hint={unWrapErrors("closeHours") ?? "Select when you close"}
             />
           </div>
-          <SelectField
+          <Select
             data={DaysOfTheWeek.map((day) => ({
-              name: formatWord(day),
+              label: formatWord(day),
               value: day,
             }))}
             label="Days of business "
             placeholder="Select..."
-            {...register("workingDays")}
+            // {...register("workingDays")}
             isError={assertError("workingDays")}
             hint={unWrapErrors("workingDays") ?? "Select days you are open"}
           />
@@ -105,16 +106,16 @@ const BusinessInformation = ({ onSubmit }: Props) => {
             className="py-4"
             label="Website"
             placeholder="Please enter your website"
-            {...register("website")}
+            // {...register("website")}
             isError={assertError("website")}
             hint={unWrapErrors("website")}
           />
           <div>
-            <SelectField
+            <Select
               label="Occupation"
               placeholder="Please select what you do"
               data={SalonOccupations}
-              {...register("occupation")}
+              // {...register("occupation")}
               isError={assertError("occupation")}
               hint={unWrapErrors("occupation")}
             />
@@ -123,13 +124,7 @@ const BusinessInformation = ({ onSubmit }: Props) => {
             <p>Upload license</p>
             <label className="flex h-[140px] w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#D9D9D9] bg-[#F3F3F3]">
               <span>Drop files here to upload…</span>
-              <input
-                type="file"
-                hidden
-                {...register("license")}
-                // isError={assertError("workingDays")}
-                // hint={unWrapErrors("workingDays") ?? "Select days you are open"}
-              />
+              <input type="file" hidden {...register("license")} />
               <span className="rounded-full bg-[#E8E8E8] px-4 py-2">
                 Browse files
               </span>

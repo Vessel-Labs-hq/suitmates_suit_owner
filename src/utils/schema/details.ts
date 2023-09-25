@@ -1,13 +1,29 @@
 import { z } from "zod";
-import { createFileSchema, createStringSchema } from "./helpers";
+import {
+  createFileSchema,
+  createStringSchema,
+  createObjectError,
+} from "./helpers";
 
 export const PersonalInfoSchema = z.object({
   firstName: createStringSchema("First name"),
   lastName: createStringSchema("Last name"),
   phoneNumber: createStringSchema("Phone number"),
   email: createStringSchema("Email").email("Invalid type provided for Email"),
-  bio: createStringSchema("Bio"),
   profileImage: createFileSchema({ key: "Profile Image" }),
+});
+
+export const SpaceInfoSchema = z.object({
+  spaceName: createStringSchema("Name"),
+  spaceAddress: createStringSchema("Address"),
+  spaceSize: createStringSchema("Size"),
+  spaceAmenities: z.object(
+    {
+      label: createStringSchema("Label"),
+      value: createStringSchema("Value"),
+    },
+    { ...createObjectError("Amenities") }
+  ),
 });
 
 export const BusinessInfoSchema = z.object({

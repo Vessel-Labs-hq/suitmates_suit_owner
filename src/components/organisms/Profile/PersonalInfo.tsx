@@ -37,12 +37,6 @@ const fields = [
     placeholder: "Davemariam@gmail.com",
     type: "email",
   },
-  {
-    name: "bio" as const,
-    label: "Bio",
-    placeholder: "Tell us about your business",
-    className: "md:col-span-2",
-  },
 ];
 
 type Inputs = InferSchema<typeof PersonalInfoSchema>;
@@ -130,7 +124,6 @@ const PersonalInformation = ({ onSubmit }: Props) => {
                 {...field}
                 key={field.name}
                 className="py-3"
-                wrapperClass={field?.className}
                 {...register(field.name)}
                 hint={getFormError(field.name)}
                 isError={Boolean(getFormError(field.name))}

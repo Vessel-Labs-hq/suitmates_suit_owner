@@ -28,21 +28,21 @@ export const DaysOfTheWeek = [
   "sunday",
 ];
 
-type TSalonOccupations = { name: string; value: string };
+type TSalonOccupations = { label: string; value: string };
 export const SalonOccupations: TSalonOccupations[] = [
-  { name: "Hairstylist or Hairdresser", value: "hairstylist" },
-  { name: "Nail Technician", value: "nail_technician" },
-  { name: "Esthetician", value: "esthetician" },
-  { name: "Makeup Artist", value: "makeup_artist" },
-  { name: "Barber", value: "barber" },
-  { name: "Massage Therapist", value: "massage_therapist" },
-  { name: "Salon Manager", value: "salon_manager" },
-  { name: "Receptionist", value: "receptionist" },
-  { name: "Colorist", value: "colorist" },
-  { name: "Shampoo Technician", value: "shampoo_technician" },
-  { name: "Manicurist/Pedicurist", value: "manicurist_pedicurist" },
-  { name: "Eyelash Technician", value: "eyelash_technician" },
-  { name: "Waxing Specialist", value: "waxing_specialist" },
-  { name: "Aesthetician Assistant", value: "aesthetician_assistant" },
-  { name: "Retail Sales Associate", value: "retail_sales_associate" },
+  { label: "Hairstylist or Hairdresser", value: "hairstylist" },
+  { label: "Nail Technician", value: "nail_technician" },
+  { label: "Esthetician", value: "esthetician" },
+  { label: "Makeup Artist", value: "makeup_artist" },
+  { label: "Barber", value: "barber" },
+  { label: "Massage Therapist", value: "massage_therapist" },
+  { label: "Salon Manager", value: "salon_manager" },
+  { label: "Receptionist", value: "receptionist" },
+  { label: "Colorist", value: "colorist" },
+  { label: "Shampoo Technician", value: "shampoo_technician" },
+  { label: "Manicurist/Pedicurist", value: "manicurist_pedicurist" },
+  { label: "Eyelash Technician", value: "eyelash_technician" },
+  { label: "Waxing Specialist", value: "waxing_specialist" },
+  { label: "Aesthetician Assistant", value: "aesthetician_assistant" },
+  { label: "Retail Sales Associate", value: "retail_sales_associate" },
 ];
