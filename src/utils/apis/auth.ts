@@ -1,7 +1,7 @@
 import { API } from "../base/axios";
 import { LoginType } from "../schema/login";
 interface SignUpType extends LoginType {
-  role: "tenant";
+  role: "owner";
 }
 
 /**
