@@ -1,37 +1,42 @@
-import axios from "axios";
-import { LoginSchema, LoginType } from "../schema/login";
-import { config } from "../config";
+import { API } from "../base/axios";
+import { LoginType } from "../schema/login";
+interface SignUpType extends LoginType {
+  role: "tenant";
+}
+
+/**
+ * for now response is the same
+ */
+export interface SignUpResponse {
+  role: string;
+  email: string;
+  accessToken: string;
+}
 
 class AuthService {
-    /**
-     *Sign up user
-     * @returns
-     */
-    async signup(data: LoginType) {
-        try {
-            const res =  await axios.post(
-                `${config.BASE_URL}/auth/registers`,
-                data
-            );
+  /**
+   *Sign up user
+   * @returns
+   */
+  async signup(data: SignUpType): Promise<SignUpResponse> {
+    try {
+      const res = await API.post("/auth/register", data);
 
-            return res.data
-        } catch (error) {
-            throw error
-        }
+      return res.data;
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async login(data: LoginType) {
-        try {
-            const res =  await axios.post(
-                `${config.BASE_URL}/auth/login`,
-                data
-            );
+  async login(data: LoginType): Promise<SignUpResponse> {
+    try {
+      const res = await API.post("/auth/login", data);
 
-            return res.data
-        } catch (error) {
-            throw error
-        }
+      return res.data;
+    } catch (error) {
+      throw error;
     }
+  }
 }
 const authService = new AuthService();
 export default authService;
