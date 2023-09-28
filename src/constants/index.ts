@@ -1,0 +1,48 @@
+let time = 1;
+type TimeData = { label: string; value: string | number };
+const timeArr: Array<TimeData> = [];
+
+while (time < 25) {
+  let meridian: "am" | "pm" = "am";
+
+  if (time > 12) {
+    meridian = "pm";
+    const nTime = time - 12;
+    timeArr.push({ label: `${nTime} ${meridian}`, value: time });
+  } else {
+    timeArr.push({ label: `${time} ${meridian}`, value: time });
+  }
+
+  time++;
+}
+
+export const WorkingHours = timeArr;
+
+export const DaysOfTheWeek = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
+
+type TSalonOccupations = { label: string; value: string };
+export const SalonOccupations: TSalonOccupations[] = [
+  { label: "Hairstylist or Hairdresser", value: "hairstylist" },
+  { label: "Nail Technician", value: "nail_technician" },
+  { label: "Esthetician", value: "esthetician" },
+  { label: "Makeup Artist", value: "makeup_artist" },
+  { label: "Barber", value: "barber" },
+  { label: "Massage Therapist", value: "massage_therapist" },
+  { label: "Salon Manager", value: "salon_manager" },
+  { label: "Receptionist", value: "receptionist" },
+  { label: "Colorist", value: "colorist" },
+  { label: "Shampoo Technician", value: "shampoo_technician" },
+  { label: "Manicurist/Pedicurist", value: "manicurist_pedicurist" },
+  { label: "Eyelash Technician", value: "eyelash_technician" },
+  { label: "Waxing Specialist", value: "waxing_specialist" },
+  { label: "Aesthetician Assistant", value: "aesthetician_assistant" },
+  { label: "Retail Sales Associate", value: "retail_sales_associate" },
+];

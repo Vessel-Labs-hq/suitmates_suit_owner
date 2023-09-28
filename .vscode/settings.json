@@ -1,0 +1,14 @@
+{
+  "cSpell.ignoreWords": ["suitmates", "Suitmates"],
+  // https://www.jussivirtanen.fi/writing/using-tailwind-intellisense-within-strings
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classNames",
+    "ngClass",
+    ".*Styles",
+    ".*className",
+    ".*class"
+  ],
+  "cSpell.words": ["Suitemates"]
+}
