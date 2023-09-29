@@ -6,12 +6,26 @@ import {
   createSelectSchema,
 } from "./helpers";
 
+/** 
+ * interface PersonalInfoPayload {
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  bio?: string;
+  onboarded?: boolean;
+  avatar?: string;
+  password?: string;
+}
+
+ */
+
 export const PersonalInfoSchema = z.object({
-  firstName: createStringSchema("First name"),
-  lastName: createStringSchema("Last name"),
-  phoneNumber: createStringSchema("Phone number"),
+  first_name: createStringSchema("First name"),
+  last_name: createStringSchema("Last name"),
+  phone_number: createStringSchema("Phone number"),
   email: createStringSchema("Email").email("Invalid type provided for Email"),
-  profileImage: createFileSchema({ key: "Profile Image" }),
+  avatar: createFileSchema({ key: "Profile Image" }),
 });
 
 export const SpaceInfoSchema = z.object({

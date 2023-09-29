@@ -1,5 +1,6 @@
 import Icons from "@/assets/icons";
 import { cn } from "@/utils";
+import { useOnboardingPersonalInfo } from "@/utils/hooks/onboarding";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,35 +12,44 @@ import {
 } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
+type Inputs = InferSchema<typeof PersonalInfoSchema>;
+
+type InputName = keyof Inputs;
+
+interface Fields {
+  name: InputName;
+  label: string;
+  placeholder?: string;
+  type?: string;
+}
+
 interface Props {
   onSubmit(): void;
 }
 
-const fields = [
+const fields: Fields[] = [
   {
-    name: "firstName" as const,
+    name: "first_name",
     label: "First Name",
     placeholder: "Please enter your first name",
   },
   {
-    name: "lastName" as const,
+    name: "last_name",
     label: "Last Name",
     placeholder: "Please enter your last name",
   },
   {
-    name: "phoneNumber" as const,
+    name: "phone_number",
     label: "Phone Number",
     placeholder: "(999) 999-9999",
   },
   {
-    name: "email" as const,
+    name: "email",
     label: "Email Address",
     placeholder: "Davemariam@gmail.com",
     type: "email",
   },
 ];
-
-type Inputs = InferSchema<typeof PersonalInfoSchema>;
 
 const PersonalInformation = ({ onSubmit }: Props) => {
   const { register, formState, handleSubmit, control, watch } = useForm<Inputs>(
@@ -49,10 +59,18 @@ const PersonalInformation = ({ onSubmit }: Props) => {
     }
   );
 
-  const selectedFile = watch("profileImage");
+  const { mutate, status, isLoading, isError, isSuccess } =
+    useOnboardingPersonalInfo();
+
+  const selectedFile = watch("avatar");
 
   const onFormSubmit: SubmitHandler<Inputs> = (data) => {
     onSubmit();
+
+    mutate({
+      id: "",
+      payload: data,
+    });
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -72,7 +90,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
             <div className="w-[180px]">
               <Controller
                 control={control}
-                name="profileImage"
+                name="avatar"
                 render={({ field: { onChange, value, ...rest } }) => (
                   <label className="relative flex h-[180px] w-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-[4px] border-[#F0D0BE]">
                     <span className="h-full w-full [&>*]:h-full [&>*]:w-full">
@@ -108,11 +126,11 @@ const PersonalInformation = ({ onSubmit }: Props) => {
               <div
                 className={cn(
                   "mt-2 max-h-0 origin-top overflow-hidden text-center text-sm text-white transition-all duration-300 ease-out",
-                  getFormError("profileImage") &&
+                  getFormError("avatar") &&
                     "max-h-[100px] text-[#5e5e5e] opacity-100"
                 )}
               >
-                {getFormError("profileImage")}
+                {getFormError("avatar")}
               </div>
             </div>
           </div>
@@ -132,8 +150,9 @@ const PersonalInformation = ({ onSubmit }: Props) => {
             type="submit"
             className="mx-auto mt-10 flex max-w-xs items-center justify-center"
             primary
+            loading={isLoading}
           >
-            Next
+            {isLoading ? "Loading..." : "Next"}
           </Button>
         </form>
       </div>
