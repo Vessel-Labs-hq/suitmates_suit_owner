@@ -1,5 +1,6 @@
 import axios from "axios";
 import { clientENV } from "./env";
+import authService from "../apis/auth";
 
 /**
  *
@@ -14,6 +15,19 @@ export const API = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+API.interceptors.request.use(
+  (config) => {
+    const user = authService.getSession(true);
+
+    if (user) {
+      config.headers.Authorization = `Bearer ${user.accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 API.interceptors.response.use(
   (response) => response,

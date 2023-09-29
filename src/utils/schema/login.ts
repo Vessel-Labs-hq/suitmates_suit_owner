@@ -12,7 +12,7 @@ export const LoginSchema = z.object({
 
 export type LoginType = z.infer<typeof LoginSchema>;
 
-export const SessionSchema = z.object({
+export const AuthResponseSchema = z.object({
   role: z.string(),
   email: z.string(),
   id: z.number(),
@@ -23,6 +23,6 @@ export const SessionSchema = z.object({
 
 /**
  *
- * Update SessionSchema to add new properties
+ * Update AuthResponseSchema to add new properties
  */
-export type SessionResponse = z.infer<typeof SessionSchema>;
+export type AuthResponse = z.infer<typeof AuthResponseSchema>;

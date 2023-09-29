@@ -1,21 +1,15 @@
 import { API } from "../base/axios";
 import { encryptionHandler } from "../functions/encrypt";
-import { LoginType, SessionResponse, SessionSchema } from "../schema/login";
+import { LoginType, AuthResponse, AuthResponseSchema } from "../schema/login";
 
 interface SignUpType extends LoginType {
   role: "owner";
 }
 
-export interface SignUpResponse {
-  role: string;
-  email: string;
-  accessToken: string;
-}
-
 class AuthService {
   private storeIndex = "d-suite-owner";
 
-  private storeUser(user: SignUpResponse) {
+  private storeUser(user: AuthResponse) {
     const res = encryptionHandler({
       action: "encrypt",
       data: JSON.stringify(user),
@@ -26,7 +20,7 @@ class AuthService {
     }
   }
 
-  async signup(data: SignUpType): Promise<SignUpResponse> {
+  async signup(data: SignUpType): Promise<AuthResponse> {
     try {
       const res = await API.post("/auth/register", data);
       this.storeUser(res.data);
@@ -36,7 +30,7 @@ class AuthService {
     }
   }
 
-  async login(data: LoginType): Promise<SignUpResponse> {
+  async login(data: LoginType): Promise<AuthResponse> {
     try {
       const res = await API.post("/auth/login", data);
       this.storeUser(res.data);
@@ -46,21 +40,23 @@ class AuthService {
     }
   }
 
-  getSession(): SessionResponse | undefined {
+  getSession(muteError?: boolean): AuthResponse | undefined {
     if (localStorage) {
       const user = localStorage.getItem(this.storeIndex);
 
       if (!user) {
+        /** if you want to access the user without throwing an error  */
+        if (muteError) return;
+
         throw new Error("User is undefined");
       }
 
       const data = encryptionHandler({ action: "decrypt", data: user });
 
-      try {
-        const res = SessionSchema.parse(JSON.parse(data));
-        return res;
-      } catch (error) {
-        throw error;
+      const res = AuthResponseSchema.safeParse(JSON.parse(data));
+
+      if (res.success) {
+        return res.data;
       }
     }
   }

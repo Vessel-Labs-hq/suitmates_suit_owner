@@ -9,7 +9,7 @@ export const useOnboardingPersonalInfo = () => {
 
   return useMutation({
     mutationFn: async ({ id, payload }: RequestBody) => {
-      return onBoardingService.personalInfo(id, payload);
+      return onBoardingService.updatePersonalInfo(id, payload);
     },
   });
 };

@@ -5,46 +5,34 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { AxiosError } from "axios";
-import { useEffect } from "react";
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
 import { LoginSchema } from "@/utils/schema/login";
-import { useLogin } from "@/utils/hooks/auth";
 import Link from "next/link";
+import authService from "@/utils/apis/auth";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
   const router = useRouter();
-  const { mutate, status, error, isLoading } = useLogin();
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log("...", formState);
-
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      mutate(data);
+      const res = await authService.login(data);
+
+      if (res.onboarded) {
+        router.push("/dashboard");
+      } else {
+        router.push("/user/profile/update?step=personal-information");
+      }
     } catch (error) {
       toast.error("Something went wrong, please try again");
     }
   };
-
-  useEffect(() => {
-    if (status === "error") {
-      toast.error(
-        (error as AxiosError<{ message: string }>).response?.data?.message
-      );
-    }
-
-    if (status === "success") {
-      toast.success("Login successful");
-      router.push("/auth/login");
-    }
-  }, [status, error]);
 
   const unWrapErrors = (key: keyof Inputs) => {
     return formState.errors[key]?.message;
@@ -53,6 +41,8 @@ const LoginPage = () => {
   const assertError = (key: keyof Inputs): boolean => {
     return Boolean(formState.errors[key]?.message);
   };
+
+  const { isSubmitting } = formState;
 
   return (
     <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-7">
@@ -97,8 +87,8 @@ const LoginPage = () => {
                 </Link>
               </div>
               <div>
-                <Button primary type="submit" loading={isLoading}>
-                  {isLoading ? "Loading..." : "Login"}
+                <Button primary type="submit" loading={isSubmitting}>
+                  {isSubmitting ? "Loading..." : "Login"}
                 </Button>
               </div>
             </div>

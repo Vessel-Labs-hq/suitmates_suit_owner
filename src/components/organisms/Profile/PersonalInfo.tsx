@@ -1,7 +1,7 @@
 import Icons from "@/assets/icons";
 import { cn } from "@/utils";
 import authService from "@/utils/apis/auth";
-import { useOnboardingPersonalInfo } from "@/utils/hooks/onboarding";
+import onBoardingService from "@/utils/apis/onboarding";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,8 +10,10 @@ import {
   Text,
   Input,
   Button,
+  PhoneInput,
 } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = InferSchema<typeof PersonalInfoSchema>;
 
@@ -62,18 +64,24 @@ const PersonalInformation = ({ onSubmit }: Props) => {
     }
   );
 
-  const { mutate, status, isLoading, isError, isSuccess } =
-    useOnboardingPersonalInfo();
-
   const selectedFile = watch("avatar");
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    onSubmit();
+  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (user) {
+      try {
+        const { avatar, ...payload } = data;
 
-    mutate({
-      id: "",
-      payload: data,
-    });
+        const res = await onBoardingService.updatePersonalInfo(
+          user.id,
+          payload
+        );
+        if (res) {
+          onSubmit();
+        }
+      } catch (error) {
+        toast.error("An error occurred please try again ");
+      }
+    }
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -81,7 +89,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
     return err ? String(err) : undefined;
   };
 
-  console.log(user);
+  const { isSubmitting: isLoading } = formState;
 
   return (
     <section className="mx-auto max-w-[960px]">
@@ -140,7 +148,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
             </div>
           </div>
           <div className="mt-10 grid gap-x-10 gap-y-6 md:grid-cols-2">
-            {fields.map((field) => (
+            {fields.slice(0, 2).map((field) => (
               <Input
                 {...field}
                 key={field.name}
@@ -150,6 +158,27 @@ const PersonalInformation = ({ onSubmit }: Props) => {
                 isError={Boolean(getFormError(field.name))}
               />
             ))}
+            <Controller
+              name="phone_number"
+              control={control}
+              render={({ field: { onChange, value, ...rest } }) => (
+                <PhoneInput
+                  {...rest}
+                  {...fields[2]}
+                  label="Phone Number"
+                  onChange={onChange}
+                  value={value}
+                  hint={getFormError("phone_number")}
+                  isError={Boolean(getFormError("phone_number"))}
+                />
+              )}
+            />
+            <Input
+              {...fields[3]}
+              {...register("email")}
+              hint={getFormError("email")}
+              isError={Boolean(getFormError("email"))}
+            />
           </div>
           <Button
             type="submit"

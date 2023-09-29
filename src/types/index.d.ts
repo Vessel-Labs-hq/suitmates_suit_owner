@@ -31,3 +31,9 @@ type LoosenString<Type> = Type | ({} & string);
 type FindAndSeparate<Values, Pattern> = Values extends `${Pattern}${infer A}`
   ? `${Capitalize<Pattern>} ${Capitalize<A>}`
   : Values;
+
+interface APIResponse<TData> {
+  success: boolean;
+  data: Readonly<TData>;
+  message: string;
+}
