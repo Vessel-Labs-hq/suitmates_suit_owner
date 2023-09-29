@@ -1,4 +1,3 @@
-import Select from "@/components/atoms/Select";
 import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +6,7 @@ import {
   Text,
   Input,
   Button,
+  Select,
 } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
@@ -93,12 +93,12 @@ const SpaceInformation = ({ onSubmit }: Props) => {
               render={({ field: { value, onChange, ...rest } }) => (
                 <Select
                   {...rest}
-                  data={[
+                  options={[
                     { label: "24 hours light", value: "24 hours light" },
                     { label: "Security", value: "Security" },
                   ]}
-                  label="Space amenities"
-                  placeholder="Select..."
+                  // label="Space amenities"
+                  placeHolder="Select..."
                   onChange={onChange}
                   value={value}
                   isError={assertError("spaceAmenities")}

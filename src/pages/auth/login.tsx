@@ -19,14 +19,14 @@ type Inputs = z.infer<typeof LoginSchema>;
 
 const SignUpPage = () => {
   const router = useRouter();
-  const { mutate, status, error, isError } = useLogin()
+  const { mutate, status, error, isError } = useLogin();
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     try {
-      mutate(data)
+      mutate(data);
     } catch (error) {
       toast.error("Something went wrong, please try again");
     }
@@ -34,38 +34,43 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (status === "error") {
-      toast.error((error as AxiosError<{message: string}>).response?.data?.message);
+      toast.error(
+        (error as AxiosError<{ message: string }>).response?.data?.message
+      );
     }
 
     if (status === "success") {
       toast.success("Login successful");
       router.push("/auth/login");
     }
-  }, [ status, error ])
+  }, [status, error]);
 
   const unWrapErrors = (key: keyof Inputs) => {
-    return formState.errors[ key ]?.message;
+    return formState.errors[key]?.message;
   };
 
   const assertError = (key: keyof Inputs): boolean => {
-    return Boolean(formState.errors[ key ]?.message);
+    return Boolean(formState.errors[key]?.message);
   };
 
   return (
-    <section className="min-h-screen grid grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-6">
-      <div className="flex flex-col items-center justify-start h-full w-full col-span-4 mx-auto my-auto px-3 pb-5 pt-14">
+    <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-6">
+      <div className="col-span-4 mx-auto my-auto flex h-full w-full flex-col items-center justify-start px-3 pb-5 pt-14">
         <Image
           src={Logo}
-          className="ml-6 max-w-[200px] justify-self-start self-start"
+          className="ml-6 max-w-[200px] self-start justify-self-start"
           alt=""
           priority
         />
-        <div className="max-w-screen-xs w-full my-auto">
-          <div className="text-left text-custom-black mb-8">
+        <div className="my-auto w-full max-w-screen-xs">
+          <div className="mb-8 text-left text-custom-black">
             <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Sign Up</h1>
             <p className="sm:text-xl">Fill the form to sign up </p>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-custom-black">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6 text-custom-black"
+          >
             <Input
               label="Email"
               placeholder="Please enter your email"
@@ -81,10 +86,17 @@ const SignUpPage = () => {
                 type="password"
                 {...register("password")}
                 isError={assertError("password")}
-                hint={unWrapErrors("password") || "Must be 8 characters contain at least one uppercase and digit "}
+                hint={
+                  unWrapErrors("password") ||
+                  "Must be 8 characters contain at least one uppercase and digit "
+                }
               />
               <div className="text-sm">
-                Don&apos;t have an account?  <Link href="/auth/signup" className="underline"> SignUp</Link>
+                Don&apos;t have an account?{" "}
+                <Link href="/auth/signup" className="underline">
+                  {" "}
+                  SignUp
+                </Link>
               </div>
               <div>
                 <Button primary>Login</Button>
@@ -94,10 +106,9 @@ const SignUpPage = () => {
         </div>
       </div>
       <header
-        style={{ backgroundImage: `url(${ Banner.src })` }}
-        className="hidden md:col-span-2 h-full items-end justify-center bg-cover bg-center md:flex"
-      >
-      </header>
+        style={{ backgroundImage: `url(${Banner.src})` }}
+        className="hidden h-full items-end justify-center bg-cover bg-center md:col-span-2 md:flex"
+      ></header>
     </section>
   );
 };

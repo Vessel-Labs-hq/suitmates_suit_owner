@@ -1,4 +1,3 @@
-import Select from "@/components/atoms/Select";
 import { AccountInoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";

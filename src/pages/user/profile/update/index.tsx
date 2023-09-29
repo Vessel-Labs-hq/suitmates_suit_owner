@@ -1,4 +1,3 @@
-import { StepProgressIndicator } from "@/components/atoms/Progess";
 import Image from "next/image";
 import Logo from "public/LogoDark.png";
 import { useRouter } from "next/router";
@@ -7,6 +6,8 @@ import PersonalInformation from "@/components/organisms/Profile/PersonalInfo";
 import SpaceInfo from "@/components/organisms/Profile/SpaceInfo";
 import SuiteInformation from "@/components/organisms/Profile/SuiteInformation";
 import AccountInformation from "@/components/organisms/Profile/AccountInfo";
+import { useEffect, useState } from "react";
+import { StepProgressIndicator } from "@the_human_cipher/components-library";
 
 const AllSteps = [
   "personal-information",
@@ -21,10 +22,13 @@ type IndexedStep = Step | (string & {});
 
 const SigUpPage = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   const step = router.query.step;
 
-  if (!step) return <div />;
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   const renderStep = (query: Extract<IndexedStep, Step>) => {
     switch (query) {
@@ -58,6 +62,17 @@ const SigUpPage = () => {
       },
     });
   }
+
+  /**
+   * handle loading state better
+   */
+  if (loading) return <div />;
+
+  if (!step) return <div>{/* 404 page if step is undefined*/}</div>;
+
+  /**
+   * default page step should be personal-information
+   */
 
   return (
     <section className="space-y-4">

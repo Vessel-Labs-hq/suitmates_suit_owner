@@ -130,7 +130,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
           </div>
           <Button
             type="submit"
-            className="mx-auto mt-10 block max-w-xs"
+            className="mx-auto mt-10 flex max-w-xs items-center justify-center"
             primary
           >
             Next

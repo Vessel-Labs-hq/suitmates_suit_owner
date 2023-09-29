@@ -1,6 +1,6 @@
 import { InferSchema } from "@/utils/schema/helpers";
 import { SuiteDetailSchema, SuiteInfoSchema } from "@/utils/schema/details";
-import { Input } from "@the_human_cipher/components-library";
+import { Input, Select } from "@the_human_cipher/components-library";
 import {
   Control,
   Controller,
@@ -8,10 +8,6 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Select from "../atoms/Select";
-import { cn } from "@/utils";
-import Icons from "@/assets/icons";
 
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
@@ -87,19 +83,17 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
         name={`suiteInfo.${idx}.suiteType`}
         render={({ field: { name, onChange, value } }) => (
           <Select
-            label="Suite Type"
-            data={[
+            // label="Suite Type"
+            options={[
               { label: "House", value: "House" },
               { label: "Store", value: "Store" },
             ]}
+            placeHolder="Suite Type"
             onChange={onChange}
             value={value}
-            name={name}
+            listbox-name={name}
             hint={getFormError("suiteType")}
             isError={Boolean(getFormError("suiteType"))}
-            className="max-md:text-sm"
-            /** https://onebite.dev/how-to-add-word-space-in-tailwind-css/ */
-            labelClass="max-xs:[word-spacing:-0.3ch]"
           />
         )}
       />
@@ -123,25 +117,16 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
             name={`suiteInfo.${idx}.suiteDuration`}
             render={({ field: { name, onChange, value } }) => (
               <Select
-                label=""
-                data={[
+                options={[
                   { label: "Daily", value: "Weekly" },
                   { label: "Weekly", value: "Weekly" },
                   { label: "Monthly", value: "Monthly" },
                 ]}
-                wrapperStyles={cn(
-                  "h-fit px-1 text-[10px] xs:text-xs md:h-[36px] md:px-2 md:text-sm "
-                )}
-                classNames={{
-                  placeholder: () => cn("text-[10px] xs:text-xs md:text-sm"),
-                  dropdownIndicator: (state) => cn("max-md:w-"),
-                }}
-                placeholder="Range"
+                placeHolder="Range"
                 onChange={onChange}
                 value={value}
-                // defaultValue={{ label: "Weekly", value: "Weekly" }}
-                name={name}
                 isError={Boolean(getFormError("suiteDuration"))}
+                listbox-name={name}
               />
             )}
           />
