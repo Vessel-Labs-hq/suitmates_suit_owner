@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "public/LogoDark.png";
+import Logo from "public/logoDark.png";
 import { useRouter } from "next/router";
 import { formatWord } from "@/utils";
 import PersonalInformation from "@/components/organisms/Profile/PersonalInfo";

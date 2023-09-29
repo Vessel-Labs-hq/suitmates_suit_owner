@@ -7,24 +7,25 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
-
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
-import { AiFillCheckCircle } from "react-icons/ai";
 import { LoginSchema } from "@/utils/schema/login";
 import { useLogin } from "@/utils/hooks/auth";
 import Link from "next/link";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const router = useRouter();
-  const { mutate, status, error, isError } = useLogin();
+  const { mutate, status, error, isLoading } = useLogin();
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
+    mode: "onChange",
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log("...", formState);
+
     try {
       mutate(data);
     } catch (error) {
@@ -54,7 +55,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-6">
+    <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-7">
       <div className="col-span-4 mx-auto my-auto flex h-full w-full flex-col items-center justify-start px-3 pb-5 pt-14">
         <Image
           src={Logo}
@@ -64,8 +65,8 @@ const SignUpPage = () => {
         />
         <div className="my-auto w-full max-w-screen-xs">
           <div className="mb-8 text-left text-custom-black">
-            <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Sign Up</h1>
-            <p className="sm:text-xl">Fill the form to sign up </p>
+            <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Login</h1>
+            <p className="sm:text-xl">Fill the form to login</p>
           </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -86,10 +87,7 @@ const SignUpPage = () => {
                 type="password"
                 {...register("password")}
                 isError={assertError("password")}
-                hint={
-                  unWrapErrors("password") ||
-                  "Must be 8 characters contain at least one uppercase and digit "
-                }
+                hint={unWrapErrors("password")}
               />
               <div className="text-sm">
                 Don&apos;t have an account?{" "}
@@ -99,7 +97,9 @@ const SignUpPage = () => {
                 </Link>
               </div>
               <div>
-                <Button primary>Login</Button>
+                <Button primary type="submit" loading={isLoading}>
+                  {isLoading ? "Loading..." : "Login"}
+                </Button>
               </div>
             </div>
           </form>
@@ -107,10 +107,20 @@ const SignUpPage = () => {
       </div>
       <header
         style={{ backgroundImage: `url(${Banner.src})` }}
-        className="hidden h-full items-end justify-center bg-cover bg-center md:col-span-2 md:flex"
-      ></header>
+        className="relative hidden h-full items-end justify-center bg-cover bg-center md:col-span-3 md:flex"
+      >
+        <div
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.61) 41.8%, rgba(0, 0, 0, 0.61) 100%)",
+          }}
+          className="absolute inset-0"
+        />
+      </header>
     </section>
   );
 };
 
-export default SignUpPage;
+// linear-gradient(180deg,_rgba(0,_0,_0,_0.00)_0%,_rgba(0,_0,_0,_0.61)_41.8%,_rgba(0,_0,_0,_0.61)_100%)
+
+export default LoginPage;
