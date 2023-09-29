@@ -11,7 +11,6 @@ import Link from "next/link";
 
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
-import { AiFillCheckCircle } from "react-icons/ai";
 import { LoginSchema } from "@/utils/schema/login";
 import { useSignup } from "@/utils/hooks/auth";
 

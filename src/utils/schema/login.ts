@@ -21,4 +21,8 @@ export const SessionSchema = z.object({
   accessToken: z.string(),
 });
 
+/**
+ *
+ * Update SessionSchema to add new properties
+ */
 export type SessionResponse = z.infer<typeof SessionSchema>;

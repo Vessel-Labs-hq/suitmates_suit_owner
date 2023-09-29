@@ -47,17 +47,27 @@ class AuthService {
   }
 
   getSession(): SessionResponse | undefined {
-    const user = localStorage.getItem(this.storeIndex);
+    if (localStorage) {
+      const user = localStorage.getItem(this.storeIndex);
 
-    if (!user) {
-      throw new Error("User is undefined");
+      if (!user) {
+        throw new Error("User is undefined");
+      }
+
+      const data = encryptionHandler({ action: "decrypt", data: user });
+
+      try {
+        const res = SessionSchema.parse(JSON.parse(data));
+        return res;
+      } catch (error) {
+        throw error;
+      }
     }
+  }
 
-    try {
-      const res = SessionSchema.parse(JSON.parse(user));
-      return res;
-    } catch (error) {
-      throw error;
+  logOut(): void {
+    if (localStorage) {
+      localStorage.removeItem(this.storeIndex);
     }
   }
 }

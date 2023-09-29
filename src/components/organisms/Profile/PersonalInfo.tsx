@@ -1,5 +1,6 @@
 import Icons from "@/assets/icons";
 import { cn } from "@/utils";
+import authService from "@/utils/apis/auth";
 import { useOnboardingPersonalInfo } from "@/utils/hooks/onboarding";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
@@ -52,6 +53,8 @@ const fields: Fields[] = [
 ];
 
 const PersonalInformation = ({ onSubmit }: Props) => {
+  const user = authService.getSession();
+
   const { register, formState, handleSubmit, control, watch } = useForm<Inputs>(
     {
       resolver: zodResolver(PersonalInfoSchema),
@@ -77,6 +80,8 @@ const PersonalInformation = ({ onSubmit }: Props) => {
     const err = formState.errors[key]?.message;
     return err ? String(err) : undefined;
   };
+
+  console.log(user);
 
   return (
     <section className="mx-auto max-w-[960px]">
