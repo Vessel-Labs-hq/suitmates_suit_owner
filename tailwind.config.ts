@@ -1,10 +1,11 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
+import Colors from "@the_human_cipher/components-library/src/theme/colors";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     container: {
@@ -39,6 +40,7 @@ const config: Config = {
         ...theme("width"),
       }),
       colors: {
+        ...Colors,
         custom: {
           black: "#333",
         },
@@ -54,6 +56,9 @@ const config: Config = {
       },
     },
   },
+  corePlugins: {
+    preflight: false,
+  },
   plugins: [],
-}
-export default config
+};
+export default config;
