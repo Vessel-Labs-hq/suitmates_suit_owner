@@ -29,10 +29,13 @@ export const PersonalInfoSchema = z.object({
 });
 
 export const SpaceInfoSchema = z.object({
-  spaceName: createStringSchema("Name"),
-  spaceAddress: createStringSchema("Address"),
-  spaceSize: createStringSchema("Size"),
-  spaceAmenities: createSelectSchema("Amenities"),
+  space_name: createStringSchema("Name"),
+  space_address: createStringSchema("Address"),
+  space_size: createStringSchema("Size"),
+  space_amenities: z.array(createSelectSchema("Amenities"), {
+    invalid_type_error: "Space amenities cannot be blank",
+    required_error: "Space amenities is required",
+  }),
 });
 
 export const SuiteDetailSchema = z.object({

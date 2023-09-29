@@ -1,13 +1,8 @@
+import { SuiteAmenities } from "@/constants";
 import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Title,
-  Text,
-  Input,
-  Button,
-  Select,
-} from "@the_human_cipher/components-library";
+import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 interface Props {
@@ -21,7 +16,7 @@ type Name = keyof Inputs;
 /**
  * totally useless codes, just wanted to do some ts magic
  */
-type Label = Name extends `space${infer A}` ? `Space ${A}` : Name;
+type Label = Name extends `space_${infer A}` ? `Space ${Capitalize<A>}` : Name;
 
 type Field = {
   name: Name;
@@ -31,24 +26,24 @@ type Field = {
 
 const fields: Field[] = [
   {
-    name: "spaceName",
+    name: "space_name",
     label: "Space Name",
     placeholder: "Enter space name",
   },
   {
-    name: "spaceAddress",
+    name: "space_address",
     label: "Space Address",
     placeholder: "Enter space address ",
   },
   {
-    name: "spaceSize",
+    name: "space_size",
     label: "Space Size (sq. ft.)",
     placeholder: "Enter space size ",
   },
 ];
 
 const SpaceInformation = ({ onSubmit }: Props) => {
-  const { register, formState, handleSubmit, control } = useForm<Inputs>({
+  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
     resolver: zodResolver(SpaceInfoSchema),
     mode: "onChange",
   });
@@ -65,6 +60,8 @@ const SpaceInformation = ({ onSubmit }: Props) => {
   const assertError = (key: keyof Inputs): boolean => {
     return Boolean(formState.errors[key]?.message);
   };
+
+  const watchAmenities = watch("space_amenities");
 
   return (
     <section className="mx-auto max-w-[960px]">
@@ -89,32 +86,36 @@ const SpaceInformation = ({ onSubmit }: Props) => {
             ))}
             <Controller
               control={control}
-              name="spaceAmenities"
+              name="space_amenities"
               render={({ field: { value, onChange, ...rest } }) => (
-                <Select
-                  {...rest}
-                  options={[
-                    { label: "24 hours light", value: "24 hours light" },
-                    { label: "Security", value: "Security" },
-                  ]}
-                  // label="Space amenities"
-                  placeHolder="Select..."
-                  onChange={onChange}
-                  value={value}
-                  isError={assertError("spaceAmenities")}
-                  hint={
-                    getFormError("spaceAmenities") ??
-                    "Select all that is offered"
-                  }
-                />
+                <div>
+                  <div className="mb-1">Space Amenities</div>
+                  <Select
+                    {...rest}
+                    options={SuiteAmenities}
+                    // label="Space amenities"
+                    placeHolder="Select..."
+                    onChange={(e) => {
+                      onChange(e);
+
+                      console.log(value, e);
+                    }}
+                    value={watchAmenities}
+                    multiple
+                    isError={assertError("space_amenities")}
+                    hint={getFormError("space_amenities") ?? "Select all that is offered"}
+                    hideMultipleSelectedValue
+                    multipleSelectedLabel={
+                      <span className="lowercase first-letter:uppercase">
+                        You can select more than 1
+                      </span>
+                    }
+                  />
+                </div>
               )}
             />
           </div>
-          <Button
-            type="submit"
-            className="mx-auto mt-10 block max-w-xs"
-            primary
-          >
+          <Button type="submit" className="mx-auto mt-10 block max-w-xs" primary>
             Next
           </Button>
         </form>

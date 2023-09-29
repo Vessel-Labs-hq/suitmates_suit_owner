@@ -1,13 +1,7 @@
 import { InferSchema } from "@/utils/schema/helpers";
 import { SuiteDetailSchema, SuiteInfoSchema } from "@/utils/schema/details";
 import { Input, Select } from "@the_human_cipher/components-library";
-import {
-  Control,
-  Controller,
-  FormState,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
+import { Control, Controller, FormState, UseFormRegister, useForm } from "react-hook-form";
 
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
@@ -55,8 +49,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
   const getFormError = (key: keyof Inputs) => {
     if (["suiteDuration", "suiteType"].includes(key)) {
       const err = (
-        (formState.errors?.suiteInfo?.[idx]?.[key] as any)?.value
-          ?.message as string
+        (formState.errors?.suiteInfo?.[idx]?.[key] as any)?.value?.message as string
       )?.replace("Value", key.replace("suite", ""));
 
       return err ? String(err) : undefined;
@@ -82,19 +75,22 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
         control={control}
         name={`suiteInfo.${idx}.suiteType`}
         render={({ field: { name, onChange, value } }) => (
-          <Select
-            // label="Suite Type"
-            options={[
-              { label: "House", value: "House" },
-              { label: "Store", value: "Store" },
-            ]}
-            placeHolder="Suite Type"
-            onChange={onChange}
-            value={value}
-            listbox-name={name}
-            hint={getFormError("suiteType")}
-            isError={Boolean(getFormError("suiteType"))}
-          />
+          <div>
+            <div>Suite Type</div>
+            <Select
+              // label="Suite Type"
+              options={[
+                { label: "Single", value: "single" },
+                { label: "Double", value: "double" },
+              ]}
+              placeHolder="Suite Type"
+              onChange={onChange}
+              value={value}
+              listbox-name={name}
+              hint={getFormError("suiteType")}
+              isError={Boolean(getFormError("suiteType"))}
+            />
+          </div>
         )}
       />
       <div className="relative flex items-start">
