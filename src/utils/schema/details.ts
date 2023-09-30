@@ -6,20 +6,6 @@ import {
   createSelectSchema,
 } from "./helpers";
 
-/** 
- * interface PersonalInfoPayload {
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  phone_number?: string;
-  bio?: string;
-  onboarded?: boolean;
-  avatar?: string;
-  password?: string;
-}
-
- */
-
 export const PersonalInfoSchema = z.object({
   first_name: createStringSchema("First name"),
   last_name: createStringSchema("Last name"),
@@ -31,7 +17,19 @@ export const PersonalInfoSchema = z.object({
 export const SpaceInfoSchema = z.object({
   space_name: createStringSchema("Name"),
   space_address: createStringSchema("Address"),
-  space_size: createStringSchema("Size"),
+  /**
+   * https://github.com/colinhacks/zod/discussions/330#discussioncomment-7097769
+   */
+  space_size: createStringSchema("Size")
+    .refine(
+      (v) => {
+        let n = Number(v);
+        /** https://zod.dev/?id=refine */
+        return !isNaN(n);
+      },
+      { message: "Space size should be a number" }
+    )
+    .refine((v) => Number(v) > 0, { message: "Number should be greater than 0" }),
   space_amenities: z.array(createSelectSchema("Amenities"), {
     invalid_type_error: "Space amenities cannot be blank",
     required_error: "Space amenities is required",

@@ -1,9 +1,11 @@
 import { SuiteAmenities } from "@/constants";
+import onBoardingService from "@/utils/apis/onboarding";
 import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface Props {
   onSubmit(): void;
@@ -48,8 +50,16 @@ const SpaceInformation = ({ onSubmit }: Props) => {
     mode: "onChange",
   });
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    onSubmit();
+  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const res = await onBoardingService.createSuite(data);
+
+      if (res) {
+        onSubmit();
+      }
+    } catch (error) {
+      toast.error("An error occurred while creating property");
+    }
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -62,6 +72,8 @@ const SpaceInformation = ({ onSubmit }: Props) => {
   };
 
   const watchAmenities = watch("space_amenities");
+
+  const { isSubmitting } = formState;
 
   return (
     <section className="mx-auto max-w-[960px]">
@@ -107,7 +119,7 @@ const SpaceInformation = ({ onSubmit }: Props) => {
                     hideMultipleSelectedValue
                     multipleSelectedLabel={
                       <span className="lowercase first-letter:uppercase">
-                        You can select more than 1
+                        Selected +{watchAmenities?.length} option(s)
                       </span>
                     }
                   />
@@ -115,8 +127,8 @@ const SpaceInformation = ({ onSubmit }: Props) => {
               )}
             />
           </div>
-          <Button type="submit" className="mx-auto mt-10 block max-w-xs" primary>
-            Next
+          <Button type="submit" className="mx-auto mt-10 block max-w-xs" disabled={isSubmitting}>
+            {isSubmitting ? "Loading..." : "Next"}
           </Button>
         </form>
       </div>
