@@ -3,13 +3,13 @@ import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
 import { LoginSchema } from "@/utils/schema/login";
 import Link from "next/link";
 import authService from "@/utils/apis/auth";
+import Alert from "@/utils/base/alerts";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
@@ -30,7 +30,7 @@ const LoginPage = () => {
         router.push("/user/profile/update?step=personal-information");
       }
     } catch (error) {
-      toast.error("Something went wrong, please try again");
+      Alert.error(error);
     }
   };
 
@@ -58,10 +58,7 @@ const LoginPage = () => {
             <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Login</h1>
             <p className="sm:text-xl">Fill the form to login</p>
           </div>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 text-custom-black"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-custom-black">
             <Input
               label="Email"
               placeholder="Please enter your email"

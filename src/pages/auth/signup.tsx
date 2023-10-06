@@ -3,9 +3,7 @@ import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { AxiosError } from "axios";
 import { useEffect } from "react";
 import Link from "next/link";
 
@@ -13,6 +11,7 @@ import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
 import { LoginSchema } from "@/utils/schema/login";
 import { useSignup } from "@/utils/hooks/auth";
+import Alert from "@/utils/base/alerts";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
@@ -28,16 +27,16 @@ const SignUp = () => {
     try {
       mutate(data);
     } catch (error) {
-      toast.error("Something went wrong, please try again");
+      Alert.error(error);
     }
   };
   useEffect(() => {
     if (status === "error") {
-      toast.error((error as AxiosError).message);
+      Alert.error(error);
     }
 
     if (status === "success") {
-      toast.success("Sign up successful");
+      Alert.success("Sign up successful");
       router.push("/auth/login");
     }
   }, [status, error]);
@@ -64,10 +63,7 @@ const SignUp = () => {
             <h1 className="mb-4 text-4xl font-bold sm:text-5xl">Sign Up</h1>
             <p className="sm:text-xl">Fill the form to sign up </p>
           </div>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 text-custom-black"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-custom-black">
             <Input
               label="Email"
               placeholder="Please enter your email"
