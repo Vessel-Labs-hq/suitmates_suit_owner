@@ -4,42 +4,31 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import Link from "next/link";
 
 import Banner from "image/loginBanner.png";
 import Logo from "public/logoDark.png";
 import { LoginSchema } from "@/utils/schema/login";
-import { useSignup } from "@/utils/hooks/auth";
 import Alert from "@/utils/base/alerts";
+import authService from "@/utils/apis/auth";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
 const SignUp = () => {
-  const { mutate, status, error, isError } = useSignup();
   const router = useRouter();
 
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      mutate(data);
+      await authService.signup({ ...data, role: "owner" });
+      router.push("/dashboard");
     } catch (error) {
       Alert.error(error);
     }
   };
-  useEffect(() => {
-    if (status === "error") {
-      Alert.error(error);
-    }
-
-    if (status === "success") {
-      Alert.success("Sign up successful");
-      router.push("/auth/login");
-    }
-  }, [status, error]);
 
   const unWrapErrors = (key: keyof Inputs) => {
     return formState.errors[key]?.message;
@@ -48,6 +37,8 @@ const SignUp = () => {
   const assertError = (key: keyof Inputs): boolean => {
     return Boolean(formState.errors[key]?.message);
   };
+
+  const { isSubmitting } = formState;
 
   return (
     <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-6">
@@ -86,13 +77,13 @@ const SignUp = () => {
               />
               <div className="text-sm">
                 Already have an account?
-                <Link href="/auth/login" className="underline">
+                <Link href="/auth/signin" className="underline">
                   Login
                 </Link>
               </div>
               <div>
-                <Button primary type="submit">
-                  Sign Up
+                <Button primary type="submit" loading={isSubmitting}>
+                  {isSubmitting ? "Loading..." : "Sign Up"}
                 </Button>
               </div>
             </div>

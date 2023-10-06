@@ -2,6 +2,7 @@ import axios from "axios";
 import { clientENV } from "./env";
 import authService from "../apis/auth";
 import { handleAxiosError } from "../functions/axios.helpers";
+import Alert from "./alerts";
 
 /**
  *
@@ -32,5 +33,23 @@ API.interceptors.request.use(
 
 API.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(handleAxiosError(error))
+  (error) => {
+    let message = handleAxiosError(error);
+
+    if (error.response.status === 401) {
+      /** Runs only the client */
+      if (typeof window !== "undefined") {
+        Alert.info("Please sign in to continue");
+        authService.logOut();
+
+        const currentLocation = window.location.pathname;
+
+        return window.location.replace(`/auth/signin?callback=${currentLocation}`);
+      }
+
+      message = "Sign in to continue";
+    }
+
+    return Promise.reject(message);
+  }
 );

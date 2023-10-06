@@ -20,15 +20,19 @@ const LoginPage = () => {
     mode: "onChange",
   });
 
+  const { callBack } = router.query;
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await authService.login(data);
 
       if (res.onboarded) {
-        router.push("/dashboard");
-      } else {
-        router.push("/user/profile/update?step=personal-information");
+        if (!callBack) return router.push("/dashboard");
+
+        return router.push(String(callBack));
       }
+
+      return router.push("/user/profile/update?step=personal-information");
     } catch (error) {
       Alert.error(error);
     }
