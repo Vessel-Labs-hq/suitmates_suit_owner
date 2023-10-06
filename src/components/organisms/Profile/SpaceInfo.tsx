@@ -1,11 +1,11 @@
 import { SuiteAmenities } from "@/constants";
 import onBoardingService from "@/utils/apis/onboarding";
+import Alert from "@/utils/base/alerts";
 import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { toast } from "react-toastify";
 
 interface Props {
   onSubmit(): void;
@@ -58,7 +58,7 @@ const SpaceInformation = ({ onSubmit }: Props) => {
         onSubmit();
       }
     } catch (error) {
-      toast.error("An error occurred while creating property");
+      Alert.error(error);
     }
   };
 

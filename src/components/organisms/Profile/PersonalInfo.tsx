@@ -2,18 +2,12 @@ import Icons from "@/assets/icons";
 import { cn } from "@/utils";
 import authService from "@/utils/apis/auth";
 import onBoardingService from "@/utils/apis/onboarding";
+import Alert from "@/utils/base/alerts";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Title,
-  Text,
-  Input,
-  Button,
-  PhoneInput,
-} from "@the_human_cipher/components-library";
+import { Title, Text, Input, Button, PhoneInput } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { toast } from "react-toastify";
 
 type Inputs = InferSchema<typeof PersonalInfoSchema>;
 
@@ -57,12 +51,10 @@ const fields: Fields[] = [
 const PersonalInformation = ({ onSubmit }: Props) => {
   const user = authService.getSession();
 
-  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>(
-    {
-      resolver: zodResolver(PersonalInfoSchema),
-      mode: "onChange",
-    }
-  );
+  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
+    resolver: zodResolver(PersonalInfoSchema),
+    mode: "onChange",
+  });
 
   const selectedFile = watch("avatar");
 
@@ -71,15 +63,12 @@ const PersonalInformation = ({ onSubmit }: Props) => {
       try {
         const { avatar, ...payload } = data;
 
-        const res = await onBoardingService.updatePersonalInfo(
-          user.id,
-          payload
-        );
+        const res = await onBoardingService.updatePersonalInfo(user.id, payload);
         if (res) {
           onSubmit();
         }
       } catch (error) {
-        toast.error("An error occurred please try again ");
+        Alert.error(error);
       }
     }
   };
@@ -130,17 +119,14 @@ const PersonalInformation = ({ onSubmit }: Props) => {
                         onChange(e.target.files?.[0]);
                       }}
                     />
-                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2">
-                      Upload
-                    </span>
+                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2">Upload</span>
                   </label>
                 )}
               />
               <div
                 className={cn(
                   "mt-2 max-h-0 origin-top overflow-hidden text-center text-sm text-white transition-all duration-300 ease-out",
-                  getFormError("avatar") &&
-                    "max-h-[100px] text-[#5e5e5e] opacity-100"
+                  getFormError("avatar") && "max-h-[100px] text-[#5e5e5e] opacity-100"
                 )}
               >
                 {getFormError("avatar")}

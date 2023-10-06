@@ -1,6 +1,7 @@
 import axios from "axios";
 import { clientENV } from "./env";
 import authService from "../apis/auth";
+import { handleAxiosError } from "../functions/axios.helpers";
 
 /**
  *
@@ -31,5 +32,5 @@ API.interceptors.request.use(
 
 API.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(handleAxiosError(error))
 );

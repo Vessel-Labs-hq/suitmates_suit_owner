@@ -11,9 +11,8 @@ interface IProps {
   className?: string;
 }
 
-type ComponentProps<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-> = React.ComponentProps<T>;
+type ComponentProps<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  React.ComponentProps<T>;
 
 /**
  * use to loosen the type restrictions on a particular type
