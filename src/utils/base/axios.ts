@@ -42,9 +42,9 @@ API.interceptors.response.use(
         Alert.info("Please sign in to continue");
         authService.logOut();
 
-        const currentLocation = window.location.pathname;
+        const currentLocation = encodeURIComponent(window.location.href);
 
-        return window.location.replace(`/auth/signin?callback=${currentLocation}`);
+        return window.location.replace(`/auth/signin?callbackUrl=${currentLocation}`);
       }
 
       message = "Sign in to continue";

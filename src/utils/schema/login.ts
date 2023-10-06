@@ -5,8 +5,8 @@ export type InferSchema<T extends ZodType<any, any, any>> = z.infer<T>;
 export const LoginSchema = z.object({
   email: z
     .string()
-    .email({ message: "Invalid type provided for Email" })
-    .min(1, { message: "Email is required" }),
+    .min(1, { message: "Email is required" })
+    .email({ message: "Please enter a valid Email" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
