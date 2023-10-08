@@ -40,16 +40,11 @@ class AuthService {
     }
   }
 
-  getSession(muteError?: boolean): AuthResponse | undefined {
-    if (localStorage) {
+  getSession(): AuthResponse | undefined {
+    if (typeof localStorage !== "undefined") {
       const user = localStorage.getItem(this.storeIndex);
 
-      if (!user) {
-        /** if you want to access the user without throwing an error  */
-        if (muteError) return;
-
-        throw new Error("User is undefined");
-      }
+      if (!user) return;
 
       const data = encryptionHandler({ action: "decrypt", data: user });
 

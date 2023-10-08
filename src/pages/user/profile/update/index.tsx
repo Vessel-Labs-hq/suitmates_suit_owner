@@ -30,7 +30,7 @@ const SigUpPage = () => {
     setLoading(false);
   }, []);
 
-  const renderStep = (query: Extract<IndexedStep, Step>) => {
+  const renderStep = (query: Extract<IndexedStep, Step>): JSX.Element => {
     switch (query) {
       case "personal-information":
         return <PersonalInformation onSubmit={handleQueryUpdate} />;
@@ -41,9 +41,7 @@ const SigUpPage = () => {
       case "account-information":
         return <AccountInformation onSubmit={() => console.log("Submitted")} />;
       default:
-        throw new Error(
-          `${step} is invalid, step should be of either ${AllSteps.join(", ")}`
-        );
+        throw new Error(`${step} is invalid, step should be of either ${AllSteps.join(", ")}`);
     }
   };
 

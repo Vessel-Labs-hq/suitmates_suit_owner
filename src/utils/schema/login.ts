@@ -13,7 +13,7 @@ export const LoginSchema = z.object({
 export type LoginType = z.infer<typeof LoginSchema>;
 
 export const AuthResponseSchema = z.object({
-  role: z.string(),
+  role: z.union([z.literal("owner"), z.literal("tenant")]),
   email: z.string(),
   id: z.number(),
   onboarded: z.boolean(),

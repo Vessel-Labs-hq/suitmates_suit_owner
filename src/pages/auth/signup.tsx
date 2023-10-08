@@ -24,7 +24,7 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await authService.signup({ ...data, role: "owner" });
-      router.push("/dashboard");
+      router.push("/user/profile/update?step=personal-information");
     } catch (error) {
       Alert.error(error);
     }
