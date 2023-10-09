@@ -22,8 +22,6 @@ const LoginPage = () => {
 
   const { callbackUrl } = router.query;
 
-  console.log(callbackUrl);
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await authService.login(data);

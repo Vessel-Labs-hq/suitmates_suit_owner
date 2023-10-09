@@ -107,11 +107,7 @@ const SpaceInformation = ({ onSubmit }: Props) => {
                     options={SuiteAmenities}
                     // label="Space amenities"
                     placeHolder="Select..."
-                    onChange={(e) => {
-                      onChange(e);
-
-                      console.log(value, e);
-                    }}
+                    onChange={(e) => onChange(e)}
                     value={watchAmenities}
                     multiple
                     isError={assertError("space_amenities")}

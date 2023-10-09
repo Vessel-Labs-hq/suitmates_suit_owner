@@ -5,8 +5,6 @@ import { toast } from "react-toastify";
 export default function Home() {
   const user = authService.getSession();
 
-  console.log(user);
-
   return (
     <main>
       <div>
