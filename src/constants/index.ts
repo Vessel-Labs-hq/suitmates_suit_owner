@@ -1,3 +1,10 @@
+import { NextPageWithLayout } from "@/pages/_app";
+import { AppProps } from "next/app";
+
+export interface AppPropsWithLayout extends AppProps {
+  Component: NextPageWithLayout;
+}
+
 let time = 1;
 type TimeData = { label: string; value: string | number };
 const timeArr: Array<TimeData> = [];

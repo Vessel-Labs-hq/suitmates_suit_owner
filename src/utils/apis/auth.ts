@@ -1,9 +1,15 @@
+import type { NextRouter } from "next/router";
 import { API } from "../base/axios";
 import { encryptionHandler } from "../functions/encrypt";
 import { LoginType, AuthResponse, AuthResponseSchema } from "../schema/login";
 
 interface SignUpType extends LoginType {
   role: "owner";
+}
+
+interface RedirectLoginArgs {
+  effect(): void;
+  router: NextRouter;
 }
 
 class AuthService {
@@ -53,6 +59,22 @@ class AuthService {
       if (res.success) {
         return res.data;
       }
+    }
+  }
+
+  redirectLogin(args?: Partial<RedirectLoginArgs>) {
+    if (typeof window !== "undefined") {
+      const currentLocation = encodeURIComponent(window.location.href);
+
+      this.logOut();
+
+      if (args?.effect) {
+        args.effect();
+      }
+
+      const url = `/auth/signin?callbackUrl=${currentLocation}`;
+
+      return args?.router ? args.router.push(url) : window.location.replace(url);
     }
   }
 

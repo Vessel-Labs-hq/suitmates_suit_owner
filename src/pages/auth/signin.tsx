@@ -27,7 +27,7 @@ const LoginPage = () => {
       const res = await authService.login(data);
 
       if (res.onboarded) {
-        if (!callbackUrl) return router.push("/dashboard");
+        if (!callbackUrl) return router.push("/");
 
         return router.push(String(callbackUrl));
       }
