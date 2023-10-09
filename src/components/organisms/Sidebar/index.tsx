@@ -18,8 +18,8 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="sticky top-0 flex h-screen w-full max-w-sm bg-light-gray md:pr-5 lg:pr-10 xxl:max-w-[400px]">
-      <div className="ml-auto flex h-full w-full max-w-[80%] flex-col">
+    <aside className="sticky top-0 flex h-screen w-full max-w-[300px] bg-light-gray px-2 lg:max-w-[380px] lg:pr-10 xl:max-w-[400px]">
+      <div className="flex h-full w-full max-w-[95%] flex-col max-lg:mx-auto lg:ml-auto lg:max-w-[80%] ">
         <Image priority src={Logo} alt="Suitemates" width={197} height={30} />
         <ul className="mt-16 grid w-full grid-cols-1 space-y-5 py-4">
           {SideBarData.map(({ pathname: url, ...ele }) => (
