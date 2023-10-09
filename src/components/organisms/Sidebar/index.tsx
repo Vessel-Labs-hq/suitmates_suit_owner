@@ -1,5 +1,7 @@
 import NavLink from "@/components/atoms/NavLink";
 import { SideBarData } from "@/constants/sidebar-data";
+import authService from "@/utils/apis/auth";
+import { IconBox } from "@the_human_cipher/components-library";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Logo from "public/logoDark.png";
@@ -36,7 +38,15 @@ const Sidebar = () => {
             link="/"
             className="w-fit bg-[#E6E6E6] pr-5"
           />
-          <NavLink icon="Settings01" text="Logout" link="/" className="w-fit bg-[#E6E6E6] pr-5" />
+          <button
+            type="button"
+            onClick={() => authService.logOut()}
+            className="flex w-fit items-center gap-3 rounded-xl bg-[#E6E6E6] px-4 py-3 pr-5
+          text-suite-dark [word-spacing:-0.1ch] lg:text-lg"
+          >
+            <IconBox icon="Settings01" size={24} />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </aside>

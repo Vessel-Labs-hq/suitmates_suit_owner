@@ -21,7 +21,7 @@ class AuthService {
       data: JSON.stringify(user),
     });
 
-    if (localStorage) {
+    if (typeof localStorage !== "undefined") {
       localStorage.setItem(this.storeIndex, res);
     }
   }
@@ -79,8 +79,10 @@ class AuthService {
   }
 
   logOut(): void {
-    if (localStorage) {
+    if (typeof localStorage !== "undefined") {
       localStorage.removeItem(this.storeIndex);
+
+      window.location.replace("/auth/signin");
     }
   }
 }
