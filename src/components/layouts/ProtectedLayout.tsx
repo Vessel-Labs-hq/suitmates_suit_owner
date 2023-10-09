@@ -19,5 +19,5 @@ export default function ProtectedLayout({ children }: IChildren) {
 
   if (loading) return <div />;
 
-  return <main>{children}</main>;
+  return children;
 }
