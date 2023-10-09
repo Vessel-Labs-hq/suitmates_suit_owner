@@ -5,6 +5,7 @@ interface AvatarProps {
   email: string;
   name: string;
   src?: string;
+  contentClass?: string;
 }
 
 const getPlaceholder = (name: string) => {
@@ -15,18 +16,24 @@ const getPlaceholder = (name: string) => {
   return cn(name[0][0], name[1][0]).replace(" ", "");
 };
 
-const Avatar = ({ email, name, src }: AvatarProps) => (
+const Avatar = ({ email, name, src, contentClass }: AvatarProps) => (
   <div className="flex items-center gap-2">
     <div>
       {src ? (
-        <Image src={src} alt={name} width={50} height={50} className="rounded-full object-cover" />
+        <Image
+          src={src}
+          alt={name}
+          width={50}
+          height={50}
+          className="rounded-full object-cover max-md:max-h-10 max-md:max-w-10"
+        />
       ) : (
-        <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-custom-black/90 text-xl uppercase text-white ">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-custom-black/90 text-base uppercase text-white md:h-[50px] md:w-[50px] md:text-xl ">
           {getPlaceholder(name)}
         </div>
       )}
     </div>
-    <div className="w-full max-w-[150px]">
+    <div className={cn("w-full max-w-[150px]", contentClass)}>
       <h6 className="text-sm font-bold capitalize text-black">{name}</h6>
       <p className="line-clamp-1 max-w-full text-xs lowercase">{email}</p>
     </div>

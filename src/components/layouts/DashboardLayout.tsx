@@ -13,16 +13,16 @@ const DashboardLayout = ({ children, headerDesc }: Props) => {
 
   return (
     <ProtectedLayout>
-      <div className="flex [&>*]:py-14">
+      <div className="flex md:[&>*]:py-14">
         <Sidebar />
-        <main className="w-full space-y-4 px-4 text-suite-dark md:px-6 lg:px-8">
+        <main className="w-full space-y-8 px-4 text-suite-dark max-md:py-5 md:space-y-4 md:px-6 lg:px-8">
           <DashboardHeader
             email={user?.email ?? ""}
             firstName="rehk"
             lastName="mansa"
             headerDesc={headerDesc ?? "Track maintenance and mange tenants on your dashboard"}
           />
-          <div className="h-[3px] w-full bg-gray" />
+          <div className="hidden h-[3px] w-full bg-gray md:block" />
           <div>{children}</div>
         </main>
       </div>
