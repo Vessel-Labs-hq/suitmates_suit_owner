@@ -88,8 +88,8 @@ const LoginPage = () => {
                 </Link>
               </div>
               <div>
-                <Button primary type="submit" loading={isSubmitting}>
-                  {isSubmitting ? "Loading..." : "Login"}
+                <Button type="submit" loading={isSubmitting}>
+                  Login
                 </Button>
               </div>
             </div>
@@ -111,7 +111,5 @@ const LoginPage = () => {
     </section>
   );
 };
-
-// linear-gradient(180deg,_rgba(0,_0,_0,_0.00)_0%,_rgba(0,_0,_0,_0.61)_41.8%,_rgba(0,_0,_0,_0.61)_100%)
 
 export default LoginPage;

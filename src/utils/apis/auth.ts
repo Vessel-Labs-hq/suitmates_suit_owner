@@ -78,6 +78,11 @@ class AuthService {
     }
   }
 
+  /**
+   * @example```tsx
+   *  <button onClick={()=> authService.logOut()}>Logout</button>
+   * ```
+   */
   logOut(): void {
     if (typeof localStorage !== "undefined") {
       localStorage.removeItem(this.storeIndex);
@@ -86,6 +91,11 @@ class AuthService {
     }
   }
 }
+
+/**
+ * Do not pass any property directly, but rather use as a callback
+ *
+ */
 const authService = new AuthService();
 
 export default authService;

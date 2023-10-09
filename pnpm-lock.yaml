@@ -9,8 +9,8 @@ dependencies:
     specifier: ^3.3.1
     version: 3.3.1(react-hook-form@7.46.1)
   '@the_human_cipher/components-library':
-    specifier: ^1.1.0
-    version: 1.1.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+    specifier: ^1.4.1
+    version: 1.4.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
   '@types/node':
     specifier: 20.5.9
     version: 20.5.9
@@ -1156,8 +1156,8 @@ packages:
       tailwindcss: 3.3.3
     dev: false
 
-  /@the_human_cipher/components-library@1.1.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-MMHHI6+szmLnoccGpDqb5yrkD31hGA7cTZxDgAHj4l/LNXL7Bc5Gu0rZ7qfV0o2cKALqPyITUK2E+FszhRUUuA==}
+  /@the_human_cipher/components-library@1.4.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-zXGDMUxyiEzT3A2CvhFX7c0SU0MGJ4dL+3ivIqpOIdnGtrEq8dx4fwBJkGq0smttl8ajSxVYA2DLFaga713MBA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
