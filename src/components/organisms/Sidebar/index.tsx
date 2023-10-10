@@ -10,8 +10,6 @@ const Sidebar = () => {
   const { pathname } = useRouter();
 
   const getNavLinkState = (url: string) => {
-    console.log(pathname);
-
     if (url === "dashboard" && pathname === "/") {
       return true;
     }

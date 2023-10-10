@@ -18,8 +18,8 @@ const DashboardLayout = ({ children, headerDesc }: Props) => {
         <main className="w-full space-y-8 px-4 text-suite-dark max-md:py-5 md:space-y-4 md:px-6 lg:px-8">
           <DashboardHeader
             email={user?.email ?? ""}
-            firstName="rehk"
-            lastName="mansa"
+            firstName="John"
+            lastName="Doe"
             headerDesc={headerDesc ?? "Track maintenance and mange tenants on your dashboard"}
           />
           <div className="hidden h-[3px] w-full bg-gray md:block" />

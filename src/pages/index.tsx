@@ -1,7 +1,12 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
+import MaintenanceRequestTable from "@/components/molecules/MiantennanceRequestTable";
 
 const HomePage = () => {
-  return <DashboardLayout>hello world</DashboardLayout>;
+  return (
+    <DashboardLayout>
+      <MaintenanceRequestTable />
+    </DashboardLayout>
+  );
 };
 
 export default HomePage;

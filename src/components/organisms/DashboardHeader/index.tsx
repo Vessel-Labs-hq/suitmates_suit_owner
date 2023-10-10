@@ -1,4 +1,4 @@
-import Avatar from "@/components/atoms/Avatar";
+import HeaderProfile from "@/components/atoms/HeaderProfile";
 import { cn } from "@/utils";
 import Image from "next/image";
 import LogoDark from "public/logoDark.png";
@@ -53,7 +53,7 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
               </defs>
             </svg>
           </button>
-          <Avatar
+          <HeaderProfile
             email={email}
             name={cn(firstName, lastName)}
             contentClass="md:block hidden"
