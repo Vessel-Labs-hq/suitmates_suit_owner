@@ -20,7 +20,7 @@ export const handleAxiosError = (error: AxiosError<APIError>) => {
   }
 
   if (error.request) {
-    return `Bad Request: ${error.request}`;
+    return `Bad Request: ${error.message}`;
   }
 
   return `Error: ${error.message}`;

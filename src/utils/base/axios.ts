@@ -36,7 +36,7 @@ API.interceptors.response.use(
   (error) => {
     let message = handleAxiosError(error);
 
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       /** Runs only the client */
       if (typeof window !== "undefined") {
         Alert.info("Please sign in to continue");
