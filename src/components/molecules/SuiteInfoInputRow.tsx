@@ -76,14 +76,13 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
         name={`suiteInfo.${idx}.suiteType`}
         render={({ field: { name, onChange, value } }) => (
           <div>
-            <div>Suite Type</div>
             <Select
-              // label="Suite Type"
+              label="Suite Type"
               options={[
                 { label: "Single", value: "single" },
                 { label: "Double", value: "double" },
               ]}
-              placeHolder="Suite Type"
+              placeholder="Suite Type"
               onChange={onChange}
               value={value}
               listbox-name={name}
@@ -107,7 +106,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
             />
           ))}
         </div>
-        <div className="absolute -top-5 right-0 w-full max-w-fit md:max-w-[100px]">
+        <div className="absolute -top-6 right-0 w-full max-w-fit md:max-w-[100px]">
           <Controller
             control={control}
             name={`suiteInfo.${idx}.suiteDuration`}
@@ -118,7 +117,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
                   { label: "Weekly", value: "Weekly" },
                   { label: "Monthly", value: "Monthly" },
                 ]}
-                placeHolder="Range"
+                placeholder="Range"
                 onChange={onChange}
                 value={value}
                 isError={Boolean(getFormError("suiteDuration"))}

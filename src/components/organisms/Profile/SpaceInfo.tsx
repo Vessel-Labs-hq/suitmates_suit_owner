@@ -101,12 +101,11 @@ const SpaceInformation = ({ onSubmit }: Props) => {
               name="space_amenities"
               render={({ field: { value, onChange, ...rest } }) => (
                 <div>
-                  <div className="mb-1">Space Amenities</div>
                   <Select
                     {...rest}
                     options={SuiteAmenities}
-                    // label="Space amenities"
-                    placeHolder="Select..."
+                    label="Space amenities"
+                    placeholder="Select..."
                     onChange={(e) => onChange(e)}
                     value={watchAmenities}
                     multiple
