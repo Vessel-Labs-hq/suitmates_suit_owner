@@ -7,7 +7,7 @@ const space = ["Space", "Category", "Priority", "Status", "Date"];
 
 const MaintenanceRequestTable = () => {
   return (
-    <div className="rounded-2xl bg-light-gray py-4">
+    <div className="w-full rounded-2xl bg-light-gray py-4">
       <div className="px-5">Recent maintenance request </div>
       <div className="mt-4 grid grid-cols-5 border-b border-solid border-suite-dark px-5 pb-2">
         {space.map((ele, idx) => (
