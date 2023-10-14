@@ -4,7 +4,7 @@ import { SpaceInfoSchema, SuiteInfoSchema } from "../schema/details";
 import { InferSchema } from "../schema/helpers";
 
 interface CreateSuitePayload {
-  suites: InferSchema<typeof SuiteInfoSchema>;
+  suites: InferSchema<typeof SuiteInfoSchema>["suites"];
   spaceId: string;
 }
 
@@ -45,13 +45,24 @@ class Details {
   }
 
   async createSuite(payload: CreateSuitePayload) {
-    const { spaceId, ...data } = payload;
+    const { spaceId, suites } = payload;
     type ResponseBody = APIResponse<DbCreateSuite[]>;
 
+    const data = suites.map(({ suite_cost, suite_type, timing, ...rest }) => ({
+      ...rest,
+      suite_cost: Number(suite_cost),
+      suite_type: JSON.stringify(suite_type),
+      timing: JSON.stringify(timing),
+    }));
+
     try {
-      const res = await API.post<ResponseBody>(`/space/${spaceId}/create-suit`, data);
+      const res = await API.post<ResponseBody>(`/space/${spaceId}/create-suit`, {
+        suites: data,
+      });
       return res.data;
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

@@ -62,7 +62,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-8 max-md:text-sm xs:gap-x-10 md:grid-cols-4">
+    <div className="grid grid-cols-1 gap-x-4 gap-y-2 max-md:text-sm xs:gap-x-10 sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4">
       {fields.slice(0, 2).map(({ name, label, ...ele }) => (
         <Input
           {...ele}
@@ -78,7 +78,8 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
         control={control}
         name={`suites.${idx}.suite_type`}
         render={({ field: { name, onChange, value } }) => (
-          <div className="mt-1">
+          <div className="mt-2.5">
+            {/* remove this class */}
             <Select
               label="Suite Type"
               options={[
@@ -95,7 +96,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
           </div>
         )}
       />
-      <div className="relative flex items-start">
+      <div className="relative mt-1 flex items-start max-sm:mt-8">
         <div className="w-full">
           {fields.slice(2).map(({ name, label, ...ele }) => (
             <Input
@@ -109,7 +110,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
             />
           ))}
         </div>
-        <div className="absolute -top-6 right-0 w-full max-w-fit md:max-w-[100px]">
+        <div className="absolute -top-7 right-0 w-full max-w-fit md:-top-6 md:max-w-[100px]">
           <Controller
             control={control}
             name={`suites.${idx}.timing`}
@@ -125,6 +126,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
                 value={value}
                 isError={Boolean(getFormError("timing"))}
                 listbox-name={name}
+                btnClassName="text-xs p-2"
               />
             )}
           />

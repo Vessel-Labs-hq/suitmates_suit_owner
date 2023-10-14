@@ -49,14 +49,17 @@ const SuiteInformation = ({ onSubmit }: Props) => {
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     if (query.spaceId) {
       try {
-        await onBoardingService.createSuite({
+        const res = await onBoardingService.createSuite({
           spaceId: String(query.spaceId),
-          suites: data,
+          suites: data.suites,
         });
+
+        if (res) {
+          onSubmit();
+        }
       } catch (error) {
         Alert.error(error);
       }
-      console.log(data);
     } else {
       Alert.error("Space Id is undefined, error creating Suite");
     }
@@ -106,7 +109,7 @@ const SuiteInformation = ({ onSubmit }: Props) => {
         </div>
 
         <div className="mx-auto mt-8 max-w-sm">
-          <Button className="" type="submit" primary>
+          <Button className="" type="submit" loading={formState.isSubmitting}>
             Submit
           </Button>
         </div>
