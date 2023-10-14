@@ -40,6 +40,14 @@ class Details {
       throw error;
     }
   }
+
+  async createSuite(payload: unknown) {
+    type ResponseBody = APIResponse<unknown>;
+
+    try {
+      const res = await API.post<ResponseBody>("/", payload);
+    } catch (error) {}
+  }
 }
 
 const onBoardingService = new Details();

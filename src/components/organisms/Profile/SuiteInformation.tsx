@@ -13,11 +13,11 @@ interface Props {
 type Inputs = InferSchema<typeof SuiteInfoSchema>;
 
 const DefaultValues = {
-  suiteCost: "",
-  suiteNumber: "",
-  suiteSize: "",
-  suiteType: { label: "", value: "" },
-  suiteDuration: { label: "", value: "" },
+  suite_cost: "",
+  suite_number: "",
+  suite_size: "",
+  suite_type: { label: "", value: "" },
+  timing: { label: "", value: "" },
 };
 
 type FormValues = {};
@@ -51,9 +51,7 @@ const SuiteInformation = ({ onSubmit }: Props) => {
           <Title weight="bold" level={2}>
             Tell us about the suites in this space
           </Title>
-          <Text className="my-5 block font-bold">
-            You can add as many as is available
-          </Text>
+          <Text className="my-5 block font-bold">You can add as many as is available</Text>
         </div>
         <div className="rounded-2xl bg-[#F3F3F3] p-5 pt-8">
           <div className="relative">

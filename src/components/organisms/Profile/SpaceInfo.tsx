@@ -123,7 +123,7 @@ const SpaceInformation = ({ onSubmit }: Props) => {
             />
           </div>
           <Button type="submit" className="mx-auto mt-10 block max-w-xs" disabled={isSubmitting}>
-            {isSubmitting ? "Loading..." : "Next"}
+            Next
           </Button>
         </form>
       </div>

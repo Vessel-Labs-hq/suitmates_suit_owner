@@ -11,6 +11,8 @@ type Name = keyof Inputs;
 
 /**
  * totally useless codes, just wanted to do some ts magic
+ *
+ * @edit => turned out handing while refactoring
  */
 type Label = FindAndSeparate<Name, "suite">;
 
@@ -23,17 +25,17 @@ type Field = {
 const fields: Field[] = [
   {
     label: "Suite Number",
-    name: "suiteNumber",
+    name: "suite_number",
     placeholder: "Enter suite number",
   },
   {
     label: "Suite Size",
-    name: "suiteSize",
+    name: "suite_size",
     placeholder: "Enter suite size",
   },
   {
     label: "Suite Cost",
-    name: "suiteCost",
+    name: "suite_cost",
     placeholder: "Enter suite cost",
   },
 ];
@@ -73,7 +75,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
       ))}
       <Controller
         control={control}
-        name={`suiteInfo.${idx}.suiteType`}
+        name={`suiteInfo.${idx}.suite_type`}
         render={({ field: { name, onChange, value } }) => (
           <div>
             <Select
@@ -86,8 +88,8 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
               onChange={onChange}
               value={value}
               listbox-name={name}
-              hint={getFormError("suiteType")}
-              isError={Boolean(getFormError("suiteType"))}
+              hint={getFormError("suite_type")}
+              isError={Boolean(getFormError("suite_type"))}
             />
           </div>
         )}
@@ -109,7 +111,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
         <div className="absolute -top-6 right-0 w-full max-w-fit md:max-w-[100px]">
           <Controller
             control={control}
-            name={`suiteInfo.${idx}.suiteDuration`}
+            name={`suiteInfo.${idx}.timing`}
             render={({ field: { name, onChange, value } }) => (
               <Select
                 options={[
@@ -120,7 +122,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
                 placeholder="Range"
                 onChange={onChange}
                 value={value}
-                isError={Boolean(getFormError("suiteDuration"))}
+                isError={Boolean(getFormError("timing"))}
                 listbox-name={name}
               />
             )}

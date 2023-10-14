@@ -172,10 +172,9 @@ const PersonalInformation = ({ onSubmit }: Props) => {
           <Button
             type="submit"
             className="mx-auto mt-10 flex max-w-xs items-center justify-center"
-            primary
             loading={isLoading}
           >
-            {isLoading ? "Loading..." : "Next"}
+            Next
           </Button>
         </form>
       </div>
