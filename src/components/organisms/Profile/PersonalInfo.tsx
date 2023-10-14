@@ -3,6 +3,7 @@ import { cn } from "@/utils";
 import authService from "@/utils/apis/auth";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
+import { onFormError } from "@/utils/functions/react-hook-form";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,10 +42,9 @@ const fields: Fields[] = [
     placeholder: "(999) 999-9999",
   },
   {
-    name: "email",
-    label: "Email Address",
-    placeholder: "Davemariam@gmail.com",
-    type: "email",
+    name: "bio",
+    label: "Bio",
+    placeholder: "Bio",
   },
 ];
 
@@ -61,9 +61,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     if (user) {
       try {
-        const { avatar, ...payload } = data;
-
-        const res = await onBoardingService.updatePersonalInfo(user.id, payload);
+        const res = await onBoardingService.updatePersonalInfo(user.id, data);
         if (res) {
           onSubmit();
         }
@@ -86,7 +84,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
         <Title weight="bold" level={2}>
           Almost done let us get to know you
         </Title>
-        <form onSubmit={handleSubmit(onFormSubmit)}>
+        <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
           <div className="ml-4">
             <Text className="my-5 block font-bold">Personal Information </Text>
             <div className="w-[180px]">
@@ -94,7 +92,12 @@ const PersonalInformation = ({ onSubmit }: Props) => {
                 control={control}
                 name="avatar"
                 render={({ field: { onChange, value, ...rest } }) => (
-                  <label className="relative flex h-[180px] w-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-[4px] border-[#F0D0BE]">
+                  <label
+                    className={cn(
+                      "relative flex h-[180px] w-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-[4px] border-[#F0D0BE]",
+                      getFormError("avatar") && "border-borderNegative/70"
+                    )}
+                  >
                     <span className="h-full w-full [&>*]:h-full [&>*]:w-full">
                       {Icons.GalleryMaskGroup}
                     </span>
@@ -126,7 +129,7 @@ const PersonalInformation = ({ onSubmit }: Props) => {
               <div
                 className={cn(
                   "mt-2 max-h-0 origin-top overflow-hidden text-center text-sm text-white transition-all duration-300 ease-out",
-                  getFormError("avatar") && "max-h-[100px] text-[#5e5e5e] opacity-100"
+                  getFormError("avatar") && "max-h-[100px] text-borderNegative opacity-100"
                 )}
               >
                 {getFormError("avatar")}
@@ -161,9 +164,9 @@ const PersonalInformation = ({ onSubmit }: Props) => {
             />
             <Input
               {...fields[3]}
-              {...register("email")}
-              hint={getFormError("email")}
-              isError={Boolean(getFormError("email"))}
+              {...register("bio")}
+              hint={getFormError("bio")}
+              isError={Boolean(getFormError("bio"))}
             />
           </div>
           <Button

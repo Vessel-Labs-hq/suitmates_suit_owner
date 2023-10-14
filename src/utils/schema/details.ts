@@ -10,8 +10,9 @@ export const PersonalInfoSchema = z.object({
   first_name: createStringSchema("First name"),
   last_name: createStringSchema("Last name"),
   phone_number: createStringSchema("Phone number"),
-  email: createStringSchema("Email").email("Invalid type provided for Email"),
+  // email: createStringSchema("Email").email("Invalid type provided for Email"),
   avatar: createFileSchema({ key: "Profile Image" }),
+  bio: z.optional(createStringSchema({ key: "Bio" })),
 });
 
 export const SpaceInfoSchema = z.object({
