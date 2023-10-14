@@ -5,6 +5,10 @@ import { Button, Text, Title } from "@the_human_cipher/components-library";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Icons from "@/assets/icons";
+import Alert from "@/utils/base/alerts";
+import onBoardingService from "@/utils/apis/onboarding";
+import { useRouter } from "next/router";
+import { onFormError } from "@/utils/functions/react-hook-form";
 
 interface Props {
   onSubmit(): void;
@@ -28,25 +32,39 @@ type FormValues = {};
  * https://www.cluemediator.com/dynamic-form-with-react-hook-form-using-usefieldarray
  */
 const SuiteInformation = ({ onSubmit }: Props) => {
+  const { query } = useRouter();
+
   const { control, handleSubmit, register, formState } = useForm<Inputs>({
     resolver: zodResolver(SuiteInfoSchema),
     mode: "onChange",
     defaultValues: {
-      suiteInfo: [DefaultValues],
+      suites: [DefaultValues],
     },
   });
   const { fields, append, remove } = useFieldArray<Inputs>({
     control,
-    name: "suiteInfo",
+    name: "suites",
   });
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    onSubmit();
+  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (query.spaceId) {
+      try {
+        await onBoardingService.createSuite({
+          spaceId: String(query.spaceId),
+          suites: data,
+        });
+      } catch (error) {
+        Alert.error(error);
+      }
+      console.log(data);
+    } else {
+      Alert.error("Space Id is undefined, error creating Suite");
+    }
   };
 
   return (
     <div className="mx-auto my-4 mt-16 max-w-[1200px] pt-10">
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
         <div className="ml-4 sm:ml-8">
           <Title weight="bold" level={2}>
             Tell us about the suites in this space

@@ -4,6 +4,7 @@ import {
   createStringSchema,
   createDefaultError,
   createSelectSchema,
+  createInputNumberSchema,
 } from "./helpers";
 
 export const PersonalInfoSchema = z.object({
@@ -21,16 +22,7 @@ export const SpaceInfoSchema = z.object({
   /**
    * https://github.com/colinhacks/zod/discussions/330#discussioncomment-7097769
    */
-  space_size: createStringSchema("Size")
-    .refine(
-      (v) => {
-        let n = Number(v);
-        /** https://zod.dev/?id=refine */
-        return !isNaN(n);
-      },
-      { message: "Space size should be a number" }
-    )
-    .refine((v) => Number(v) > 0, { message: "Number should be greater than 0" }),
+  space_size: createInputNumberSchema("Size"),
   space_amenities: z.array(createSelectSchema("Amenities"), {
     invalid_type_error: "Space amenities cannot be blank",
     required_error: "Space amenities is required",
@@ -40,7 +32,7 @@ export const SpaceInfoSchema = z.object({
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
   suite_size: createStringSchema("Size"),
-  suite_cost: createStringSchema("Cost"),
+  suite_cost: createInputNumberSchema("Cost"),
   suite_type: createSelectSchema("Type"),
   timing: createSelectSchema("Duration"),
 });
@@ -67,7 +59,7 @@ export const SuiteDetailSchema = z.object({
  */
 export const SuiteInfoSchema = z.object(
   {
-    suiteInfo: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
+    suites: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
   },
   { ...createDefaultError("Suite Info") }
 );

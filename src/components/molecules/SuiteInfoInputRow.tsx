@@ -2,6 +2,7 @@ import { InferSchema } from "@/utils/schema/helpers";
 import { SuiteDetailSchema, SuiteInfoSchema } from "@/utils/schema/details";
 import { Input, Select } from "@the_human_cipher/components-library";
 import { Control, Controller, FormState, UseFormRegister, useForm } from "react-hook-form";
+import { capitalizeFirstLetter } from "@/utils";
 
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
@@ -49,14 +50,14 @@ interface Props {
 
 const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
   const getFormError = (key: keyof Inputs) => {
-    if (["suiteDuration", "suiteType"].includes(key)) {
+    if (["timing", "suite_type"].includes(key)) {
       const err = (
-        (formState.errors?.suiteInfo?.[idx]?.[key] as any)?.value?.message as string
-      )?.replace("Value", key.replace("suite", ""));
+        (formState.errors?.suites?.[idx]?.[key] as any)?.value?.message as string
+      )?.replace("Value", key.replace("suite_", ""));
 
-      return err ? String(err) : undefined;
+      return err ? capitalizeFirstLetter(String(err)) : undefined;
     }
-    const err = formState.errors?.suiteInfo?.[idx]?.[key]?.message;
+    const err = formState.errors?.suites?.[idx]?.[key]?.message;
     return err ? String(err) : undefined;
   };
 
@@ -68,16 +69,16 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
           key={name}
           label={label}
           className="py-3"
-          {...register(`suiteInfo.${idx}.${name}`)}
+          {...register(`suites.${idx}.${name}`)}
           hint={getFormError(name)}
           isError={Boolean(getFormError(name))}
         />
       ))}
       <Controller
         control={control}
-        name={`suiteInfo.${idx}.suite_type`}
+        name={`suites.${idx}.suite_type`}
         render={({ field: { name, onChange, value } }) => (
-          <div>
+          <div className="mt-1">
             <Select
               label="Suite Type"
               options={[
@@ -102,7 +103,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
               key={name}
               label={label}
               className="py-3"
-              {...register(`suiteInfo.${idx}.${name}`)}
+              {...register(`suites.${idx}.${name}`)}
               hint={getFormError(name)}
               isError={Boolean(getFormError(name))}
             />
@@ -111,11 +112,11 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
         <div className="absolute -top-6 right-0 w-full max-w-fit md:max-w-[100px]">
           <Controller
             control={control}
-            name={`suiteInfo.${idx}.timing`}
+            name={`suites.${idx}.timing`}
             render={({ field: { name, onChange, value } }) => (
               <Select
                 options={[
-                  { label: "Daily", value: "Weekly" },
+                  { label: "Daily", value: "Daily" },
                   { label: "Weekly", value: "Weekly" },
                   { label: "Monthly", value: "Monthly" },
                 ]}

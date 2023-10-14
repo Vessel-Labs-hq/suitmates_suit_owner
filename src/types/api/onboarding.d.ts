@@ -37,3 +37,17 @@ interface DbCreateSpace {
   createdAt: string;
   updatedAt: string;
 }
+
+interface DbCreateSuite {
+  id: number;
+  suite_number: string;
+  suite_type: string;
+  suite_size: string;
+  suite_cost: number;
+  timing: string;
+  tenant_id: any;
+  space_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted: any;
+}

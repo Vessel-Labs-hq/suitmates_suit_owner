@@ -1,7 +1,12 @@
 import { objectToFormData } from "..";
 import { API } from "../base/axios";
-import { SpaceInfoSchema } from "../schema/details";
+import { SpaceInfoSchema, SuiteInfoSchema } from "../schema/details";
 import { InferSchema } from "../schema/helpers";
+
+interface CreateSuitePayload {
+  suites: InferSchema<typeof SuiteInfoSchema>;
+  spaceId: string;
+}
 
 class Details {
   async updatePersonalInfo(personId: string | number, payload: PersonalInfoPayload) {
@@ -27,13 +32,11 @@ class Details {
 
     const { space_amenities, space_size, ...rest } = payload;
 
-    const spaceAmenities = space_amenities.map((ele) => ele.value);
-
     try {
       const res = await API.post<ResponseBody>("/space", {
         ...rest,
         space_size: Number(space_size),
-        space_amenities: JSON.stringify(spaceAmenities),
+        space_amenities: JSON.stringify(space_amenities),
       });
       return res.data;
     } catch (error) {
@@ -41,11 +44,13 @@ class Details {
     }
   }
 
-  async createSuite(payload: unknown) {
-    type ResponseBody = APIResponse<unknown>;
+  async createSuite(payload: CreateSuitePayload) {
+    const { spaceId, ...data } = payload;
+    type ResponseBody = APIResponse<DbCreateSuite[]>;
 
     try {
-      const res = await API.post<ResponseBody>("/", payload);
+      const res = await API.post<ResponseBody>(`/space/${spaceId}/create-suit`, data);
+      return res.data;
     } catch (error) {}
   }
 }

@@ -41,3 +41,11 @@ export const formatWord = (text: string) =>
 export function camelCaseToSnakeCase(camelCase: string) {
   return camelCase.replace(/([A-Z])/g, "_$1").toLowerCase();
 }
+
+export const capitalizeFirstLetter = (str: string) => {
+  const s0 = str[0].toUpperCase();
+
+  const rest = str.slice(1);
+
+  return s0 + rest;
+};
