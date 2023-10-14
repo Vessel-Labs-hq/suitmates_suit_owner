@@ -10,6 +10,7 @@ import { LoginSchema } from "@/utils/schema/login";
 import Link from "next/link";
 import authService from "@/utils/apis/auth";
 import Alert from "@/utils/base/alerts";
+import SEO from "@/components/layouts/SEO";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
@@ -50,6 +51,7 @@ const LoginPage = () => {
 
   return (
     <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-7">
+      <SEO title="Sign Up | Suitemates" />
       <div className="col-span-4 mx-auto my-auto flex h-full w-full flex-col items-center justify-start px-3 pb-5 pt-14">
         <Image
           src={Logo}

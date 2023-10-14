@@ -8,7 +8,7 @@ import { Title, Text, Input, Button, Select } from "@the_human_cipher/components
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 interface Props {
-  onSubmit(): void;
+  onSubmit(spaceId: string): void;
 }
 
 type Inputs = InferSchema<typeof SpaceInfoSchema>;
@@ -52,10 +52,10 @@ const SpaceInformation = ({ onSubmit }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await onBoardingService.createSuite(data);
+      const res = await onBoardingService.createSpace(data);
 
       if (res) {
-        onSubmit();
+        onSubmit(String(res.data.id));
       }
     } catch (error) {
       Alert.error(error);

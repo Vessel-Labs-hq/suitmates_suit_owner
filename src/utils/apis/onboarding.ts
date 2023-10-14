@@ -22,16 +22,18 @@ class Details {
     }
   }
 
-  async createSuite(payload: InferSchema<typeof SpaceInfoSchema>) {
-    type ResponseBody = APIResponse<Record<string, unknown>>;
+  async createSpace(payload: InferSchema<typeof SpaceInfoSchema>) {
+    type ResponseBody = APIResponse<DbCreateSpace>;
 
     const { space_amenities, space_size, ...rest } = payload;
 
+    const spaceAmenities = space_amenities.map((ele) => ele.value);
+
     try {
-      const res = await API.post<ResponseBody>("/suite", {
+      const res = await API.post<ResponseBody>("/space", {
         ...rest,
         space_size: Number(space_size),
-        space_amenities: JSON.stringify(space_amenities),
+        space_amenities: JSON.stringify(spaceAmenities),
       });
       return res.data;
     } catch (error) {

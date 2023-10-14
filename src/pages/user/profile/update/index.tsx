@@ -8,6 +8,7 @@ import SuiteInformation from "@/components/organisms/Profile/SuiteInformation";
 import AccountInformation from "@/components/organisms/Profile/AccountInfo";
 import { useEffect, useState } from "react";
 import { StepProgressIndicator } from "@the_human_cipher/components-library";
+import SEO from "@/components/layouts/SEO";
 
 const AllSteps = [
   "personal-information",
@@ -20,7 +21,7 @@ type Step = (typeof AllSteps)[number];
 
 type IndexedStep = Step | (string & {});
 
-const SigUpPage = () => {
+const UpdateUserPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +36,7 @@ const SigUpPage = () => {
       case "personal-information":
         return <PersonalInformation onSubmit={handleQueryUpdate} />;
       case "space-information":
-        return <SpaceInfo onSubmit={handleQueryUpdate} />;
+        return <SpaceInfo onSubmit={(spaceId) => handleQueryUpdate({ spaceId })} />;
       case "suite-information":
         return <SuiteInformation onSubmit={handleQueryUpdate} />;
       case "account-information":
@@ -51,11 +52,14 @@ const SigUpPage = () => {
     return idx + 1;
   };
 
-  function handleQueryUpdate() {
+  type HandleQueryUpdate = typeof router.query;
+  function handleQueryUpdate(args?: HandleQueryUpdate) {
     const idx = getCurrentStep(String(step));
 
     router.push({
       query: {
+        ...router.query,
+        ...args,
         step: AllSteps[idx],
       },
     });
@@ -64,16 +68,31 @@ const SigUpPage = () => {
   /**
    * handle loading state better
    */
-  if (loading) return <div />;
+  if (loading)
+    return (
+      <>
+        <div />
+        <SEO title="Update Profile" />
+      </>
+    );
 
-  if (!step) return <div>{/* 404 page if step is undefined*/}</div>;
+  if (!step)
+    return (
+      <div>
+        <SEO title="Update Profile" />
+        {/* 404 page if step is undefined*/}
+      </div>
+    );
 
   /**
    * default page step should be personal-information
    */
 
+  const PAGE_TITLE = AllSteps.at(getCurrentStep(String(step)) - 1) ?? "Update Profile";
+
   return (
     <section className="space-y-4">
+      <SEO title={`${formatWord(PAGE_TITLE)} | Suitemates`} />
       <header className="container py-10">
         <Image src={Logo} className="max-w-40" alt="Suitemates" priority />
       </header>
@@ -105,4 +124,4 @@ const SigUpPage = () => {
   );
 };
 
-export default SigUpPage;
+export default UpdateUserPage;

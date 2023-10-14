@@ -2,13 +2,15 @@ import authService from "@/utils/apis/auth";
 import DashboardHeader from "../organisms/DashboardHeader";
 import Sidebar from "../organisms/Sidebar";
 import ProtectedLayout from "./ProtectedLayout";
+import SEO from "./SEO";
 
 interface Props {
   children: React.ReactNode;
   headerDesc?: string;
+  seo?: SEOobject;
 }
 
-const DashboardLayout = ({ children, headerDesc }: Props) => {
+const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
   const user = authService.getSession();
 
   return (
@@ -26,6 +28,7 @@ const DashboardLayout = ({ children, headerDesc }: Props) => {
           <div>{children}</div>
         </main>
       </div>
+      <SEO {...seo} />
     </ProtectedLayout>
   );
 };

@@ -23,3 +23,17 @@ interface DbUpdatePersonalInfo {
   createdAt: string;
   updatedAt: string;
 }
+
+interface DbCreateSpace {
+  id: number;
+  user_id: number;
+  space_name: string;
+  space_address: string;
+  space_size: number;
+  space_amenities: string;
+  account_number: string;
+  account_name: string;
+  routing_number: string;
+  createdAt: string;
+  updatedAt: string;
+}
