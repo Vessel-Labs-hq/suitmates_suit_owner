@@ -17,7 +17,7 @@ class Details {
   async updatePersonalInfo(personId: string | number, payload: PersonalInfoPayload) {
     type ResponseBody = APIResponse<DbUpdatePersonalInfo>;
 
-    const data = objectToFormData(payload);
+    const data = objectToFormData({ ...payload, onboarded: true });
 
     try {
       const res = await API.patch<ResponseBody>(`/user/${personId}`, data, {

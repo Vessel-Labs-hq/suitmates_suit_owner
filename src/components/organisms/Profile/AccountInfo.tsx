@@ -98,7 +98,11 @@ const AccountInformation = ({ onSubmit, spaceId }: Props) => {
               />
             ))}
           </div>
-          <Button type="submit" className="mx-auto mt-10 block max-w-xs" primary>
+          <Button
+            type="submit"
+            className="mx-auto mt-10 block max-w-xs"
+            loading={formState.isSubmitting}
+          >
             Finish
           </Button>
         </form>

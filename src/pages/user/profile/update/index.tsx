@@ -33,14 +33,6 @@ const UpdateUserPage = () => {
     setLoading(false);
   }, []);
 
-  // const updateUser = async()=> {
-  //   try {
-  //     const res =
-  //   } catch (error) {
-
-  //   }
-  // }
-
   const renderStep = (query: Extract<IndexedStep, Step>): JSX.Element => {
     switch (query) {
       case "personal-information":
