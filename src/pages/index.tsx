@@ -2,7 +2,10 @@ import Icons from "@/assets/icons";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import MaintenanceRequestTable from "@/components/molecules/MiantennanceRequestTable";
 import RentHistorySidebar from "@/components/molecules/RentHistory";
-import { DashboardDoughNutChart } from "@/components/organisms/DashboardCharts";
+import {
+  DashboardRentHistoryChart,
+  DashboardSuiteInfoChart,
+} from "@/components/organisms/DashboardCharts";
 import { IconBox, Title } from "@the_human_cipher/components-library";
 
 interface CardProps {
@@ -28,7 +31,7 @@ const HomePage = () => {
               <Card title="Occupied Spaces" value={12} />
             </div>
             <div className="h-[180px] w-[180px]">
-              <DashboardDoughNutChart />
+              <DashboardSuiteInfoChart />
             </div>
           </div>
           <div className="flex flex-col justify-between rounded-3xl bg-light-gray p-4">
@@ -51,8 +54,19 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="w-full max-w-[365px] rounded-3xl bg-light-gray">
-          <p>hello world</p>
+        <div className="flex w-full max-w-[365px] flex-col space-y-3 rounded-3xl bg-primary px-3 py-2">
+          <div className="flex items-center gap-2">
+            <div className="flex w-fit items-center justify-center rounded-full bg-light-green p-1 text-primary">
+              <IconBox icon="CurrencyDollarCircle" size={26} className="translate-y-[1px]" />
+            </div>
+            <Title level={4} className="text-white" weight="bold">
+              Rent Paid this Month{" "}
+            </Title>
+          </div>
+          <h2 className="text-center text-4xl font-bold text-white">$ 350,007.89</h2>
+          <div className="mt-auto h-[100px] w-full">
+            <DashboardRentHistoryChart />
+          </div>
         </div>
       </div>
       <div className="flex gap-4">
