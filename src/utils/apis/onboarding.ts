@@ -1,10 +1,15 @@
 import { objectToFormData } from "..";
 import { API } from "../base/axios";
-import { SpaceInfoSchema, SuiteInfoSchema } from "../schema/details";
+import { SpaceInfoSchema, SuiteInfoSchema, AccountInoSchema } from "../schema/details";
 import { InferSchema } from "../schema/helpers";
 
 interface CreateSuitePayload {
   suites: InferSchema<typeof SuiteInfoSchema>["suites"];
+  spaceId: string;
+}
+
+interface AddAccountPayload {
+  accountDetails: InferSchema<typeof AccountInoSchema>;
   spaceId: string;
 }
 
@@ -59,6 +64,17 @@ class Details {
       const res = await API.post<ResponseBody>(`/space/${spaceId}/create-suit`, {
         suites: data,
       });
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addAccountDetails(data: AddAccountPayload) {
+    const { accountDetails, spaceId } = data;
+    type ResponseBody = APIResponse<DbCreateSpace>;
+    try {
+      const res = await API.patch<ResponseBody>(`/space/${spaceId}`, accountDetails);
       return res.data;
     } catch (error) {
       throw error;

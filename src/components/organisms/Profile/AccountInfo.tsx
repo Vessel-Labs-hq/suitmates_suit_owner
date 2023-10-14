@@ -1,16 +1,14 @@
+import onBoardingService from "@/utils/apis/onboarding";
+import Alert from "@/utils/base/alerts";
 import { AccountInoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Title,
-  Text,
-  Input,
-  Button,
-} from "@the_human_cipher/components-library";
+import { Title, Text, Input, Button } from "@the_human_cipher/components-library";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
   onSubmit(): void;
+  spaceId: string | null;
 }
 
 type Inputs = InferSchema<typeof AccountInoSchema>;
@@ -21,7 +19,7 @@ type Name = keyof Inputs;
  * totally useless codes, just wanted to do some ts magic
  */
 type Label = {
-  [Key in Name]: Key extends `account${infer A}` ? `Account ${A}` : Key;
+  [Key in Name]: Key extends `account_${infer A}` ? `Account ${A}` : Key;
 }[Name];
 
 type Field = {
@@ -32,30 +30,45 @@ type Field = {
 
 const fields: Field[] = [
   {
-    name: "accountName",
+    name: "account_name",
     label: "Account Name",
     placeholder: "Please enter your account name",
   },
   {
-    name: "accountNumber",
+    name: "account_number",
     label: "Account Number",
     placeholder: "Please enter your account number",
   },
   {
-    name: "routingNumber",
+    name: "routing_number",
     label: "Routing Number",
     placeholder: "Please enter your routing number",
   },
 ];
 
-const AccountInformation = ({ onSubmit }: Props) => {
+const AccountInformation = ({ onSubmit, spaceId }: Props) => {
   const { register, formState, handleSubmit } = useForm<Inputs>({
     resolver: zodResolver(AccountInoSchema),
     mode: "onChange",
   });
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    onSubmit();
+  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (spaceId) {
+      try {
+        const res = await onBoardingService.addAccountDetails({
+          spaceId,
+          accountDetails: data,
+        });
+
+        if (res) {
+          onSubmit();
+        }
+      } catch (error) {
+        Alert.error(error);
+      }
+    } else {
+      Alert.error("Space Id is undefined, error creating Suite");
+    }
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -85,11 +98,7 @@ const AccountInformation = ({ onSubmit }: Props) => {
               />
             ))}
           </div>
-          <Button
-            type="submit"
-            className="mx-auto mt-10 block max-w-xs"
-            primary
-          >
+          <Button type="submit" className="mx-auto mt-10 block max-w-xs" primary>
             Finish
           </Button>
         </form>

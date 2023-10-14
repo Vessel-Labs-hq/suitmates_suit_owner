@@ -7,11 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Icons from "@/assets/icons";
 import Alert from "@/utils/base/alerts";
 import onBoardingService from "@/utils/apis/onboarding";
-import { useRouter } from "next/router";
 import { onFormError } from "@/utils/functions/react-hook-form";
 
 interface Props {
   onSubmit(): void;
+  spaceId: string | null;
 }
 
 type Inputs = InferSchema<typeof SuiteInfoSchema>;
@@ -24,16 +24,12 @@ const DefaultValues = {
   timing: { label: "", value: "" },
 };
 
-type FormValues = {};
-
 /**
  * guide on how to do multiple fields
  *
  * https://www.cluemediator.com/dynamic-form-with-react-hook-form-using-usefieldarray
  */
-const SuiteInformation = ({ onSubmit }: Props) => {
-  const { query } = useRouter();
-
+const SuiteInformation = ({ onSubmit, spaceId }: Props) => {
   const { control, handleSubmit, register, formState } = useForm<Inputs>({
     resolver: zodResolver(SuiteInfoSchema),
     mode: "onChange",
@@ -47,10 +43,10 @@ const SuiteInformation = ({ onSubmit }: Props) => {
   });
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (query.spaceId) {
+    if (spaceId) {
       try {
         const res = await onBoardingService.createSuite({
-          spaceId: String(query.spaceId),
+          spaceId,
           suites: data.suites,
         });
 

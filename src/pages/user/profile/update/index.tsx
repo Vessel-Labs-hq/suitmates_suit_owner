@@ -25,11 +25,21 @@ const UpdateUserPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const step = router.query.step;
+  const { step, spaceId } = router.query;
+
+  const space_id = spaceId ? String(spaceId) : null;
 
   useEffect(() => {
     setLoading(false);
   }, []);
+
+  // const updateUser = async()=> {
+  //   try {
+  //     const res =
+  //   } catch (error) {
+
+  //   }
+  // }
 
   const renderStep = (query: Extract<IndexedStep, Step>): JSX.Element => {
     switch (query) {
@@ -38,9 +48,16 @@ const UpdateUserPage = () => {
       case "space-information":
         return <SpaceInfo onSubmit={(spaceId) => handleQueryUpdate({ spaceId })} />;
       case "suite-information":
-        return <SuiteInformation onSubmit={handleQueryUpdate} />;
+        return <SuiteInformation onSubmit={handleQueryUpdate} spaceId={space_id} />;
       case "account-information":
-        return <AccountInformation onSubmit={() => console.log("Submitted")} />;
+        return (
+          <AccountInformation
+            onSubmit={() => {
+              router.push("/");
+            }}
+            spaceId={space_id}
+          />
+        );
       default:
         throw new Error(`${step} is invalid, step should be of either ${AllSteps.join(", ")}`);
     }

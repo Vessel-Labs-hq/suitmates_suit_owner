@@ -65,7 +65,7 @@ export const SuiteInfoSchema = z.object(
 );
 
 export const AccountInoSchema = z.object({
-  accountNumber: createStringSchema("Account Number"),
-  accountName: createStringSchema("Account Name"),
-  routingNumber: createStringSchema("Routing Number"),
+  account_number: createStringSchema("Account Number"),
+  account_name: createStringSchema("Account Name"),
+  routing_number: createStringSchema("Routing Number"),
 });
