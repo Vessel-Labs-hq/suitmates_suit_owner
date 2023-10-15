@@ -74,6 +74,7 @@ class AuthService {
     }
   }
 
+  /** pass router for clean redirect(as an SPA), it wont clear cached data */
   redirectLogin(args?: Partial<RedirectLoginArgs>) {
     if (typeof window !== "undefined") {
       const currentLocation = encodeURIComponent(window.location.href);
@@ -93,6 +94,7 @@ class AuthService {
   }
 
   /**
+   * logout is an explicit method, it clears the cache
    * @example```tsx
    *  <button onClick={()=> authService.logOut()}>Logout</button>
    * ```
