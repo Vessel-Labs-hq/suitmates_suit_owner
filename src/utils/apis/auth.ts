@@ -64,12 +64,9 @@ class AuthService {
 
   async validateSession() {
     const data = this.getSession();
-    console.log("....");
 
     try {
       const res = await API.post("auth/verify-token", { token: data?.accessToken });
-
-      if (!res.data.status) return;
 
       return res.data;
     } catch (error) {
