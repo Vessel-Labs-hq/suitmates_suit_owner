@@ -62,17 +62,34 @@ class AuthService {
     }
   }
 
+  async validateSession() {
+    const data = this.getSession();
+    console.log("....");
+
+    try {
+      const res = await API.post("auth/verify-token", { token: data?.accessToken });
+
+      if (!res.data.status) return;
+
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   redirectLogin(args?: Partial<RedirectLoginArgs>) {
     if (typeof window !== "undefined") {
       const currentLocation = encodeURIComponent(window.location.href);
-
-      this.logOut();
 
       if (args?.effect) {
         args.effect();
       }
 
       const url = `/auth/signin?callbackUrl=${currentLocation}`;
+
+      if (typeof localStorage !== "undefined") {
+        localStorage.removeItem(this.storeIndex);
+      }
 
       return args?.router ? args.router.push(url) : window.location.replace(url);
     }
@@ -85,9 +102,14 @@ class AuthService {
    */
   logOut(): void {
     if (typeof localStorage !== "undefined") {
-      localStorage.removeItem(this.storeIndex);
+      if (typeof window !== "undefined") {
+        const currentLocation = encodeURIComponent(window.location.href);
+        const url = `/auth/signin?callbackUrl=${currentLocation}`;
 
-      window.location.replace("/auth/signin");
+        localStorage.removeItem(this.storeIndex);
+
+        window.location.replace(url);
+      }
     }
   }
 }

@@ -1,23 +1,36 @@
 import authService from "@/utils/apis/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { SpinnerLoader } from "../atoms/Loader";
 
 export default function ProtectedLayout({ children }: IChildren) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const user = authService.getSession();
-
-    if (!user) {
+  const validateSession = async () => {
+    try {
+      await authService.validateSession();
+    } catch (error) {
       authService.redirectLogin({ router });
-    } else {
-      setLoading(false);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 400);
     }
+  };
+
+  useEffect(() => {
+    validateSession();
   }, []);
 
-  if (loading) return <div />;
+  if (loading)
+    return (
+      <SpinnerLoader
+        wrapperClass="w-full h-screen flex items-center justify-center"
+        className="fill-white text-primary"
+      />
+    );
 
   return children;
 }
