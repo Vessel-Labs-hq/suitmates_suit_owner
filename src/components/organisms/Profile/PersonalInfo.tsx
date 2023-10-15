@@ -68,6 +68,8 @@ const PersonalInformation = ({ onSubmit }: Props) => {
       } catch (error) {
         Alert.error(error);
       }
+    } else {
+      Alert.error("User is undefined");
     }
   };
 

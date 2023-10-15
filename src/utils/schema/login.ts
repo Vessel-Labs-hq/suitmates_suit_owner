@@ -24,7 +24,7 @@ export const AuthResponseSchema = z.object({
   verified: z.boolean(),
   accessToken: z.string(),
   name: z.optional(z.string()),
-  avatar: z.optional(z.string()),
+  avatar: z.string().nullable(),
 });
 
 /**
