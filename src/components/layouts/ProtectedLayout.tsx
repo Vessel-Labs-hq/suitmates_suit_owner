@@ -27,7 +27,7 @@ export default function ProtectedLayout({ children }: IChildren) {
     if (!isLoading) {
       timeoutId = setTimeout(() => {
         setLoading(false);
-      }, 300);
+      }, 500);
     }
 
     return () => {
