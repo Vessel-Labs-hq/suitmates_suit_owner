@@ -20,11 +20,7 @@ class Details {
     const data = objectToFormData({ ...payload, onboarded: true });
 
     try {
-      const res = await API.patch<ResponseBody>(`/user/${personId}`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
 
       return res.data;
     } catch (error) {
