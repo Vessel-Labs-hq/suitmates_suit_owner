@@ -9,6 +9,10 @@ import AccountInformation from "@/components/organisms/Profile/AccountInfo";
 import { useEffect, useState } from "react";
 import { StepProgressIndicator } from "@the_human_cipher/components-library";
 import SEO from "@/components/layouts/SEO";
+import { SpinnerLoader } from "@/components/atoms/Loader";
+import authService from "@/utils/apis/auth";
+import onBoardingService from "@/utils/apis/onboarding";
+import Alert from "@/utils/base/alerts";
 
 const AllSteps = [
   "personal-information",
@@ -25,31 +29,42 @@ const UpdateUserPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
+  const [shouldVerify, setShouldVerify] = useState(false);
+
   const { step, spaceId } = router.query;
 
   const space_id = spaceId ? String(spaceId) : null;
+
+  const user = authService.getSession();
 
   useEffect(() => {
     setLoading(false);
   }, []);
 
+  const updateUserProfile = async () => {
+    setShouldVerify(true);
+
+    try {
+      await onBoardingService.completeUserOnboarding(String(user?.id));
+      Alert.success("Profile Updated successfully");
+      router.push("/");
+    } catch (error) {
+      Alert.error(error);
+    } finally {
+      setShouldVerify(false);
+    }
+  };
+
   const renderStep = (query: Extract<IndexedStep, Step>): JSX.Element => {
     switch (query) {
       case "personal-information":
-        return <PersonalInformation onSubmit={handleQueryUpdate} />;
+        return <PersonalInformation onSubmit={handleQueryUpdate} personId={user?.id} />;
       case "space-information":
         return <SpaceInfo onSubmit={(spaceId) => handleQueryUpdate({ spaceId })} />;
       case "suite-information":
         return <SuiteInformation onSubmit={handleQueryUpdate} spaceId={space_id} />;
       case "account-information":
-        return (
-          <AccountInformation
-            onSubmit={() => {
-              router.push("/");
-            }}
-            spaceId={space_id}
-          />
-        );
+        return <AccountInformation onSubmit={() => updateUserProfile()} spaceId={space_id} />;
       default:
         throw new Error(`${step} is invalid, step should be of either ${AllSteps.join(", ")}`);
     }
@@ -129,6 +144,15 @@ const UpdateUserPage = () => {
           {renderStep(String(step) as Step)}
         </div>
       </div>
+
+      {shouldVerify && (
+        <div className="fixed inset-0 z-10 grid place-items-center bg-white/80">
+          <div className="items-center space-y-4">
+            <SpinnerLoader className="h-10 w-10" wrapperClass="w-fit mx-auto" />
+            <div>Your profile is being updated...</div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

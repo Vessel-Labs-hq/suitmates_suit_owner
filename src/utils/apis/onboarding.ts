@@ -17,11 +17,14 @@ class Details {
   async updatePersonalInfo(personId: string | number, payload: PersonalInfoPayload) {
     type ResponseBody = APIResponse<DbUpdatePersonalInfo>;
 
-    const data = objectToFormData({ ...payload, onboarded: true });
+    const data = objectToFormData({ ...payload });
 
     try {
-      const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
-
+      const res = await API.patch<ResponseBody>(`/user/${personId}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return res.data;
     } catch (error) {
       throw error;
@@ -71,6 +74,19 @@ class Details {
     type ResponseBody = APIResponse<DbCreateSpace>;
     try {
       const res = await API.patch<ResponseBody>(`/space/${spaceId}`, accountDetails);
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async completeUserOnboarding(personId: string) {
+    type ResponseBody = APIResponse<DbUpdatePersonalInfo>;
+
+    const data = objectToFormData({ onboarded: true });
+
+    try {
+      const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
       return res.data;
     } catch (error) {
       throw error;

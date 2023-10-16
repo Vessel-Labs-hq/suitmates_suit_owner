@@ -1,6 +1,5 @@
 import Icons from "@/assets/icons";
 import { cn } from "@/utils";
-import authService from "@/utils/apis/auth";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { onFormError } from "@/utils/functions/react-hook-form";
@@ -23,6 +22,7 @@ interface Fields {
 
 interface Props {
   onSubmit(): void;
+  personId?: number;
 }
 
 const fields: Fields[] = [
@@ -48,9 +48,7 @@ const fields: Fields[] = [
   },
 ];
 
-const PersonalInformation = ({ onSubmit }: Props) => {
-  const user = authService.getSession();
-
+const PersonalInformation = ({ onSubmit, personId }: Props) => {
   const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
     resolver: zodResolver(PersonalInfoSchema),
     mode: "onChange",
@@ -59,9 +57,9 @@ const PersonalInformation = ({ onSubmit }: Props) => {
   const selectedFile = watch("avatar");
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (user) {
+    if (personId) {
       try {
-        const res = await onBoardingService.updatePersonalInfo(user.id, data);
+        const res = await onBoardingService.updatePersonalInfo(personId, data);
         if (res) {
           onSubmit();
         }
