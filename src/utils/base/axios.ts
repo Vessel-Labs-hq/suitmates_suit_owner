@@ -36,7 +36,7 @@ API.interceptors.response.use(
   (error) => {
     let message = handleAxiosError(error);
 
-    if (error?.response?.status === 400) {
+    if (error?.response?.status === 401) {
       message = "DO_NOT_ERROR";
 
       /** Runs only the client */
