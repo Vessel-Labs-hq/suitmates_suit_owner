@@ -16,15 +16,27 @@ class AlertsService {
   }
 
   error(message: unknown) {
-    return toast.error(this.assertMessage(message), {});
+    const msg = this.assertMessage(message);
+
+    if (msg === "DO_NOT_ERROR") return;
+
+    return toast.error(msg, {});
   }
 
   success(message: unknown) {
-    return toast.success(this.assertMessage(message), {});
+    const msg = this.assertMessage(message);
+
+    if (msg === "DO_NOT_ERROR") return;
+
+    return toast.success(msg, {});
   }
 
   info(message: unknown) {
-    return toast.info(this.assertMessage(message), {});
+    const msg = this.assertMessage(message);
+
+    if (msg === "DO_NOT_ERROR") return;
+
+    return toast.info(msg, {});
   }
 }
 

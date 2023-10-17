@@ -102,12 +102,21 @@ class AuthService {
   logOut(): void {
     if (typeof localStorage !== "undefined") {
       if (typeof window !== "undefined") {
-        const currentLocation = encodeURIComponent(window.location.href);
-        const url = `/auth/signin?callbackUrl=${currentLocation}`;
+        const currentLocation = window.location.href;
+        const locationToRedirectTo = "/auth/signin";
 
         localStorage.removeItem(this.storeIndex);
 
-        window.location.replace(url);
+        /**
+         * don't run on sign-in page
+         */
+        if (currentLocation.includes(locationToRedirectTo)) {
+          return window.location.replace(locationToRedirectTo);
+        }
+
+        const url = `${locationToRedirectTo}?callbackUrl=${encodeURIComponent(currentLocation)}`;
+
+        return window.location.replace(url);
       }
     }
   }
