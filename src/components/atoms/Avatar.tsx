@@ -11,9 +11,13 @@ interface AvatarProps {
 const getPlaceholder = (name: string) => {
   const fullName = name.split(" ");
 
-  if (fullName.length < 1) return cn(name[0][0], name[0]?.[1] ?? "").replace(" ", "");
+  const assertChildValue = (str?: string) => (str ? (str.length > 1 ? str[0] : str) : "");
 
-  return cn(name[0][0], name[1][0]).replace(" ", "");
+  const joinValues = (str: string) => str.replace(" ", "");
+
+  if (fullName.length < 1) return joinValues(cn(assertChildValue(name[0]), name[0]?.[1] ?? ""));
+
+  return joinValues(cn(assertChildValue(name[0]), assertChildValue(name[1])));
 };
 
 const Avatar = ({ name, className, src, size = 50 }: AvatarProps) =>
