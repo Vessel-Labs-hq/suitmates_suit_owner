@@ -4,14 +4,31 @@ import Image from "next/image";
 import LogoDark from "public/logoDark.png";
 
 export interface DashboardHeaderProps {
-  firstName: string;
-  lastName: string;
+  name: string | undefined;
+  avatar: string | undefined;
   headerDesc: string;
   email: string;
 }
 
+const assertName = (name?: string) => {
+  const assertValue = (value: string) => (value === "null" ? "" : value);
+
+  if (name) {
+    const [firstName, lastName, ...rest] = name.trim().split(" ");
+
+    return {
+      firstName: assertValue(firstName),
+      lastName: assertValue(lastName) ?? "",
+    };
+  }
+
+  return { firstName: "", lastName: "" };
+};
+
 const DashboardHeader = (props: DashboardHeaderProps) => {
-  const { firstName, headerDesc, lastName, email } = props;
+  const { name, headerDesc, avatar, email } = props;
+
+  const { firstName, lastName } = assertName(name);
 
   return (
     <header className="flex flex-col-reverse justify-between gap-5  md:flex-row md:gap-4">
@@ -57,7 +74,7 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
             email={email}
             name={cn(firstName, lastName)}
             contentClass="md:block hidden"
-            // src="/temp/avatar.png"
+            src={avatar}
           />
         </div>
       </div>
