@@ -27,7 +27,10 @@ const Avatar = ({ name, className, src, size = 50 }: AvatarProps) =>
       alt={name}
       width={size}
       height={size}
-      className={cn("rounded-full object-cover max-md:max-h-10 max-md:max-w-10", className)}
+      className={cn(
+        "h-[50px] w-[50px] rounded-full object-cover max-md:h-10 max-md:w-10",
+        className
+      )}
     />
   ) : (
     <div
