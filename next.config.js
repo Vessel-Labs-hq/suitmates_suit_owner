@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["suite-mate.s3.eu-north-1.amazonaws.com"],
+    //https://nextjs.org/docs/pages/api-reference/components/image#remotepatterns
+    remotePatterns: [{ protocol: "https", hostname: "**.amazonaws.com" }],
   },
 };
 

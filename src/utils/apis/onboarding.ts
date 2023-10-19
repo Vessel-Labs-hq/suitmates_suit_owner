@@ -1,3 +1,4 @@
+import { BaseAPIService } from "./base";
 import { objectToFormData } from "..";
 import { API } from "../base/axios";
 import { SpaceInfoSchema, SuiteInfoSchema, AccountInoSchema } from "../schema/details";
@@ -13,7 +14,7 @@ interface AddAccountPayload {
   spaceId: string;
 }
 
-class Details {
+class Details extends BaseAPIService {
   async updatePersonalInfo(personId: string | number, payload: PersonalInfoPayload) {
     type ResponseBody = APIResponse<DbUpdatePersonalInfo>;
 
@@ -87,6 +88,11 @@ class Details {
 
     try {
       const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
+
+      this.updateUserSession({
+        ...res.data.data,
+        role: "owner",
+      });
       return res.data;
     } catch (error) {
       throw error;

@@ -1,7 +1,7 @@
 import type { NextRouter } from "next/router";
 import { API } from "../base/axios";
-import { encryptionHandler } from "../functions/encrypt";
 import { LoginType, AuthResponse, AuthResponseSchema } from "../schema/login";
+import { BaseAPIService } from "./base";
 
 interface SignUpType extends LoginType {
   role: "owner";
@@ -12,19 +12,8 @@ interface RedirectLoginArgs {
   router: NextRouter;
 }
 
-class AuthService {
-  private storeIndex = "d-suite-owner";
-
-  private storeUser(user: AuthResponse) {
-    const res = encryptionHandler({
-      action: "encrypt",
-      data: JSON.stringify(user),
-    });
-
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem(this.storeIndex, res);
-    }
-  }
+class AuthService extends BaseAPIService {
+  public getSession = this.handleUserSession;
 
   async signup(data: SignUpType): Promise<AuthResponse> {
     try {
@@ -43,22 +32,6 @@ class AuthService {
       return res.data;
     } catch (error) {
       throw error;
-    }
-  }
-
-  getSession(): AuthResponse | undefined {
-    if (typeof localStorage !== "undefined") {
-      const user = localStorage.getItem(this.storeIndex);
-
-      if (!user) return;
-
-      const data = encryptionHandler({ action: "decrypt", data: user });
-
-      const res = AuthResponseSchema.safeParse(JSON.parse(data));
-
-      if (res.success) {
-        return res.data;
-      }
     }
   }
 
