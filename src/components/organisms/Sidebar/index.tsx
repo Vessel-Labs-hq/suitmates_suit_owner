@@ -1,6 +1,6 @@
 import NavLink from "@/components/atoms/NavLink";
-import { SideBarData } from "@/constants/sidebar-data";
-import { cn } from "@/utils";
+import { SideBarData } from "@/constants/navdata";
+import { checkIfNavLinkIsActive, cn } from "@/utils";
 import authService from "@/utils/apis/auth";
 import { IconBox } from "@the_human_cipher/components-library";
 import Image from "next/image";
@@ -15,13 +15,7 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const [showText, setShowText] = useState(false);
 
-  const getNavLinkState = (url: string) => {
-    if (url === "dashboard" && pathname === "/") {
-      return true;
-    }
-
-    return pathname === url;
-  };
+  const getNavLinkState = checkIfNavLinkIsActive(pathname);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -117,7 +111,7 @@ const Sidebar = () => {
             <NavLink
               icon="User01"
               text="Help & Support"
-              link="/"
+              link="#"
               className={cn(baseClassStyle, "bg-[#E6E6E6] xxl:w-fit", open && "w-fit")}
               textStyles={cn(textStyles, showText && "delay-100")}
             />

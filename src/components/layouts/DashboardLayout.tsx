@@ -3,6 +3,7 @@ import DashboardHeader from "../organisms/DashboardHeader";
 import Sidebar from "../organisms/Sidebar";
 import ProtectedLayout from "./ProtectedLayout";
 import SEO from "./SEO";
+import MobileMenu from "../organisms/MobileMenu";
 
 interface Props {
   children: React.ReactNode;
@@ -29,6 +30,7 @@ const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
         </main>
       </div>
       <SEO {...seo} />
+      <MobileMenu />
     </ProtectedLayout>
   );
 };

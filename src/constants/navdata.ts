@@ -35,3 +35,36 @@ export const SideBarData: ISideBarData[] = [
     pathname: "/tenant",
   },
 ];
+
+export const MobileMenuData: ISideBarData[] = [
+  {
+    link: "/rent-collection",
+    text: "Rent",
+    icon: "CoinsStacked02",
+    pathname: "/rent-collection",
+  },
+  {
+    link: "/maintenance-request",
+    text: "Maintenance",
+    icon: "Tool02",
+    pathname: "/maintenance-request",
+  },
+  {
+    link: "/",
+    text: "Dashboard",
+    icon: "Home01",
+    pathname: "dashboard",
+  },
+  {
+    link: "/tenant",
+    text: "Tenant",
+    icon: "Users01",
+    pathname: "/tenant",
+  },
+  {
+    link: "#",
+    text: "Profile",
+    icon: "User01",
+    pathname: "/settings",
+  },
+];

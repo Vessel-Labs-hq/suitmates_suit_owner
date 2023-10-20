@@ -51,3 +51,15 @@ export const capitalizeFirstLetter = (str: string) => {
 
   return s0 + rest;
 };
+
+export const checkIfNavLinkIsActive = (pathname: string) => {
+  const isActiveFn = (url: string) => {
+    if (url === "dashboard" && pathname === "/") {
+      return true;
+    }
+
+    return pathname === url;
+  };
+
+  return isActiveFn;
+};
