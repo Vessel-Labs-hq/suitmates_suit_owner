@@ -82,7 +82,8 @@ const Sidebar = () => {
               alt="Suitemates"
               className={cn(
                 "absolute top-0 opacity-0 ",
-                open && "opacity-100 transition-opacity delay-300 duration-300"
+                open && "opacity-100 transition-opacity delay-300 duration-300",
+                "xxl:opacity-100"
               )}
               width={197}
               height={30}
@@ -94,7 +95,8 @@ const Sidebar = () => {
               height={40}
               className={cn(
                 "absolute top-0 ml-2 block h-10 w-fit opacity-0",
-                !open && "opacity-100"
+                !open && "opacity-100",
+                "xxl:opacity-0"
               )}
             />
           </div>
@@ -138,7 +140,8 @@ const Sidebar = () => {
       <div
         className={cn(
           "fixed inset-0 z-[-1] bg-transparent xxl:hidden",
-          open && "z-[1] w-full bg-black/30 duration-100 ease-out"
+          open && "z-[1] w-full bg-black/30 duration-100 ease-out",
+          "max-md:hidden"
         )}
         onClick={() => setOpen(false)}
       ></div>

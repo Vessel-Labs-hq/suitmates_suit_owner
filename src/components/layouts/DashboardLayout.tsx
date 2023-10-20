@@ -17,7 +17,7 @@ const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
     <ProtectedLayout>
       <div className="flex md:[&>*]:py-14">
         <Sidebar />
-        <main className="w-full space-y-8 px-4 text-suite-dark max-md:py-5 md:space-y-4 md:px-6 lg:px-8">
+        <main className="w-full space-y-8 px-4 text-suite-dark max-md:py-5 md:ml-[100px] md:space-y-4 md:px-6 lg:px-8 xxl:ml-0">
           <DashboardHeader
             email={user?.email ?? ""}
             name={user?.name}

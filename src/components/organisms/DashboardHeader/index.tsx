@@ -1,7 +1,7 @@
 import HeaderProfile from "@/components/atoms/HeaderProfile";
 import { cn } from "@/utils";
 import Image from "next/image";
-import LogoDark from "public/logoDark.png";
+import LogoDark from "public/logo-dark.png";
 
 export interface DashboardHeaderProps {
   name: string | undefined;

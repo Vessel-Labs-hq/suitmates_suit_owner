@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/router";
 import Banner from "image/loginBanner.png";
-import Logo from "public/logoDark.png";
+import Logo from "public/logo-dark.png";
 import { LoginSchema } from "@/utils/schema/login";
 import Link from "next/link";
 import authService from "@/utils/apis/auth";

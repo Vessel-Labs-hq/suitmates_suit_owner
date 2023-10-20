@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 import Banner from "image/loginBanner.png";
-import Logo from "public/logoDark.png";
+import Logo from "public/logo-dark.png";
 import { LoginSchema } from "@/utils/schema/login";
 import Alert from "@/utils/base/alerts";
 import authService from "@/utils/apis/auth";

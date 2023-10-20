@@ -44,6 +44,10 @@ const defaultOption = (title: string): Options => ({
     legend: {
       position: "bottom",
       align: "start",
+      labels: {
+        boxWidth: 20,
+        textAlign: "left",
+      },
     },
     title: {
       display: false,
