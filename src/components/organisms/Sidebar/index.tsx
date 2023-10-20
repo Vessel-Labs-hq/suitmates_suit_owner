@@ -12,8 +12,8 @@ import { Fragment, useEffect, useState } from "react";
 const Sidebar = () => {
   const { pathname } = useRouter();
 
-  const [open, setOpen] = useState(true);
-  const [showText, setShowText] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [showText, setShowText] = useState(false);
 
   const getNavLinkState = (url: string) => {
     if (url === "dashboard" && pathname === "/") {

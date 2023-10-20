@@ -36,7 +36,7 @@ const BentoWrapper = ({ children, className }: IProps) => (
 const HomePage = () => {
   return (
     <DashboardLayout>
-      <div className="mb-8 flex flex-col gap-4 md:flex-row">
+      <div className="flex flex-col gap-4 md:mb-8 md:flex-row">
         <div className="grid w-full grid-cols-1 gap-4 max-xl:items-center xxl:grid-cols-2">
           <BentoWrapper className="xxl:min-h-[190px]">
             <div className="space-y-2 xxl:space-y-4">
