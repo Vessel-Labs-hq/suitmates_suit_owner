@@ -6,12 +6,14 @@ import { z } from "zod";
  */
 const clientSideENVSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().nonempty(),
+  NEXT_PUBLIC_AUTH_KEY: z.string().nonempty(),
 });
 
 type TClientSideEnv = z.infer<typeof clientSideENVSchema>;
 
 const clientSideEnv = clientSideENVSchema.parse({
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  NEXT_PUBLIC_AUTH_KEY: process.env.NEXT_PUBLIC_AUTH_KEY,
 });
 
 type ClientENV = {

@@ -1,7 +1,8 @@
 {
-	"trailingComma": "es5",
-	"tabWidth": 2,
-	"singleQuote": false,
-	"plugins": ["prettier-plugin-tailwindcss"],
-	"tailwindFunctions": ["cn"]
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "singleQuote": false,
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindFunctions": ["cn", "cnFn"],
+  "printWidth": 100
 }

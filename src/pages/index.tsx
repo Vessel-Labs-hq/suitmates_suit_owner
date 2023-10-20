@@ -1,119 +1,99 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Icons from "@/assets/icons";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
+import MaintenanceRequestTable from "@/components/molecules/MiantennanceRequestTable";
+import RentHistorySidebar from "@/components/molecules/RentHistory";
+import {
+  DashboardRentHistoryChart,
+  DashboardSuiteInfoChart,
+} from "@/components/organisms/DashboardCharts";
+import { IconBox, Title } from "@the_human_cipher/components-library";
+import { ClassValues, cn } from "@/utils";
 
-const inter = Inter({ subsets: ['latin'] })
+interface CardProps {
+  title: string;
+  value: number | string;
+}
 
-export default function Home() {
-  
+const Card = ({ title, value }: CardProps) => (
+  <div>
+    <span className="whitespace-nowrap text-xs xxl:text-sm">{title}</span>
+    <h4 className="text-2xl font-bold text-primary xxl:text-4xl">{value}</h4>
+  </div>
+);
+
+const BentoWrapper = ({ children, className }: IProps) => (
+  <div
+    className={cn(
+      "relative flex items-center justify-between gap-2 rounded-2xl bg-light-gray p-4 max-xxl:py-2 xxl:rounded-3xl",
+      "max-xxl:h-[150px]",
+      className
+    )}
+  >
+    {children}
+  </div>
+);
+
+const HomePage = () => {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <DashboardLayout>
+      <div className="flex flex-col gap-4 md:mb-8 md:flex-row">
+        <div className="grid w-full grid-cols-1 gap-4 max-xl:items-center xxl:grid-cols-2">
+          <BentoWrapper className="xxl:min-h-[190px]">
+            <div className="space-y-2 xxl:space-y-4">
+              <Card title="Vacant Spaces" value={10} />
+              <Card title="Occupied Spaces" value={12} />
+            </div>
+            <div className="absolute right-0 top-1/2 mt-1 h-[120px] w-[120px] -translate-x-5 -translate-y-1/2 xxl:h-[180px] xxl:w-[180px] xxl:translate-x-3">
+              <DashboardSuiteInfoChart />
+            </div>
+          </BentoWrapper>
+          <BentoWrapper className="flex-col items-start justify-between">
+            <div className="flex items-center gap-2">
+              <span className="">{Icons.MaintenanceGreen}</span>
+              <Title level={5} weight="bold">
+                Maintenance Request{" "}
+              </Title>
+            </div>
+            <div className="w-full max-xxl:-mt-1 max-xxl:space-y-1">
+              <div className="flex w-full items-center justify-between gap-2">
+                <Card title="Total Requests" value={120} />
+                <Card title="Pending Requests" value="010" />
+              </div>
+              <div className="flex items-center gap-2 text-[11px]">
+                <div className="flex items-center justify-between gap-1 rounded-full bg-light-green p-1 px-2.5 text-[11px] leading-normal text-primary">
+                  <IconBox size={14} icon="TrendUp01" />
+                  <span className="font-bold">+120%</span>
+                </div>
+                <span>from last month</span>
+              </div>
+            </div>
+          </BentoWrapper>
+        </div>
+        <div className="flex w-full flex-col rounded-2xl bg-primary px-3 py-2 md:max-w-[350px] xxl:space-y-3 xxl:rounded-3xl">
+          <div className="flex items-center gap-2">
+            <div className="flex w-fit items-center justify-center rounded-full bg-light-green p-1 text-primary">
+              <IconBox icon="CurrencyDollarCircle" size={26} className="translate-y-[1px]" />
+            </div>
+            <Title level={4} className="text-white" weight="bold">
+              Rent Paid this Month{" "}
+            </Title>
+          </div>
+          <h2 className="mt-1 text-xl font-bold text-white md:text-4xl xxl:text-center">
+            $ 350,007.89
+          </h2>
+          <div className="mt-auto h-20 min-h-[100px] w-full max-xxl:mt-3 md:h-full xxl:h-[100px]">
+            <DashboardRentHistoryChart />
+          </div>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="flex flex-col gap-4 xl:flex-row">
+        <MaintenanceRequestTable />
+        <aside className="w-full rounded-3xl bg-light-gray p-3 max-xl:hidden xl:max-w-[350px] xl:p-6">
+          <RentHistorySidebar />
+        </aside>
       </div>
+    </DashboardLayout>
+  );
+};
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default HomePage;

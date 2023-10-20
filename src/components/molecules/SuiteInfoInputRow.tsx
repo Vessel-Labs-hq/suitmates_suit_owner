@@ -1,17 +1,8 @@
 import { InferSchema } from "@/utils/schema/helpers";
 import { SuiteDetailSchema, SuiteInfoSchema } from "@/utils/schema/details";
-import { Input } from "@the_human_cipher/components-library";
-import {
-  Control,
-  Controller,
-  FormState,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Select from "../atoms/Select";
-import { cn } from "@/utils";
-import Icons from "@/assets/icons";
+import { Input, Select } from "@the_human_cipher/components-library";
+import { Control, Controller, FormState, UseFormRegister, useForm } from "react-hook-form";
+import { capitalizeFirstLetter } from "@/utils";
 
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
@@ -21,6 +12,8 @@ type Name = keyof Inputs;
 
 /**
  * totally useless codes, just wanted to do some ts magic
+ *
+ * @edit => turned out handing while refactoring
  */
 type Label = FindAndSeparate<Name, "suite">;
 
@@ -33,17 +26,17 @@ type Field = {
 const fields: Field[] = [
   {
     label: "Suite Number",
-    name: "suiteNumber",
+    name: "suite_number",
     placeholder: "Enter suite number",
   },
   {
     label: "Suite Size",
-    name: "suiteSize",
+    name: "suite_size",
     placeholder: "Enter suite size",
   },
   {
     label: "Suite Cost",
-    name: "suiteCost",
+    name: "suite_cost",
     placeholder: "Enter suite cost",
   },
 ];
@@ -57,53 +50,53 @@ interface Props {
 
 const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
   const getFormError = (key: keyof Inputs) => {
-    if (["suiteDuration", "suiteType"].includes(key)) {
+    if (["timing", "suite_type"].includes(key)) {
       const err = (
-        (formState.errors?.suiteInfo?.[idx]?.[key] as any)?.value
-          ?.message as string
-      )?.replace("Value", key.replace("suite", ""));
+        (formState.errors?.suites?.[idx]?.[key] as any)?.value?.message as string
+      )?.replace("Value", key.replace("suite_", ""));
 
-      return err ? String(err) : undefined;
+      return err ? capitalizeFirstLetter(String(err)) : undefined;
     }
-    const err = formState.errors?.suiteInfo?.[idx]?.[key]?.message;
+    const err = formState.errors?.suites?.[idx]?.[key]?.message;
     return err ? String(err) : undefined;
   };
 
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-8 max-md:text-sm xs:gap-x-10 md:grid-cols-4">
+    <div className="grid grid-cols-1 gap-x-4 gap-y-2 max-md:text-sm xs:gap-x-10 sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4">
       {fields.slice(0, 2).map(({ name, label, ...ele }) => (
         <Input
           {...ele}
           key={name}
           label={label}
           className="py-3"
-          {...register(`suiteInfo.${idx}.${name}`)}
+          {...register(`suites.${idx}.${name}`)}
           hint={getFormError(name)}
           isError={Boolean(getFormError(name))}
         />
       ))}
       <Controller
         control={control}
-        name={`suiteInfo.${idx}.suiteType`}
+        name={`suites.${idx}.suite_type`}
         render={({ field: { name, onChange, value } }) => (
-          <Select
-            label="Suite Type"
-            data={[
-              { label: "House", value: "House" },
-              { label: "Store", value: "Store" },
-            ]}
-            onChange={onChange}
-            value={value}
-            name={name}
-            hint={getFormError("suiteType")}
-            isError={Boolean(getFormError("suiteType"))}
-            className="max-md:text-sm"
-            /** https://onebite.dev/how-to-add-word-space-in-tailwind-css/ */
-            labelClass="max-xs:[word-spacing:-0.3ch]"
-          />
+          <div className="mt-2.5">
+            {/* remove this class */}
+            <Select
+              label="Suite Type"
+              options={[
+                { label: "Single", value: "single" },
+                { label: "Double", value: "double" },
+              ]}
+              placeholder="Suite Type"
+              onChange={onChange}
+              value={value}
+              listbox-name={name}
+              hint={getFormError("suite_type")}
+              isError={Boolean(getFormError("suite_type"))}
+            />
+          </div>
         )}
       />
-      <div className="relative flex items-start">
+      <div className="relative mt-1 flex items-start max-sm:mt-8">
         <div className="w-full">
           {fields.slice(2).map(({ name, label, ...ele }) => (
             <Input
@@ -111,37 +104,29 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
               key={name}
               label={label}
               className="py-3"
-              {...register(`suiteInfo.${idx}.${name}`)}
+              {...register(`suites.${idx}.${name}`)}
               hint={getFormError(name)}
               isError={Boolean(getFormError(name))}
             />
           ))}
         </div>
-        <div className="absolute -top-5 right-0 w-full max-w-fit md:max-w-[100px]">
+        <div className="absolute -top-7 right-0 w-full max-w-fit md:-top-6 md:max-w-[100px]">
           <Controller
             control={control}
-            name={`suiteInfo.${idx}.suiteDuration`}
+            name={`suites.${idx}.timing`}
             render={({ field: { name, onChange, value } }) => (
               <Select
-                label=""
-                data={[
-                  { label: "Daily", value: "Weekly" },
+                options={[
+                  { label: "Daily", value: "Daily" },
                   { label: "Weekly", value: "Weekly" },
                   { label: "Monthly", value: "Monthly" },
                 ]}
-                wrapperStyles={cn(
-                  "h-fit px-1 text-[10px] xs:text-xs md:h-[36px] md:px-2 md:text-sm "
-                )}
-                classNames={{
-                  placeholder: () => cn("text-[10px] xs:text-xs md:text-sm"),
-                  dropdownIndicator: (state) => cn("max-md:w-"),
-                }}
                 placeholder="Range"
                 onChange={onChange}
                 value={value}
-                // defaultValue={{ label: "Weekly", value: "Weekly" }}
-                name={name}
-                isError={Boolean(getFormError("suiteDuration"))}
+                isError={Boolean(getFormError("timing"))}
+                listbox-name={name}
+                btnClassName="text-xs p-2"
               />
             )}
           />

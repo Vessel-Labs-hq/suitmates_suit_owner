@@ -1,3 +1,13 @@
+interface SEOobject {
+  readonly title: string;
+  readonly description: string;
+  readonly image: string;
+  readonly twitterCard: string;
+  readonly noindex: boolean;
+  readonly ogType: TemplateType;
+}
+type TemplateType = "website" | "article";
+
 interface IChildren {
   children: React.ReactNode;
 }
@@ -11,9 +21,8 @@ interface IProps {
   className?: string;
 }
 
-type ComponentProps<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
-> = React.ComponentProps<T>;
+type ComponentProps<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  React.ComponentProps<T>;
 
 /**
  * use to loosen the type restrictions on a particular type
@@ -31,3 +40,9 @@ type LoosenString<Type> = Type | ({} & string);
 type FindAndSeparate<Values, Pattern> = Values extends `${Pattern}${infer A}`
   ? `${Capitalize<Pattern>} ${Capitalize<A>}`
   : Values;
+
+interface APIResponse<TData> {
+  success: boolean;
+  data: Readonly<TData>;
+  message: string;
+}

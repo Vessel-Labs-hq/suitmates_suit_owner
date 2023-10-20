@@ -1,3 +1,10 @@
+import { NextPageWithLayout } from "@/pages/_app";
+import { AppProps } from "next/app";
+
+export interface AppPropsWithLayout extends AppProps {
+  Component: NextPageWithLayout;
+}
+
 let time = 1;
 type TimeData = { label: string; value: string | number };
 const timeArr: Array<TimeData> = [];
@@ -45,4 +52,17 @@ export const SalonOccupations: TSalonOccupations[] = [
   { label: "Waxing Specialist", value: "waxing_specialist" },
   { label: "Aesthetician Assistant", value: "aesthetician_assistant" },
   { label: "Retail Sales Associate", value: "retail_sales_associate" },
+];
+
+export const SuiteAmenities = [
+  { label: "Event/conference room", value: "Event/conference room" },
+  { label: "Wifi / high-speed internet", value: "Wifi / high-speed internet" },
+  { label: "Laundry room", value: "Laundry room" },
+  { label: "24/7hr door access", value: "24/7hr door access" },
+  { label: "Cleaning services", value: "Cleaning services" },
+  { label: "Parking", value: "Parking" },
+  { label: "Utilities", value: "Utilities" },
+  { label: "Security", value: "Security" },
+  { label: "Furniture", value: "Furniture" },
+  { label: "Pet friendly", value: "Pet friendly" },
 ];
