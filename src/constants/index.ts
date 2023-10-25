@@ -1,3 +1,4 @@
+import { MRCProps } from "@/components/molecules/Cards/MaintenanceRequestCard";
 import { NextPageWithLayout } from "@/pages/_app";
 import { AppProps } from "next/app";
 
@@ -66,3 +67,54 @@ export const SuiteAmenities = [
   { label: "Furniture", value: "Furniture" },
   { label: "Pet friendly", value: "Pet friendly" },
 ];
+
+export const DummyMaintenanceData: Omit<MRCProps, "href">[] = [
+  {
+    title: "Plumbing",
+    date: "10 Jan 2023",
+    desc: "Persistent, slow-draining sink clogged with hair and debris, causing backups.",
+    img: "/dummy_image_problem.png",
+    label: "critical",
+    status: "completed",
+  },
+  {
+    title: "Plumbing II",
+    date: "10 Jan 2023",
+    desc: "Persistent, slow-draining sink clogged with hair and debris, causing backups.",
+    img: "/dummy_image_problem.png",
+    label: "trivial",
+    status: "completed",
+  },
+  {
+    title: "Plumbing III",
+    date: "10 Jan 2023",
+    desc: "Persistent, slow-draining sink clogged with hair and debris, causing backups.",
+    img: "/dummy_image_problem.png",
+    label: "trivial",
+    status: "not-completed",
+  },
+  {
+    title: "Plumbing IV",
+    date: "10 Jan 2023",
+    desc: "Persistent, slow-draining sink clogged with hair and debris, causing backups.",
+    img: "/dummy_image_problem.png",
+    label: "critical",
+    status: "not-completed",
+  },
+];
+
+export const MaintenanceQueries = {
+  add_request: "add_request",
+  requestId: "requestId",
+} as const;
+
+export const MaintenanceRequestCategory = [
+  "Appliance",
+  "Cleaning",
+  "Electrical",
+  "General",
+  "Painting ",
+  "Plumbing",
+];
+
+export const SortOptions = ["Date", "Status"];
