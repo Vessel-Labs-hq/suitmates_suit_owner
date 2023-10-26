@@ -1,5 +1,8 @@
 import clsx, { type ClassValue } from "clsx";
+import type { FieldValues, FormState } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
+
+const isLocal = typeof window === "undefined" ? true : !!window.origin.includes("localhost");
 
 export type ClassValues = ClassValue[];
 
@@ -63,3 +66,30 @@ export const checkIfNavLinkIsActive = (pathname: string) => {
 
   return isActiveFn;
 };
+
+export const localLog = (...args: any[]) => {
+  if (isLocal) {
+    console.log(...args);
+  }
+};
+
+/**
+ * @example```tsx
+ * const { unwrapFormErrors, assertFormError } = getFormStateError(formState)
+ * const xyzError = unWrapErrors("xyz")
+ * ```
+ */
+export const getFormStateError = <Inputs extends FieldValues>(formState: FormState<Inputs>) => {
+  const unwrapFormError = (key: keyof Inputs) => {
+    const err = formState.errors[key]?.message;
+    return err ? String(err) : undefined;
+  };
+
+  const assertFormError = (key: keyof Inputs): boolean => {
+    return Boolean(formState.errors[key]?.message);
+  };
+
+  return { unwrapFormError, assertFormError };
+};
+
+export const assertQuery = (str: unknown): str is string => str !== undefined;

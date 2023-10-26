@@ -1,4 +1,5 @@
 import { cn } from "@/utils";
+import style from "./Loader.module.scss";
 
 type Variant = "primary" | "gray" | "light" | "dark";
 
@@ -47,5 +48,23 @@ export const SpinnerLoader = (props: IndicatorProps) => {
       </svg>
       <span className="sr-only">Loading...</span>
     </div>
+  );
+};
+
+interface TDLProps extends IClass {
+  /** use hex */
+  color?: string;
+  /** use offset color to make a perfect circle */
+  offsetColor?: string;
+  useCSSVar?: true;
+}
+export const ThreeDotsLoader = (props: TDLProps) => {
+  const { className, color } = props;
+
+  return (
+    <div
+      className={cn(style.alternate_loader, "relative flex w-10", className)}
+      style={{ "--loader-color": color ?? "#d9d9d9" } as React.CSSProperties}
+    />
   );
 };
