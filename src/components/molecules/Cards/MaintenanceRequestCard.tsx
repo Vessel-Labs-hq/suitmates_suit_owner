@@ -1,3 +1,4 @@
+import Avatar from "@/components/atoms/Avatar";
 import { Button, IconBox, Label, Title } from "@the_human_cipher/components-library";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,6 @@ export interface MRCProps {
   status: "completed" | "not-completed";
   img: string;
   href: React.ComponentProps<typeof Link>["href"];
-  showButton?: true;
 }
 
 const StatusLabel = ({ status }: Pick<MRCProps, "status">) => (
@@ -25,50 +25,68 @@ const StatusLabel = ({ status }: Pick<MRCProps, "status">) => (
 );
 
 const MaintenanceRequestCard = (props: MRCProps) => {
-  const { date, desc, label, status, title, img, showButton = false, href } = props;
+  const { date, desc, label, status, title, img, href } = props;
 
   return (
     <div className="relative rounded-xl bg-light-gray p-5 text-suite-dark">
       <Link href={href} className="absolute inset-0 rounded-[16px]" />
-      <div className="flex w-full justify-between gap-4">
-        <div className="max-w-sm space-y-2">
-          <div className="space-y-1">
-            <div className="flex gap-2">
-              <Title level={2}>{title}</Title>
+
+      <div className="mb-3 flex items-start">
+        <div className="flex items-center gap-2">
+          <Avatar name="Alfred Alisha" src="/temp/avatar.png" />
+
+          <div>
+            <div className="flex items-center gap-2">
+              <p>Suite 14C</p>
               <Label
                 label={label}
                 type={label === "critical" ? "danger" : "warning"}
-                className="text-xs capitalize"
+                className="!px-3 text-[10px] capitalize md:text-xs"
                 small
                 dots
               />
             </div>
-            <div className="text-xs">{date}</div>
+            <div className="mt-1 flex items-center gap-1 text-[10px] font-light leading-none">
+              <span>Alfred Alisha</span> <div className="h-1 w-1 rounded-full bg-current"></div>{" "}
+              <span>Alfredalisha@gmail.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="ml-auto">
+          <div className="">
+            <Image height={56} width={120} src={img} alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex w-full justify-between gap-4">
+        <div className="max-w-sm space-y-3">
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <Title level={2}>{title}</Title>
+            </div>
+            <div className="text-xs">
+              <span>{date}</span> | <span>2:53pm</span>
+            </div>
           </div>
           <p className="text-sm">{desc}</p>
         </div>
-        <div className="space-y-4">
-          <div>
-            <Image height={56} width={120} src={img} alt="" />
-          </div>
-          {!showButton && <StatusLabel status={status} />}
+      </div>
+
+      <div className="mt-4 flex items-end justify-between gap-4">
+        <div>
+          <StatusLabel status={status} />
+        </div>
+        <div>
+          <Button className="flex h-10 items-center gap-2 px-4" asChild>
+            <Link href={href}>
+              <IconBox icon="ArrowNarrowRight" size={17} />
+              <span>View</span>
+            </Link>
+          </Button>
         </div>
       </div>
-      {showButton && (
-        <div className="mt-4 flex items-end justify-between gap-4">
-          <div>
-            <StatusLabel status={status} />
-          </div>
-          <div>
-            <Button className="flex h-10 items-center gap-2 px-4" asChild>
-              <Link href={href}>
-                <IconBox icon="ArrowNarrowRight" size={17} />
-                <span>View</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
