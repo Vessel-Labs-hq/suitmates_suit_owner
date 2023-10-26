@@ -7,7 +7,7 @@ import {
   DashboardSuiteInfoChart,
 } from "@/components/organisms/DashboardCharts";
 import { IconBox, Title } from "@the_human_cipher/components-library";
-import { ClassValues, cn } from "@/utils";
+import { cn } from "@/utils";
 
 interface CardProps {
   title: string;
@@ -34,6 +34,8 @@ const BentoWrapper = ({ children, className }: IProps) => (
 );
 
 const HomePage = () => {
+  // const res = useGetA
+
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-4 md:mb-8 md:flex-row">

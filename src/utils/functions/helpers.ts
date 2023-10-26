@@ -61,7 +61,7 @@ export const checkIfNavLinkIsActive = (pathname: string) => {
       return true;
     }
 
-    return pathname === url;
+    return pathname.includes(url);
   };
 
   return isActiveFn;
