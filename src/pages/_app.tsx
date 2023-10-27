@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { cn } from "@/utils";
-import { FontInter } from "@/assets/fonts";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
@@ -20,7 +19,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return getLayout(
     <QueryClientProvider client={queryClient}>
-      <main className={cn(FontInter.variable, "font-inter", "min-h-screen")}>
+      <main className={cn("font-inter", "min-h-screen")}>
         <Component {...pageProps} />
       </main>
       <ToastContainer />

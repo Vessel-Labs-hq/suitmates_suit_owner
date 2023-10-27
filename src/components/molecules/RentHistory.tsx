@@ -29,7 +29,7 @@ const RentNotification = () => (
 const RentHistorySidebar = () => (
   <div className="">
     <header className="flex items-center justify-between gap-4">
-      <Title level={4}>Recent History</Title>
+      <h4 className="font-bold">Recent History</h4>
       <p className="text-sm">See All</p>
     </header>
     <div className="mt-5 space-y-3">

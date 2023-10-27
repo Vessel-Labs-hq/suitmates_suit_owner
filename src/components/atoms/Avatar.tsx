@@ -1,7 +1,7 @@
 import { cn } from "@/utils";
 import Image from "next/image";
 
-interface AvatarProps {
+export interface AvatarProps {
   src?: string;
   name: string;
   className?: string;
