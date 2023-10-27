@@ -42,29 +42,35 @@ const MaintenanceRequestPage = () => {
                 />
               ))}
             </div>
-            <aside className="w-full rounded-2xl bg-light-gray p-3 max-xl:hidden xl:max-w-[350px] xl:p-6">
-              <header className="flex items-center justify-between gap-4">
-                <Title level={4} weight="bold" className="font-bold">
-                  Recent History
+            <aside className="sticky top-4 w-full rounded-2xl bg-light-gray p-3 max-xl:hidden xl:max-w-[350px] xl:p-6">
+              <header className="mb-4 flex items-center justify-between gap-4">
+                <Title level={4} weight="bold">
+                  Due Requests
                 </Title>
                 <p className="text-sm">See All</p>
               </header>
-              <NotificationUI>
-                <NotificationUI.Content
-                  title="Water heater Issues"
-                  style={{ titleStyle: "text-sm whitespace-nowrap" }}
-                  avatarProps={{ name: "Suite 14c" }}
-                >
-                  <div className="flex items-center gap-1">
-                    <span>2wks ago</span>
-                    <span className="text-suite-dark">•</span>
-                    <span className="text-suite-dark">Suite 12b</span>
-                  </div>
-                </NotificationUI.Content>
-                <NotificationUI.Label dots type="danger">
-                  Critical
-                </NotificationUI.Label>
-              </NotificationUI>
+              <ul className="grid grid-cols-1 gap-4">
+                {[...DummyMaintenanceData, ...DummyMaintenanceData].slice(0, 8).map((_, idx) => (
+                  <li key={idx}>
+                    <NotificationUI>
+                      <NotificationUI.Content
+                        title={`Water heater Issues (${idx + 1})`}
+                        style={{ titleStyle: "text-sm whitespace-nowrap" }}
+                        avatarProps={{ name: "Suite 14c" }}
+                      >
+                        <div className="flex items-center gap-1">
+                          <span>2wks ago</span>
+                          <span className="text-suite-dark">•</span>
+                          <span className="text-suite-dark">Suite 12b</span>
+                        </div>
+                      </NotificationUI.Content>
+                      <NotificationUI.Label dots type="danger">
+                        Critical
+                      </NotificationUI.Label>
+                    </NotificationUI>
+                  </li>
+                ))}
+              </ul>
             </aside>
           </div>
         </div>

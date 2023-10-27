@@ -16,7 +16,7 @@ const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
 
   return (
     <ProtectedLayout>
-      <div className="flex md:[&>*]:py-14">
+      <div className="flex max-md:pb-40 md:[&>*]:py-14">
         <Sidebar />
         <main className="w-full space-y-4 px-4 text-suite-dark max-md:py-5 md:ml-[100px] md:space-y-8 md:px-6 lg:px-8 xxl:ml-0">
           <DashboardHeader
