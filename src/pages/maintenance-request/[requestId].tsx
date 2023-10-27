@@ -13,8 +13,8 @@ interface ContentLabelProps {
 }
 const ContentLabel = ({ title, value }: ContentLabelProps) => (
   <div className="w-fit space-y-1 text-sm">
-    <p className="text-sm font-medium text-black">{title}</p>
-    <div className="w-fit rounded-md bg-light-gray p-4 leading-none">
+    <p className="text-xs font-medium text-black md:text-sm">{title}</p>
+    <div className="w-fit rounded-md bg-light-gray p-4 leading-none max-md:text-xs">
       <span>{value}</span>
     </div>
   </div>
@@ -39,8 +39,9 @@ function MaintenanceRequestPage() {
     <DashboardLayout>
       <section className="max-w-[900px] space-y-8">
         <div className="flex gap-4">
-          <Link className="flex gap-1" href="/maintenance-request">
-            <IconBox icon="ArrowNarrowLeft" size={24} />
+          <Link className="mt-8 flex gap-1 max-sm:text-sm" href="/maintenance-request">
+            <IconBox className="max-sm:hidden" icon="ArrowNarrowLeft" size={24} />
+            <IconBox className="sm:hidden" icon="ArrowNarrowLeft" size={18} />
             <span>Maintenance Request</span>
           </Link>
         </div>
@@ -49,14 +50,14 @@ function MaintenanceRequestPage() {
             <h2 className="text-2xl font-medium md:text-3xl">Plumbing</h2>
             <div className="mt-2 text-sm">10 Jan 2023 | 2:25pm</div>
 
-            <p className="mt-6 font-light md:text-lg">
+            <p className="mt-6 text-sm font-light md:text-lg">
               Persistent, slow-draining sink clogged with hair and debris, causing backups.
               Persistent, slow-draining sink clogged with hair and debris, causing backups.
               Persistent, slow-draining sink clogged with hair and debris.
             </p>
           </div>
           <div>
-            <h3 className="text-xl font-medium">Resolution Details </h3>
+            <h3 className="font-medium md:text-xl">Resolution Details </h3>
             <div className="mt-4 flex gap-8">
               <ContentLabel title="Repair Date" value="08/21/2024" />
               <ContentLabel title="Repair Time" value="03:00pm" />

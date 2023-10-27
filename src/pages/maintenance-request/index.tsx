@@ -12,7 +12,7 @@ const MaintenanceRequestPage = () => {
     <DashboardLayout>
       <main className="space-y-8 py-4">
         <div className="flex flex-col-reverse gap-4 lg:flex-row">
-          <div className="grid w-full grid-cols-1 gap-4 xs:grid-cols-2">
+          <div className="grid w-full max-w-xl grid-cols-1 gap-4 xs:grid-cols-2">
             <HomeBento
               title="Total Requests"
               icon={Icons.Tool02Green}
