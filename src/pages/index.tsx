@@ -5,7 +5,12 @@ import RentHistorySidebar from "@/components/molecules/RentHistory";
 import { DashboardSuiteInfoChart } from "@/components/organisms/DashboardCharts";
 import { IconBox, Title } from "@the_human_cipher/components-library";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
-import { HomeBentoWrapper, HomeInfoCard, HomeRentGraph } from "@/components/atoms/HomeSharedUI";
+import {
+  HomeBentoWrapper,
+  HomeInfoCard,
+  HomeRentGraph,
+  SidebarElement,
+} from "@/components/atoms/HomeSharedUI";
 
 const HomePage = () => {
   const res = useGetAllMaintenance();
@@ -49,9 +54,9 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col gap-4 xl:flex-row">
         <MaintenanceRequestTable />
-        <aside className="w-full rounded-3xl bg-light-gray p-3 max-xl:hidden xl:max-w-[350px] xl:p-6">
+        <SidebarElement className="rounded-3xl">
           <RentHistorySidebar />
-        </aside>
+        </SidebarElement>
       </div>
     </DashboardLayout>
   );

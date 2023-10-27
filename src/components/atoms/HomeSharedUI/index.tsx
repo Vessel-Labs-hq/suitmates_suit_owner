@@ -42,3 +42,14 @@ export const HomeRentGraph = () => (
     </div>
   </div>
 );
+
+export const SidebarElement = ({ children, className }: IProps) => (
+  <aside
+    className={cn(
+      "sticky top-4 w-full rounded-2xl bg-light-gray p-3 max-xl:hidden xl:max-w-[350px] xl:p-6",
+      className
+    )}
+  >
+    {children}
+  </aside>
+);
