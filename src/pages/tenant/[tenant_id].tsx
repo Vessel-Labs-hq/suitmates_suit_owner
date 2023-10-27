@@ -9,6 +9,11 @@ const TenantSinglePage = () => {
 
   const { add_tenant, tenant_id } = router.query;
 
+  const handleClose = () =>
+    router.push({
+      query: { tenant_id },
+    });
+
   return (
     <DashboardLayout>
       <p>/tenant/:tenant_id</p>
@@ -30,14 +35,7 @@ const TenantSinglePage = () => {
       </div>
 
       {assertQuery(add_tenant) && (
-        <AddTenantModal
-          open
-          onOpenChange={() =>
-            router.push({
-              query: { tenant_id },
-            })
-          }
-        />
+        <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
     </DashboardLayout>
   );
