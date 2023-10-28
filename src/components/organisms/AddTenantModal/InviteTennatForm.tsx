@@ -22,9 +22,13 @@ const InviteTenantForm = ({ onSubmit, suites }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      await tenantAPI.addTenant(data);
-      Alert.success("Tenant added successfully");
-      onSubmit();
+      const res = await tenantAPI.inviteTenant(data);
+
+      if (res) {
+        await tenantAPI.addTenant(data);
+        Alert.success("Tenant added successfully");
+        onSubmit();
+      }
     } catch (error) {
       Alert.error(error);
     }

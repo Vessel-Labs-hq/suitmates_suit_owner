@@ -19,6 +19,15 @@ class TenantService extends BaseAPIService {
       throw error;
     }
   }
+
+  async inviteTenant({ email }: { email: string }) {
+    try {
+      const res = await API.post("/auth/register-tenant", { email });
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const tenantAPI = new TenantService();
