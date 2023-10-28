@@ -5,10 +5,27 @@ import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import AddTenantModal from "@/components/organisms/AddTenantModal";
 import { DashboardSuiteInfoChart } from "@/components/organisms/DashboardCharts";
 import { DummyMaintenanceData } from "@/constants";
-import { assertQuery } from "@/utils";
+import { assertQuery, cn } from "@/utils";
 import { Button, IconBox, Title } from "@the_human_cipher/components-library";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { UrlObject } from "url";
+
+interface IconButtonProps {
+  href: string | UrlObject;
+  icon: React.ComponentProps<typeof IconBox>["icon"];
+  text: string;
+  className?: string;
+}
+
+const IconButton = ({ href, icon, text, className }: IconButtonProps) => (
+  <Button asChild className={cn("flex items-center gap-2 px-3", className)}>
+    <Link href={href}>
+      <IconBox icon={icon} />
+      <span className="whitespace-nowrap">{text}</span>
+    </Link>
+  </Button>
+);
 
 const TenantPage = () => {
   const router = useRouter();
@@ -22,34 +39,40 @@ const TenantPage = () => {
       <main>
         <section className="flex items-start justify-between gap-4">
           <div className="flex h-full w-full flex-col gap-4">
-            <div className="grid max-h-44 w-full grid-cols-3 items-center gap-4 rounded-xl bg-light-gray p-6">
-              <HomeInfoCard title="Vacant Suites" value={10} />
-              <HomeInfoCard title="Occupied Suites" value={12} />
+            <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
+                <HomeInfoCard title="Vacant Suites" value={10} />
+                <HomeInfoCard title="Occupied Suites" value={12} />
+              </div>
               <DashboardSuiteInfoChart />
             </div>
-            <div className="mt-auto w-fit">
+            <div className="mt-auto hidden w-fit md:block">
               <div className="flex items-center gap-4">
-                <Button asChild className="flex items-center gap-2 px-3">
-                  <Link href={{ query: { add_tenant: true } }}>
-                    <IconBox icon="Plus" />
-                    <span className="whitespace-nowrap">Add Tenant</span>
-                  </Link>
-                </Button>
-                <Button asChild className="flex items-center gap-2 px-3">
-                  <Link href="#">
-                    <IconBox icon="Edit05" />
-                    <span>Edit Suite</span>
-                  </Link>
-                </Button>
+                <IconButton
+                  icon="Plus"
+                  text="Add Tenat"
+                  href={{ query: { add_tenant: "true" } }}
+                />
+
+                <IconButton icon="Edit05" text="Edit Suite" href="#" />
               </div>
             </div>
           </div>
           <DueRequestSideBar length={3} />
         </section>
-        <section className="mt-6">
-          <Title level={4} weight="bold" className="text-lg text-black">
-            All Tenants
-          </Title>
+        <section className="mt-10 md:mt-6">
+          <div className="flex items-center justify-between">
+            <Title level={4} weight="bold" className="text-lg text-black">
+              All Tenants
+            </Title>
+
+            <IconButton
+              icon="Plus"
+              text="Add Tenat"
+              href={{ query: { add_tenant: "true" } }}
+              className="w-fit gap-0.5 rounded-md px-2 py-2 text-xs md:hidden"
+            />
+          </div>
 
           <div className="mt-4 space-y-4">
             {[...DummyMaintenanceData, ...DummyMaintenanceData].map((n, idx) => (

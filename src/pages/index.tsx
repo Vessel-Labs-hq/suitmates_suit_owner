@@ -32,7 +32,7 @@ const HomePage = () => {
             <div className="flex items-center gap-2">
               <span className="">{Icons.MaintenanceGreen}</span>
               <Title level={5} weight="bold">
-                Maintenance Request{" "}
+                Maintenance Request
               </Title>
             </div>
             <div className="w-full max-xxl:-mt-1 max-xxl:space-y-1">

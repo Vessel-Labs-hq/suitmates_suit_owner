@@ -2,7 +2,8 @@ import clsx, { type ClassValue } from "clsx";
 import type { FieldValues, FormState } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
-const isLocal = typeof window === "undefined" ? true : !!window.origin.includes("localhost");
+const isLocal =
+  typeof window === "undefined" ? true : !!window.origin.includes("localhost");
 
 export type ClassValues = ClassValue[];
 
@@ -79,7 +80,9 @@ export const localLog = (...args: any[]) => {
  * const xyzError = unWrapErrors("xyz")
  * ```
  */
-export const getFormStateError = <Inputs extends FieldValues>(formState: FormState<Inputs>) => {
+export const getFormStateError = <Inputs extends FieldValues>(
+  formState: FormState<Inputs>
+) => {
   const unwrapFormError = (key: keyof Inputs) => {
     const err = formState.errors[key]?.message;
     return err ? String(err) : undefined;
@@ -93,3 +96,11 @@ export const getFormStateError = <Inputs extends FieldValues>(formState: FormSta
 };
 
 export const assertQuery = (str: unknown): str is string => str !== undefined;
+
+export const clampText = (str: string, maxLen = 23) => {
+  if (str.length > maxLen) {
+    return str.slice(0, maxLen - 3) + "...";
+  }
+
+  return str;
+};
