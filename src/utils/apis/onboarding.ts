@@ -26,7 +26,7 @@ class Details extends BaseAPIService {
           "Content-Type": "multipart/form-data",
         },
       });
-      return res.data;
+      return res.data.data;
     } catch (error) {
       throw error;
     }

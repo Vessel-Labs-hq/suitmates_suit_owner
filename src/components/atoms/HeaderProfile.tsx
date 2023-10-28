@@ -1,6 +1,7 @@
 import { cn } from "@/utils";
 import Image from "next/image";
 import Avatar from "./Avatar";
+import Link from "next/link";
 
 interface HeaderProfileProps {
   email: string;
@@ -18,7 +19,7 @@ const getPlaceholder = (name: string) => {
 };
 
 const HeaderProfile = ({ email, name, src, contentClass }: HeaderProfileProps) => (
-  <div className="flex items-center gap-2">
+  <Link className="flex cursor-pointer items-center gap-2" href="/profile-management">
     <div>
       <Avatar src={src} name={name} />
     </div>
@@ -26,7 +27,7 @@ const HeaderProfile = ({ email, name, src, contentClass }: HeaderProfileProps) =
       <h6 className="text-sm font-bold capitalize text-black">{name}</h6>
       <p className="line-clamp-1 max-w-full text-xs lowercase">{email}</p>
     </div>
-  </div>
+  </Link>
 );
 
 export default HeaderProfile;

@@ -37,26 +37,6 @@ export const SuiteDetailSchema = z.object({
   timing: createSelectSchema("Duration"),
 });
 
-/** 
- * {
-    "suites": [
-        {
-            "suite_number": "HN923",
-            "suite_type": "type",
-            "suite_size": "234234ft",
-            "suite_cost": 200000,
-            "timing": "weekly"
-        },
-        {
-            "suite_number": "23",
-            "suite_type": "large room",
-            "suite_size": "234ft",
-            "suite_cost": 2230,
-            "timing": "weekly"
-        }
-    ]
-}
- */
 export const SuiteInfoSchema = z.object(
   {
     suites: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
@@ -69,3 +49,7 @@ export const AccountInoSchema = z.object({
   account_name: createStringSchema("Account Name"),
   routing_number: createStringSchema("Routing Number"),
 });
+
+// export const UpdateProfileSchema = PersonalInfoSchema.merge(SpaceInfoSchema)
+//   .merge(AccountInoSchema)
+// .updateProfileSchema();

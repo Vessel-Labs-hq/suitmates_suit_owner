@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 import { StepProgressIndicator } from "@the_human_cipher/components-library";
 import SEO from "@/components/layouts/SEO";
 import { SpinnerLoader } from "@/components/atoms/Loader";
-import authService from "@/utils/apis/auth";
+// import authService from "@/utils/apis/auth";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
+import useSession from "@/utils/hooks/useSession";
 
 const AllSteps = [
   "personal-information",
@@ -35,7 +36,7 @@ const UpdateUserPage = () => {
 
   const space_id = spaceId ? String(spaceId) : null;
 
-  const user = authService.getSession();
+  const user = useSession();
 
   useEffect(() => {
     setLoading(false);
