@@ -2,7 +2,7 @@ import { encryptionHandler } from "../functions/encrypt";
 import { AuthResponse, AuthResponseSchema } from "../schema/login";
 
 export class BaseAPIService {
-  protected storeIndex = "d-suite-owner";
+  protected storeIndex = "d-suite-tenant";
 
   protected storeUser(user: AuthResponse) {
     const res = encryptionHandler({
@@ -15,19 +15,23 @@ export class BaseAPIService {
     }
   }
 
+  /** hidden to other class members, can not be used by instances */
   protected handleUserSession(): AuthResponse | undefined {
     if (typeof localStorage !== "undefined") {
       const user = localStorage.getItem(this.storeIndex);
 
-      if (!user) return;
+      if (user) {
+        const data = encryptionHandler({ action: "decrypt", data: user });
 
-      const data = encryptionHandler({ action: "decrypt", data: user });
+        const res = AuthResponseSchema.safeParse(JSON.parse(data));
 
-      const res = AuthResponseSchema.safeParse(JSON.parse(data));
-
-      if (res.success) {
-        return res.data;
+        if (res.success) {
+          // window.dispatchEvent(new Event("UpdatedUserData"));
+          return res.data;
+        }
       }
+
+      return undefined;
     }
   }
 
@@ -37,5 +41,6 @@ export class BaseAPIService {
     if (user) {
       this.storeUser({ ...user, ...data });
     }
+    window.dispatchEvent(new Event("UpdatedUserData"));
   }
 }

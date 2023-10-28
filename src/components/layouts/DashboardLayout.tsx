@@ -1,9 +1,10 @@
-import authService from "@/utils/apis/auth";
 import DashboardHeader from "../organisms/DashboardHeader";
 import Sidebar from "../organisms/Sidebar";
 import ProtectedLayout from "./ProtectedLayout";
 import SEO from "./SEO";
 import MobileMenu from "../organisms/MobileMenu";
+import useSession from "@/utils/hooks/useSession";
+import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 
 interface Props {
   children: React.ReactNode;
@@ -12,7 +13,11 @@ interface Props {
 }
 
 const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
-  const user = authService.getSession();
+  const user = useSession();
+
+  const _response = useGetProfile();
+
+  console.log(_response.data);
 
   return (
     <ProtectedLayout>
@@ -23,7 +28,9 @@ const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
             email={user?.email ?? ""}
             name={user?.name}
             avatar={user?.avatar ?? undefined}
-            headerDesc={headerDesc ?? "Track maintenance and mange tenants on your dashboard"}
+            headerDesc={
+              headerDesc ?? "Track maintenance and mange tenants on your dashboard"
+            }
           />
           <div className="hidden h-[3px] w-full bg-gray md:block" />
           <div>{children}</div>

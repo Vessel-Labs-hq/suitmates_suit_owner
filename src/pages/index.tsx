@@ -4,7 +4,6 @@ import MaintenanceRequestTable from "@/components/molecules/MiantennanceRequestT
 import RentHistorySidebar from "@/components/molecules/RentHistory";
 import { DashboardSuiteInfoChart } from "@/components/organisms/DashboardCharts";
 import { IconBox, Title } from "@the_human_cipher/components-library";
-import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
 import {
   HomeBentoWrapper,
   HomeInfoCard,
@@ -13,8 +12,6 @@ import {
 } from "@/components/atoms/HomeSharedUI";
 
 const HomePage = () => {
-  const res = useGetAllMaintenance();
-
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-4 md:mb-8 md:flex-row">

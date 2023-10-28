@@ -1,5 +1,4 @@
 interface PersonalInfoPayload {
-  // email: string;
   first_name?: string;
   last_name?: string;
   phone_number?: string;
@@ -38,6 +37,12 @@ interface DbCreateSpace {
   updatedAt: string;
 }
 
+interface DbSpace extends Omit<DbCreateSpace, "user_id"> {
+  owner_id: string;
+  suite?: DbCreateSuite[];
+  deleted?: boolean;
+}
+
 interface DbCreateSuite {
   id: number;
   suite_number: string;
@@ -50,4 +55,12 @@ interface DbCreateSuite {
   created_at: string;
   updated_at: string;
   deleted: any;
+}
+
+interface DbGetUserDetails extends DbUpdatePersonalInfo {
+  stripe_customer_id?: string;
+  stripe_payment_method_id?: string;
+  card_last_digit?: string;
+  card_name?: string;
+  space: DbSpace;
 }

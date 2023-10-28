@@ -98,6 +98,15 @@ class Details extends BaseAPIService {
       throw error;
     }
   }
+
+  async getUserSpace(spaceId: string) {
+    try {
+      const res = await API.get<DbSpace>(`/space/${spaceId}`);
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const onBoardingService = new Details();
