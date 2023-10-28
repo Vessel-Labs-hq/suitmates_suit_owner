@@ -10,10 +10,10 @@ class TenantService extends BaseAPIService {
     try {
       const payload = {
         email,
-        suite_id: JSON.stringify(suite_id),
+        suite_id: Number(suite_id.value),
       };
 
-      const res = await API.post("/tenant", payload);
+      const res = await API.post("/user/attach-tenant", payload);
       return res.data;
     } catch (error) {
       throw error;

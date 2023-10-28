@@ -1,5 +1,5 @@
 import { BaseAPIService } from "./base";
-import { objectToFormData } from "..";
+import { objectToFormData, parseDbSelectRecords } from "..";
 import { API } from "../base/axios";
 import { SpaceInfoSchema, SuiteInfoSchema, AccountInoSchema } from "../schema/details";
 import { InferSchema } from "../schema/helpers";
@@ -99,10 +99,18 @@ class Details extends BaseAPIService {
     }
   }
 
-  async getUserSpace(spaceId: string) {
+  async getUserSpace(spaceId: SN) {
     try {
-      const res = await API.get<DbSpace>(`/space/${spaceId}`);
-      return res.data;
+      const res = await API.get<APIResponse<DbSpace>>(`/space/${spaceId}`);
+
+      const { space_amenities, ...rest } = res.data.data;
+
+      const data = {
+        ...rest,
+        space_amenities: parseDbSelectRecords(space_amenities),
+      };
+
+      return data;
     } catch (error) {
       throw error;
     }

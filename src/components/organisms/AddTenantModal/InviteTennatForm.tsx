@@ -11,9 +11,10 @@ type Inputs = InferSchema<typeof AddTenantByInviteSchema>;
 
 interface Props {
   onSubmit(): void;
+  suites: SelectData<SN>[];
 }
 
-const InviteTenantForm = ({ onSubmit }: Props) => {
+const InviteTenantForm = ({ onSubmit, suites }: Props) => {
   const { handleSubmit, register, control, formState } = useForm<Inputs>({
     mode: "onChange",
     resolver: zodResolver(AddTenantByInviteSchema),
@@ -21,7 +22,7 @@ const InviteTenantForm = ({ onSubmit }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await tenantAPI.addTenant(data);
+      await tenantAPI.addTenant(data);
       Alert.success("Tenant added successfully");
       onSubmit();
     } catch (error) {
@@ -48,9 +49,9 @@ const InviteTenantForm = ({ onSubmit }: Props) => {
         name="suite_id"
         render={({ field: { onChange, value } }) => (
           <Select
-            options={[]}
+            options={suites}
             onChange={onChange}
-            value={value}
+            defaultValue={value}
             label="Assign Suite Space"
             placeholder="Select..."
             hint={unwrapFormError("suite_id") ?? "Select the suite they occupy"}
@@ -59,7 +60,9 @@ const InviteTenantForm = ({ onSubmit }: Props) => {
         )}
       />
 
-      <Button type="submit">Add</Button>
+      <Button type="submit" loading={formState.isSubmitting}>
+        Add
+      </Button>
     </form>
   );
 };

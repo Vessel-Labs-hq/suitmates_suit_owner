@@ -104,3 +104,29 @@ export const clampText = (str: string, maxLen = 23) => {
 
   return str;
 };
+
+/**
+ * pass generic to assert type
+ */
+export const parseDbSelectRecords = <Type = SelectData[]>(data: string) => {
+  try {
+    const res = JSON.parse(data) as Type;
+    return res;
+  } catch (error) {
+    localLog(error);
+
+    throw new Error("An error occurred while parsing the value");
+  }
+};
+
+export const assertReactQueryError = (error: unknown) => {
+  if (typeof error === "string") {
+    return error;
+  }
+
+  if (typeof error === "object") {
+    return JSON.stringify(error);
+  }
+
+  return String(error);
+};

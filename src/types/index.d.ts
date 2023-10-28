@@ -57,3 +57,10 @@ interface IChatMessage {
 interface IChats extends IChatMessage {
   idx: number | string;
 }
+
+type SN = string | number;
+
+type SelectData<Type = string> = {
+  label: Type;
+  value: Type;
+};

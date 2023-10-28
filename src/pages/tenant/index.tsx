@@ -5,7 +5,8 @@ import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import AddTenantModal from "@/components/organisms/AddTenantModal";
 import { DashboardSuiteInfoChart } from "@/components/organisms/DashboardCharts";
 import { DummyMaintenanceData } from "@/constants";
-import { assertQuery, cn } from "@/utils";
+import { assertQuery, cn, localLog } from "@/utils";
+import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 import { Button, IconBox, Title } from "@the_human_cipher/components-library";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -31,6 +32,10 @@ const TenantPage = () => {
   const router = useRouter();
 
   const { add_tenant } = router.query;
+
+  const { data: profile } = useGetProfile();
+
+  localLog(profile);
 
   const handleClose = () => router.push({ query: {} });
 
