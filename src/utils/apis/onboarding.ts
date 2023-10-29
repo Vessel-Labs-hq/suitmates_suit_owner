@@ -21,7 +21,7 @@ class Details extends BaseAPIService {
     const data = objectToFormData({ ...payload });
 
     try {
-      const res = await API.patch<ResponseBody>(`/user/${personId}`, data, {
+      const res = await API.patch<ResponseBody>(`/user`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -87,7 +87,7 @@ class Details extends BaseAPIService {
     const data = objectToFormData({ onboarded: true });
 
     try {
-      const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
+      const res = await API.patch<ResponseBody>(`/user`, data);
 
       const {
         data: { first_name, last_name, ...rest },
