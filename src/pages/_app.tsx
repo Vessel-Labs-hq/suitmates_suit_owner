@@ -14,7 +14,6 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const [queryClient] = useState(() => new QueryClient());
-
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(

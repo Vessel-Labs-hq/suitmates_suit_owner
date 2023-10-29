@@ -89,9 +89,14 @@ class Details extends BaseAPIService {
     try {
       const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
 
+      const {
+        data: { first_name, last_name, ...rest },
+      } = res.data;
+
       this.updateUserSession({
-        ...res.data.data,
-        role: "owner",
+        ...rest,
+        name: `${first_name} ${last_name}`,
+        role: "tenant",
       });
       return res.data;
     } catch (error) {
