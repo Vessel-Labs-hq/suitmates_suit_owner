@@ -74,7 +74,7 @@ class Details extends BaseAPIService {
     const { accountDetails, spaceId } = data;
     type ResponseBody = APIResponse<DbCreateSpace>;
     try {
-      const res = await API.patch<ResponseBody>(`/space/${spaceId}`, accountDetails);
+      const res = await API.patch<ResponseBody>(`/space`, accountDetails);
       return res.data;
     } catch (error) {
       throw error;

@@ -3,15 +3,27 @@ import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { onFormError } from "@/utils/functions/react-hook-form";
+import useSession from "@/utils/hooks/useSession";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Title, Text, Input, Button, PhoneInput } from "@the_human_cipher/components-library";
+import {
+  Title,
+  Text,
+  Input,
+  Button,
+  PhoneInput,
+} from "@the_human_cipher/components-library";
+import { useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 type Inputs = InferSchema<typeof PersonalInfoSchema>;
 
-type InputName = keyof Inputs;
+interface ExtendsInputs extends Inputs {
+  email: string;
+}
+
+type InputName = keyof ExtendsInputs;
 
 interface Fields {
   name: InputName;
@@ -42,19 +54,31 @@ const fields: Fields[] = [
     placeholder: "(999) 999-9999",
   },
   {
-    name: "bio",
-    label: "Bio",
-    placeholder: "Bio",
+    name: "email",
+    label: "Email",
+    placeholder: "email",
   },
 ];
 
 const PersonalInformation = ({ onSubmit, personId }: Props) => {
-  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
-    resolver: zodResolver(PersonalInfoSchema),
-    mode: "onChange",
-  });
+  const data = useSession();
+
+  const { register, formState, handleSubmit, control, watch, reset } =
+    useForm<ExtendsInputs>({
+      resolver: zodResolver(PersonalInfoSchema),
+      mode: "onChange",
+      defaultValues: {
+        email: data?.email,
+      },
+    });
 
   const selectedFile = watch("avatar");
+
+  useEffect(() => {
+    reset({
+      email: data?.email,
+    });
+  }, [data]);
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     if (personId) {
@@ -71,12 +95,13 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
     }
   };
 
-  const getFormError = (key: keyof Inputs) => {
+  const getFormError = (key: keyof ExtendsInputs) => {
     const err = formState.errors[key]?.message;
     return err ? String(err) : undefined;
   };
 
   const { isSubmitting: isLoading } = formState;
+  console.log(data, formState.defaultValues);
 
   return (
     <section className="mx-auto max-w-[960px]">
@@ -122,14 +147,17 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
                         onChange(e.target.files?.[0]);
                       }}
                     />
-                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2">Upload</span>
+                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2">
+                      Upload
+                    </span>
                   </label>
                 )}
               />
               <div
                 className={cn(
                   "mt-2 max-h-0 origin-top overflow-hidden text-center text-sm text-white transition-all duration-300 ease-out",
-                  getFormError("avatar") && "max-h-[100px] text-borderNegative opacity-100"
+                  getFormError("avatar") &&
+                    "max-h-[100px] text-borderNegative opacity-100"
                 )}
               >
                 {getFormError("avatar")}
@@ -164,9 +192,11 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
             />
             <Input
               {...fields[3]}
-              {...register("bio")}
-              hint={getFormError("bio")}
-              isError={Boolean(getFormError("bio"))}
+              {...register("email")}
+              hint={getFormError("email")}
+              isError={Boolean(getFormError("email"))}
+              defaultValue={formState?.defaultValues?.email}
+              disabled
             />
           </div>
           <Button
