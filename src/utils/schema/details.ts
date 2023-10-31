@@ -29,6 +29,10 @@ export const SpaceInfoSchema = z.object({
   }),
 });
 
+export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({
+  space_size: z.optional(z.any()),
+});
+
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
   suite_size: createStringSchema("Size"),

@@ -1,7 +1,12 @@
 import { BaseAPIService } from "./base";
 import { objectToFormData } from "..";
 import { API } from "../base/axios";
-import { SpaceInfoSchema, SuiteInfoSchema, AccountInoSchema } from "../schema/details";
+import {
+  SpaceInfoSchema,
+  SuiteInfoSchema,
+  AccountInoSchema,
+  UpdateSpaceInfoSchema,
+} from "../schema/details";
 import { InferSchema } from "../schema/helpers";
 
 interface CreateSuitePayload {
@@ -14,6 +19,10 @@ interface AddAccountPayload {
   spaceId: string;
 }
 
+interface UpdateAccountPayload {
+  accountDetails: InferSchema<typeof AccountInoSchema>;
+}
+
 class Details extends BaseAPIService {
   async updatePersonalInfo(personId: string | number, payload: PersonalInfoPayload) {
     type ResponseBody = APIResponse<DbUpdatePersonalInfo>;
@@ -22,6 +31,23 @@ class Details extends BaseAPIService {
 
     try {
       const res = await API.patch<ResponseBody>(`/user/${personId}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return res.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserPersonalInfo(payload: PersonalInfoPayload) {
+    type ResponseBody = APIResponse<DbUserProfileResponse>;
+
+    const data = objectToFormData({ ...payload });
+
+    try {
+      const res = await API.patch<ResponseBody>("/user", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -75,6 +101,35 @@ class Details extends BaseAPIService {
     type ResponseBody = APIResponse<DbCreateSpace>;
     try {
       const res = await API.patch<ResponseBody>(`/space/${spaceId}`, accountDetails);
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateAccountDetails(data: UpdateAccountPayload) {
+    const { accountDetails } = data;
+    type ResponseBody = APIResponse<DbUserProfileResponse>;
+    try {
+      const res = await API.patch<ResponseBody>(`/space`, accountDetails);
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateSpace(payload: InferSchema<typeof UpdateSpaceInfoSchema>) {
+    type ResponseBody = APIResponse<DbCreateSpace>;
+
+    const { space_amenities, space_size, ...rest } = payload;
+
+    const data: Record<string, unknown> = {
+      ...rest,
+      space_amenities: JSON.stringify(space_amenities),
+    };
+
+    try {
+      const res = await API.patch<ResponseBody>("/space", data);
       return res.data;
     } catch (error) {
       throw error;

@@ -1,7 +1,7 @@
 import { BaseAPIService } from "@/utils/apis/base";
 import { API } from "@/utils/base/axios";
-import { SpaceInfoSchema } from "@/utils/schema/details";
-import { InferSchema } from "@/utils/schema/helpers";
+// import { SpaceInfoSchema } from "@/utils/schema/details";
+// import { InferSchema } from "@/utils/schema/helpers";
 
 class UserProfile extends BaseAPIService {
   async getUserProfile(personId: number) {

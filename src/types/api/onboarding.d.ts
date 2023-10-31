@@ -38,6 +38,20 @@ interface DbCreateSpace {
   updatedAt: string;
 }
 
+interface DbUpdateSpace {
+  id: number;
+  user_id: number;
+  space_name: string;
+  space_address: string;
+  space_size: number;
+  space_amenities: string;
+  account_number: string;
+  account_name: string;
+  routing_number: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface DbCreateSuite {
   id: number;
   suite_number: string;
@@ -103,15 +117,11 @@ interface DbUserProfileResponse {
   deleted: null;
 }
 
-// interface DbGetUserProfile {
-//   id: number;
-//   first_name: string;
-//   last_name: string;
-//   phone_number: string;
-//   avatar: string;
-//   space_name: string;
-//   space_address: string;
-//   space_amenities: string;
-//   account_name: string;
-//   routing_number: string;
-// }
+interface UpdateAccountPayload {
+  accountDetails: InferSchema<typeof AccountInoSchema>;
+  space_amenities: [];
+  space_name: string;
+  space_address: string;
+  space_size: string;
+  // spaceId: string;
+}
