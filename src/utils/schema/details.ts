@@ -53,7 +53,3 @@ export const AccountInoSchema = z.object({
   account_name: createStringSchema("Account Name"),
   routing_number: createStringSchema("Routing Number"),
 });
-
-// export const UpdateProfileSchema = PersonalInfoSchema.merge(SpaceInfoSchema)
-//   .merge(AccountInoSchema)
-// .updateProfileSchema();
