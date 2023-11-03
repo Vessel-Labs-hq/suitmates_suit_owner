@@ -8,6 +8,7 @@ import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, PhoneInput } from "@the_human_cipher/components-library";
+import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
@@ -78,7 +79,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
       <div className="my-4 mt-16">
         <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
           <div className="mx-auto max-w-[1180px]">
-            <div className="flex justify-between">
+            <div className="flex flex-col justify-between md:flex-row">
               <div className="flex">
                 <Controller
                   control={control}
@@ -99,13 +100,16 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                       {selectedFile && (
                         <span
                           className={cn(
-                            "absolute top-0 flex h-[120px] w-full items-center justify-center bg-[#F3F3F3] pt-10 text-sm "
+                            "absolute bottom-0 left-0 right-0 top-0 flex h-[120px] w-full items-center justify-center bg-red-500 object-cover pt-10 text-sm"
                           )}
                         >
-                          <Avatar
+                          <Image
+                            alt=""
                             src={userProfile.avatar}
-                            name=""
-                            className="h-[180px] w-[180px]"
+                            width={120}
+                            height={180}
+                            // name=""
+                            className="h-[180px] w-full object-cover"
                           />
                         </span>
                       )}
@@ -119,13 +123,17 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                         }}
                         disabled={isEditMode}
                       />
-                      <span className="absolute bottom-3 left-1/2 -translate-x-1/2">Upload</span>
+                      {selectedFile ? (
+                        ""
+                      ) : (
+                        <span className="absolute bottom-3 left-1/2 -translate-x-1/2">Upload</span>
+                      )}
                     </label>
                   )}
                 />
               </div>
 
-              <div>
+              <div className="">
                 <Button
                   className="mt-16 h-16 w-52 rounded-lg bg-[#3BAF75] text-lg font-medium text-white"
                   onClick={handleEditClick}

@@ -146,16 +146,16 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                 />
               </label>
 
-              <div className="relative grid items-center justify-center gap-x-28 text-center md:grid-cols-2 md:gap-y-4">
+              <div className="relative flex flex-wrap items-center justify-center gap-x-4 gap-y-4 text-center md:justify-start md:gap-x-2">
                 {amenities.map(
                   (amenity: any, index: number) =>
                     closeAmenities[index] && (
-                      <label key={index} className="h-8 w-64 rounded-lg bg-[#E8E8E8]">
+                      <label
+                        key={index}
+                        className="flex h-8 items-center justify-center rounded-lg bg-[#E8E8E8] px-3 py-2"
+                      >
                         {amenity.label}
-                        <button
-                          className="absolute px-4 py-1"
-                          onClick={() => handleCloseAmenities(index)}
-                        >
+                        <button className="mx-3" onClick={() => handleCloseAmenities(index)}>
                           X
                         </button>
                       </label>
