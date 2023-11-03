@@ -135,7 +135,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
               <div className="">
                 <Button
-                  className="mt-16 h-16 w-52 rounded-lg bg-[#3BAF75] text-lg font-medium text-white"
+                  className="md:w-38 mt-16 h-16 w-52 rounded-lg bg-[#3BAF75] text-lg font-medium text-white md:mr-20 md:h-20 md:font-bold "
                   onClick={handleEditClick}
                 >
                   Edit Information
