@@ -20,9 +20,8 @@ export default function ProtectedLayout({ children }: IChildren) {
   const [loading, setLoading] = useState(isLoading);
 
   useEffect(() => {
-    queryClient.invalidateQueries();
-
     if (isError) {
+      queryClient.invalidateQueries();
       authService.redirectLogin({ router });
     }
   }, [isError]);

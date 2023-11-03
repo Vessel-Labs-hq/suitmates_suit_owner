@@ -1,4 +1,4 @@
-import Icons from "@/assets/icons";
+import Icons, { IconSlot } from "@/assets/icons";
 import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
@@ -14,7 +14,7 @@ import {
   Button,
   PhoneInput,
 } from "@the_human_cipher/components-library";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 type Inputs = InferSchema<typeof PersonalInfoSchema>;
@@ -62,6 +62,7 @@ const fields: Fields[] = [
 
 const PersonalInformation = ({ onSubmit, personId }: Props) => {
   const data = useSession();
+  const [hovered, setHovered] = useState(false);
 
   const { register, formState, handleSubmit, control, watch, reset } =
     useForm<ExtendsInputs>({
@@ -101,7 +102,6 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
   };
 
   const { isSubmitting: isLoading } = formState;
-  console.log(data, formState.defaultValues);
 
   return (
     <section className="mx-auto max-w-[960px]">
@@ -113,6 +113,8 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
           <div className="ml-4">
             <Text className="my-5 block font-bold">Personal Information </Text>
             <div className="w-[180px]">
+              {/** integrating controlled inputs
+               *   https://claritydev.net/blog/react-hook-form-multipart-form-data-file-uploads */}
               <Controller
                 control={control}
                 name="avatar"
@@ -130,13 +132,32 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
                       {Icons.PhotoGallery}
                     </span>
                     {selectedFile && (
-                      <span
+                      <div
                         className={cn(
-                          "absolute top-0 flex h-[120px] w-full items-center justify-center bg-[#F3F3F3] pt-10 text-sm "
+                          "absolute inset-0 top-0 z-[1] flex w-full items-center justify-center bg-[#F3F3F3] bg-cover bg-center text-sm hover:cursor-pointer"
                         )}
+                        style={{
+                          backgroundImage: `url(${URL.createObjectURL(selectedFile)})`,
+                        }}
+                        onMouseOver={() => setHovered(true)}
+                        onMouseLeave={() => setHovered(false)}
                       >
-                        {selectedFile?.name}
-                      </span>
+                        <div
+                          className={cn(
+                            "h-full w-full origin-center bg-black/0 duration-200",
+                            hovered && "bg-black/40"
+                          )}
+                        ></div>
+                        <div
+                          className={cn(
+                            "absolute top-[60%] flex -translate-y-1/2 items-center gap-2 rounded bg-slate-300 px-4 py-1 text-xs opacity-0 duration-500",
+                            hovered && "top-1/2 mt-2 -translate-y-1/2 opacity-100"
+                          )}
+                        >
+                          <IconSlot icon="Refresh" className="h-5 w-5" />
+                          Change
+                        </div>
+                      </div>
                     )}
                     <input
                       {...rest}

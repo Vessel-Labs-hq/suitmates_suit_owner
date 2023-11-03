@@ -51,7 +51,7 @@ const MaintenanceRequestTable = () => {
                 icon="XCircle"
                 type="danger"
                 small
-                className="hidden text-xs xxl:flex"
+                className="hidden whitespace-nowrap text-xs xxl:flex"
               />
               <Label
                 label="Pending"

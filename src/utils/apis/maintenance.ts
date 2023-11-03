@@ -7,7 +7,7 @@ import { BaseAPIService } from "./base";
 class MaintenanceService extends BaseAPIService {
   async getAllMaintenanceRequest() {
     try {
-      const res = await API.get<DbGetAllMaintenanceRequest[]>("/maintenance");
+      const res = await API.get<DbGetAllMaintenanceRequest[]>("/maintenance/owner");
       return res.data;
     } catch (error) {
       throw error;

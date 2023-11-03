@@ -10,8 +10,11 @@ import {
   HomeRentGraph,
   SidebarElement,
 } from "@/components/atoms/HomeSharedUI";
+import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
 
 const HomePage = () => {
+  const response = useGetAllMaintenance();
+
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-4 md:mb-8 md:flex-row">
