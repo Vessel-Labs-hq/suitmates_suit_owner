@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import UpdatePersonalInfo from "./UpdatePersonalInfo";
 import UpdateSpaceInfo from "./UpdateSpaceInfo";
 import UpdateAccountInfo from "./UpdateAccountInfo";
-import CardInfo from "./CardInfo";
+// import CardInfo from "./CardInfo";
 import useSession from "@/utils/hooks/useSession";
 import { useGetUserProfile } from "@/utils/hooks/api/useQuery";
 import authService from "@/utils/apis/auth";
@@ -62,10 +62,10 @@ const UserProfile = () => {
         setIsEditMode={setIsEditMode}
         userProfile={userProfile}
       />
-      <CardInfo />
+      {/* <CardInfo /> */}
     </>
   ) : (
-    <>{/* <SpinnerLoader fullScreen /> */}</>
+    <></>
   );
 };
 
