@@ -64,7 +64,11 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
   const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
-    setIsEditMode(false);
+    if (isEditMode) {
+      setIsEditMode(false);
+    } else {
+      setIsEditMode(true);
+    }
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -100,7 +104,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                       {selectedFile && (
                         <span
                           className={cn(
-                            "absolute bottom-0 left-0 right-0 top-0 flex h-[120px] w-full items-center justify-center bg-red-500 object-cover pt-10 text-sm"
+                            "absolute bottom-0 left-0 right-0 top-0 flex h-[120px] w-full items-center justify-center bg-[#F3F3F3] object-cover pt-10 text-sm"
                           )}
                         >
                           <Image
@@ -135,10 +139,10 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
               <div className="">
                 <Button
-                  className="md:w-38 mt-16 h-16 w-52 rounded-lg bg-[#3BAF75] text-lg font-medium text-white md:mr-20 md:h-20 md:font-bold "
+                  className="md:w-38 mt-16 h-16 w-36 rounded-lg bg-[#3BAF75] px-4 text-base font-normal text-white md:mr-20 md:h-20 md:font-bold "
                   onClick={handleEditClick}
                 >
-                  Edit Information
+                  {isEditMode ? "Edit Information" : "Stop Editing"}
                 </Button>
               </div>
             </div>

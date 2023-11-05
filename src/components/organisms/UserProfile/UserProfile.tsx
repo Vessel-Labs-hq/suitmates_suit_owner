@@ -65,7 +65,9 @@ const UserProfile = () => {
       <CardInfo />
     </>
   ) : (
-    <></>
+    <>
+      <SpinnerLoader fullScreen />
+    </>
   );
 };
 

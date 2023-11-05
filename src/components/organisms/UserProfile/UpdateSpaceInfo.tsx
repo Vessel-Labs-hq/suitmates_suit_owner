@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import Icons from "@/assets/icons";
 
 type Inputs = InferSchema<typeof UpdateSpaceInfoSchema>;
 
@@ -52,9 +53,13 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
       space_amenities: [],
     },
   });
-  const amenities = JSON.parse(userProfile.space?.space_amenities as string) ?? [];
+  const [amenities, setAmenities] = useState<any[]>(
+    JSON.parse(userProfile.space?.space_amenities as string) ?? []
+  );
 
-  const [closeAmenities, setCloseAmenities] = useState(amenities.map(() => true));
+  const [closeAmenities, setCloseAmenities] = useState<boolean[]>(
+    new Array(amenities.length).fill(true)
+  );
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -77,7 +82,10 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
     return Boolean(formState.errors[key]?.message);
   };
 
-  const handleCloseAmenities = (index: any) => {
+  const handleCloseAmenities = (index: number) => {
+    const updatedAmenities = amenities.filter((_, i) => i !== index);
+    setAmenities(updatedAmenities);
+
     const updatedLabels = [...closeAmenities];
     updatedLabels[index] = false;
     setCloseAmenities(updatedLabels);
@@ -117,7 +125,11 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                         options={SuiteAmenities}
                         label="Space amenities"
                         placeholder="Select..."
-                        onChange={(e) => onChange(e)}
+                        onChange={(e) => {
+                          onChange(e);
+                          setAmenities(e); // Assuming setAmenities is defined and handles updating the amenities state
+                          setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
+                        }}
                         defaultValue={amenities}
                         multiple
                         isError={assertError("space_amenities")}
@@ -156,7 +168,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                       >
                         {amenity.label}
                         <button className="mx-3" onClick={() => handleCloseAmenities(index)}>
-                          X
+                          {Icons.XClose}
                         </button>
                       </label>
                     )
