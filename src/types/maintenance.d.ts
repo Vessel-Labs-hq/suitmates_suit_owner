@@ -32,7 +32,7 @@ interface DbMaintenanceRequest {
   priority: TMaintenanceRequestPriority | Capitalize<TMaintenanceRequestPriority>;
   category: null | string;
   description: string;
-  repair_date: Date | null;
+  repair_date: string | null;
   repair_time: string | null;
   status: MaintenanceRequestStatus;
   created_at: string;

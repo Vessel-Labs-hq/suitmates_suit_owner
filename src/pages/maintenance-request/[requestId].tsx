@@ -3,6 +3,8 @@ import DashboardLayout from "@/components/layouts/DashboardLayout";
 import UserQuickInfoCard from "@/components/molecules/UserQuickInfoCard";
 import { ChatFeed, SendAResponseForm } from "@/components/organisms/ChatBox";
 import { AllMaintenanceRequestStatus, WorkingHours } from "@/constants";
+import maintenanceApi from "@/utils/apis/maintenance";
+import Alert from "@/utils/base/alerts";
 import {
   assertQuery,
   cn,
@@ -29,6 +31,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
 
 type Inputs = InferSchema<typeof UpdateMaintenanceRequestSchema>;
 
@@ -64,6 +67,8 @@ function MaintenanceRequestPage() {
 
   const [chats, setChats] = useState<IChats[]>([]);
 
+  const queryClient = useQueryClient();
+
   const { requestId, view_comments } = router.query;
   const handleModalClose = () => router.push({ query: { requestId } });
 
@@ -76,7 +81,7 @@ function MaintenanceRequestPage() {
     {
       resolver: zodResolver(UpdateMaintenanceRequestSchema),
       defaultValues: {
-        repair_date: selectedRequest?.repair_date ?? undefined,
+        repair_date: new Date(selectedRequest?.repair_date ?? "") ?? undefined,
         repair_time: selectedRequest?.repair_time
           ? JSON.parse(selectedRequest?.repair_time)
           : undefined,
@@ -89,7 +94,7 @@ function MaintenanceRequestPage() {
 
   useEffect(() => {
     reset({
-      repair_date: selectedRequest?.repair_date ?? undefined,
+      repair_date: new Date(selectedRequest?.repair_date ?? "") ?? undefined,
       repair_time: selectedRequest?.repair_time
         ? JSON.parse(selectedRequest?.repair_time)
         : undefined,
@@ -112,7 +117,18 @@ function MaintenanceRequestPage() {
     }
   }, [selectedRequest]);
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {};
+  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const res = await maintenanceApi.updateMaintenanceRequest({
+        data,
+        requestId: selectedRequest?.id ?? "n/a",
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["get-all-maintenance"] });
+    } catch (error) {
+      Alert.error(error);
+    }
+  };
 
   const { assertFormError, unwrapFormError } = getFormStateError(formState);
 
