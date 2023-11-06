@@ -1,4 +1,3 @@
-import Modal from "../Modal";
 import { useRouter } from "next/router";
 import AddTenantUI from "./AddTenantUI";
 import InviteTenantForm from "./InviteTennatForm";
@@ -6,6 +5,7 @@ import { assertReactQueryError } from "@/utils";
 import { SpinnerLoader } from "@/components/atoms/Loader";
 import { useMemo } from "react";
 import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
+import { Modal } from "@the_human_cipher/components-library";
 
 type ModalProps = React.ComponentProps<typeof Modal>;
 

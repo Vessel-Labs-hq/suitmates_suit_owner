@@ -4,7 +4,6 @@ import HomeBento from "@/components/molecules/Cards/HomeBento";
 import MaintenanceRequestCard from "@/components/molecules/Cards/MaintenanceRequestCard";
 import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import MaintenanceRequestActionRow from "@/components/molecules/MaintenanceActionRow";
-import { DummyMaintenanceData } from "@/constants";
 import { dateFn } from "@/utils";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
 import Image from "next/image";

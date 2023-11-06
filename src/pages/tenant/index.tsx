@@ -4,7 +4,6 @@ import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import AddTenantModal from "@/components/organisms/AddTenantModal";
 import { DashboardSuiteInfoChart } from "@/components/organisms/DashboardCharts";
-import { DummyMaintenanceData } from "@/constants";
 import { assertQuery, cn, localLog } from "@/utils";
 import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 import { Button, IconBox, Title } from "@the_human_cipher/components-library";
@@ -80,7 +79,7 @@ const TenantPage = () => {
           </div>
 
           <div className="mt-4 space-y-4">
-            {[...DummyMaintenanceData, ...DummyMaintenanceData].map((n, idx) => (
+            {[0, 1, 2, 3, 4, 5, 6].map((n, idx) => (
               <TenantDetailCard
                 key={idx}
                 onRemove={() => {

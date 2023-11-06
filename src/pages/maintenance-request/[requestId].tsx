@@ -1,8 +1,7 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import { ChatFeed, SendAResponseForm } from "@/components/organisms/ChatBox";
-import Modal from "@/components/organisms/Modal";
 import { assertQuery } from "@/utils/functions/helpers";
-import { Button, IconBox, Label } from "@the_human_cipher/components-library";
+import { Button, IconBox, Label, Modal } from "@the_human_cipher/components-library";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -51,9 +50,10 @@ function MaintenanceRequestPage() {
             <div className="mt-2 text-sm">10 Jan 2023 | 2:25pm</div>
 
             <p className="mt-6 text-sm font-light md:text-lg">
-              Persistent, slow-draining sink clogged with hair and debris, causing backups.
-              Persistent, slow-draining sink clogged with hair and debris, causing backups.
-              Persistent, slow-draining sink clogged with hair and debris.
+              Persistent, slow-draining sink clogged with hair and debris, causing
+              backups. Persistent, slow-draining sink clogged with hair and debris,
+              causing backups. Persistent, slow-draining sink clogged with hair and
+              debris.
             </p>
           </div>
           <div>
@@ -84,7 +84,11 @@ function MaintenanceRequestPage() {
                     query: { view_comments: true, requestId },
                   }}
                 >
-                  <IconBox size={24} icon="MessageCheckCircle" className="max-md:hidden" />
+                  <IconBox
+                    size={24}
+                    icon="MessageCheckCircle"
+                    className="max-md:hidden"
+                  />
                   <IconBox size={18} icon="MessageCheckCircle" className="md:hidden" />
                   See Comments
                   <span></span>

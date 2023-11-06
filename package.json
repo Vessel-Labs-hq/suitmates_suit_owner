@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
+    "@natscale/react-calendar": "0.0.0-beta.26",
     "@radix-ui/react-dialog": "^1.0.5",
-    "@the_human_cipher/components-library": "^1.4.1",
+    "@the_human_cipher/components-library": "^1.5.4",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",

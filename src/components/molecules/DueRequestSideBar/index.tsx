@@ -1,6 +1,5 @@
 import { SidebarElement } from "@/components/atoms/HomeSharedUI";
 import NotificationUI from "@/components/atoms/NotificationUI";
-import { DummyMaintenanceData } from "@/constants";
 import { Title } from "@the_human_cipher/components-library";
 
 interface DueRequestSideBarProps {
@@ -16,7 +15,7 @@ const DueRequestSideBar = ({ length = 10 }: DueRequestSideBarProps) => (
       <p className="text-sm">See All</p>
     </header>
     <ul className="grid grid-cols-1 gap-4">
-      {[...DummyMaintenanceData, ...DummyMaintenanceData].slice(0, length).map((_, idx) => (
+      {[0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6].slice(0, length).map((_, idx) => (
         <li key={idx}>
           <NotificationUI>
             <NotificationUI.Content

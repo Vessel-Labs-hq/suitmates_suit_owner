@@ -8,12 +8,15 @@ dependencies:
   '@hookform/resolvers':
     specifier: ^3.3.1
     version: 3.3.1(react-hook-form@7.46.1)
+  '@natscale/react-calendar':
+    specifier: 0.0.0-beta.26
+    version: 0.0.0-beta.26(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-dialog':
     specifier: ^1.0.5
     version: 1.0.5(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
   '@the_human_cipher/components-library':
-    specifier: ^1.4.1
-    version: 1.4.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+    specifier: ^1.5.4
+    version: 1.5.4(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
   '@types/node':
     specifier: 20.5.9
     version: 20.5.9
@@ -419,6 +422,16 @@ packages:
   /@ljharb/through@2.3.9:
     resolution: {integrity: sha512-yN599ZBuMPPK4tdoToLlvgJB4CLK8fGl7ntfy0Wn7U6ttNvHYurd81bfUiK/6sMkiIwm65R6ck4L6+Y3DfVbNQ==}
     engines: {node: '>= 0.4'}
+    dev: false
+
+  /@natscale/react-calendar@0.0.0-beta.26(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ySZklL2YxxwsxrQodXwIcgfbN067rKduJlEGFqmdo9ATE+CPN2Zna1kvT7x9eL1GSHDAAaGNwJsUHqZd2IlX0w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@next/env@13.4.19:
@@ -1300,14 +1313,16 @@ packages:
       tailwindcss: 3.3.3
     dev: false
 
-  /@the_human_cipher/components-library@1.4.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-zXGDMUxyiEzT3A2CvhFX7c0SU0MGJ4dL+3ivIqpOIdnGtrEq8dx4fwBJkGq0smttl8ajSxVYA2DLFaga713MBA==}
+  /@the_human_cipher/components-library@1.5.4(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-MZ2Tx6nMDAvx/o+vc3CU6l2O6a+Nd7jJK2TcWgXPWAQoGi6ZB4F4pYFTnUpH23H3ZDJU/xhDkkT17Va91sOiEA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
     dependencies:
       '@headlessui/react': 1.7.17(react-dom@18.2.0)(react@18.2.0)
       '@headlessui/tailwindcss': 0.2.0(tailwindcss@3.3.3)
+      '@natscale/react-calendar': 0.0.0-beta.26(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-dialog': 1.0.5(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-icons': 1.3.0(react@18.2.0)
       '@radix-ui/react-progress': 1.0.3(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-select': 1.2.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
