@@ -1,6 +1,7 @@
 import clsx, { type ClassValue } from "clsx";
 import type { FieldValues, FormState } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
 
 const isLocal =
   typeof window === "undefined" ? true : !!window.origin.includes("localhost");
@@ -145,6 +146,21 @@ export const getMaintenanceRequestStatusType = (status: MaintenanceRequestStatus
   }
 };
 
+export const getMaintenanceRequestPriorityType = (
+  status: TMaintenanceRequestPriority | Capitalize<TMaintenanceRequestPriority>
+) => {
+  switch (status.toLowerCase()) {
+    case "trivial":
+      return "neutral";
+    case "medium":
+      return "warning";
+    case "critical":
+      return "danger";
+    default:
+      return "warning";
+  }
+};
+
 export const getMaintenanceRequestStatusIcon = (status: MaintenanceRequestStatus) => {
   switch (status) {
     case "COMPLETED":
@@ -157,3 +173,5 @@ export const getMaintenanceRequestStatusIcon = (status: MaintenanceRequestStatus
       return "Flag03";
   }
 };
+
+export const dateFn = (date: string) => dayjs(date);
