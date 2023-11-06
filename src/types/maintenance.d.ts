@@ -30,10 +30,10 @@ interface DbMaintenanceRequest {
   user_id: number;
   suite_id: number;
   priority: TMaintenanceRequestPriority | Capitalize<TMaintenanceRequestPriority>;
-  category: any;
+  category: null | string;
   description: string;
-  repair_date: any;
-  repair_time: any;
+  repair_date: string | null;
+  repair_time: string | null;
   status: MaintenanceRequestStatus;
   created_at: string;
   updated_at: string;

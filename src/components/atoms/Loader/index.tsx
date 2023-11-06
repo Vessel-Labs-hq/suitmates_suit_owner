@@ -1,5 +1,7 @@
 import { cn } from "@/utils";
 import style from "./Loader.module.scss";
+import Image from "next/image";
+import Favicon from "public/favicon.png";
 
 type Variant = "primary" | "gray" | "light" | "dark";
 
@@ -68,3 +70,11 @@ export const ThreeDotsLoader = (props: TDLProps) => {
     />
   );
 };
+
+interface FaviconLoaderProps extends IClass {
+  width?: number;
+}
+
+export const FaviconLoader = ({ width = 30, className }: FaviconLoaderProps) => (
+  <Image src={Favicon} alt="" width={width} className={cn("animate-bounce", className)} />
+);

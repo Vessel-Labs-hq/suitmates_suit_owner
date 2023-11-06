@@ -1,10 +1,35 @@
+import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
+import UserQuickInfoCard from "@/components/molecules/UserQuickInfoCard";
 import { ChatFeed, SendAResponseForm } from "@/components/organisms/ChatBox";
-import { assertQuery } from "@/utils/functions/helpers";
-import { Button, IconBox, Label, Modal } from "@the_human_cipher/components-library";
+import { AllMaintenanceRequestStatus, WorkingHours } from "@/constants";
+import {
+  assertQuery,
+  cn,
+  formatWord,
+  getFormStateError,
+  getMaintenanceRequestStatusIcon,
+  getMaintenanceRequestStatusType,
+} from "@/utils/functions/helpers";
+import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
+import { InferSchema } from "@/utils/schema/helpers";
+import { UpdateMaintenanceRequestSchema } from "@/utils/schema/maintenance";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  DatePicker,
+  IconBox,
+  Label,
+  Modal,
+  Select,
+} from "@the_human_cipher/components-library";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
+type Inputs = InferSchema<typeof UpdateMaintenanceRequestSchema>;
 
 interface ContentLabelProps {
   title: string;
@@ -19,8 +44,15 @@ const ContentLabel = ({ title, value }: ContentLabelProps) => (
   </div>
 );
 
+const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) => ({
+  label: formatWord(ele.toLowerCase()),
+  value: ele,
+}));
+
 function MaintenanceRequestPage() {
   const router = useRouter();
+
+  const { data, isLoading, isError } = useGetAllMaintenance();
 
   const [chats, setChats] = useState<IChats[]>([
     {
@@ -34,9 +66,92 @@ function MaintenanceRequestPage() {
   const { requestId, view_comments } = router.query;
   const handleModalClose = () => router.push({ query: { requestId } });
 
+  const selectedRequest = useMemo(
+    () => data?.maintenanceRequests.find(({ id }) => String(id) === requestId),
+    [data, requestId]
+  );
+
+  const { control, formState, register, reset, handleSubmit, setValue } = useForm<Inputs>(
+    {
+      resolver: zodResolver(UpdateMaintenanceRequestSchema),
+      defaultValues: {
+        repair_date: selectedRequest?.repair_date ?? undefined,
+        repair_time: selectedRequest?.repair_time
+          ? JSON.parse(selectedRequest?.repair_time)
+          : undefined,
+        status: MaintenanceRequestArr.find(
+          ({ value }) => value === selectedRequest?.status
+        ),
+      },
+    }
+  );
+
+  useEffect(() => {
+    reset({
+      repair_date: selectedRequest?.repair_date ?? undefined,
+      repair_time: selectedRequest?.repair_time
+        ? JSON.parse(selectedRequest?.repair_time)
+        : undefined,
+      status: MaintenanceRequestArr.find(
+        ({ value }) => value === selectedRequest?.status
+      ),
+    });
+  }, [selectedRequest]);
+
+  useEffect(() => {
+    if (selectedRequest) {
+      const Chats: IChats[] = selectedRequest.comments.map(({ id, user, text }) => ({
+        idx: id,
+        message: text,
+        contact: cn(user.first_name, user.last_name),
+      }));
+
+      setChats(Chats);
+    }
+  }, [selectedRequest]);
+
+  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+  };
+
+  const { assertFormError, unwrapFormError } = getFormStateError(formState);
+
+  if (isLoading) {
+    return (
+      <DashboardLayout headerDesc="Track maintenance on your dashboard ">
+        <div className="grid h-[500px] place-items-center">
+          <div>
+            <FaviconLoader />
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <DashboardLayout headerDesc="Track maintenance on your dashboard ">
+        <div>Oops an error occurred</div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!selectedRequest) {
+    return (
+      <DashboardLayout>
+        <div className="mt-10">Oops something went wrong</div>
+      </DashboardLayout>
+    );
+  }
+
+  const { updated_at, description, images, priority, status, suite, category, user } =
+    selectedRequest;
+
+  console.log(selectedRequest);
+
   return (
-    <DashboardLayout>
-      <section className="max-w-[900px] space-y-8">
+    <DashboardLayout headerDesc="Track maintenance on your dashboard ">
+      <section className="max-w-[900px] space-y-8 pb-40">
         <div className="flex gap-4">
           <Link className="mt-8 flex gap-1 max-sm:text-sm" href="/maintenance-request">
             <IconBox className="max-sm:hidden" icon="ArrowNarrowLeft" size={24} />
@@ -46,30 +161,103 @@ function MaintenanceRequestPage() {
         </div>
         <div className="space-y-8">
           <div>
-            <h2 className="text-2xl font-medium md:text-3xl">Plumbing</h2>
-            <div className="mt-2 text-sm">10 Jan 2023 | 2:25pm</div>
-
-            <p className="mt-6 text-sm font-light md:text-lg">
-              Persistent, slow-draining sink clogged with hair and debris, causing
-              backups. Persistent, slow-draining sink clogged with hair and debris,
-              causing backups. Persistent, slow-draining sink clogged with hair and
-              debris.
-            </p>
+            <UserQuickInfoCard
+              suite={`Suite ${suite.suite_number}`}
+              user={user}
+              label={priority}
+            />
           </div>
           <div>
-            <h3 className="font-medium md:text-xl">Resolution Details </h3>
-            <div className="mt-4 flex gap-8">
-              <ContentLabel title="Repair Date" value="08/21/2024" />
-              <ContentLabel title="Repair Time" value="03:00pm" />
+            <h2 className="text-2xl font-medium">{category ?? "Appliance"}</h2>
+            <div className="mt-2 text-sm">
+              {dayjs(updated_at).format("DD MMM YYYY")} |{" "}
+              {dayjs(updated_at).format("h:ma")}
             </div>
+
+            <p className="mt-6 text-sm font-light first-letter:capitalize md:text-lg">
+              {description?.trim()}
+            </p>
+            <div className="mt-6 grid grid-cols-4 gap-2 sm:gap-4">
+              {images.map(({ url }) => (
+                <div
+                  key={url}
+                  style={{
+                    backgroundImage: `url(${url})`,
+                  }}
+                  className="h-20 w-full rounded bg-cover sm:h-40 sm:rounded-md"
+                />
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="font-medium">Resolve maintenance request</h3>
+            <form
+              onSubmit={handleSubmit(onFormSubmit)}
+              className="mt-4 grid max-w-md grid-cols-2 gap-4"
+            >
+              <Controller
+                control={control}
+                name="repair_date"
+                render={({ field: { value, onChange } }) => (
+                  <DatePicker
+                    onChange={onChange}
+                    pickerProps={{ pickerWrapperStyles: "z-[1]" }}
+                    label="Repair Date"
+                    placeholder="Repair Time"
+                    isError={assertFormError("repair_date")}
+                    hint={unwrapFormError("repair_date")}
+                    value={(value ?? formState.defaultValues?.repair_date) as any}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="repair_time"
+                render={({ field: { value, onChange } }) => (
+                  <Select
+                    options={WorkingHours}
+                    placeholder="0:00 am"
+                    label="Repair Time"
+                    btnClassName="h-14 mt-1"
+                    isError={assertFormError("repair_time")}
+                    hint={unwrapFormError("repair_time")}
+                    onChange={onChange}
+                    value={value}
+                    defaultValue={value}
+                  />
+                )}
+              />
+              <div className="col-span-2">
+                <Controller
+                  control={control}
+                  name="status"
+                  render={({ field: { value, onChange } }) => (
+                    <Select
+                      options={MaintenanceRequestArr}
+                      placeholder="Status"
+                      label="Update Status"
+                      btnClassName="h-14 mt-1"
+                      isError={assertFormError("status")}
+                      hint={unwrapFormError("status")}
+                      onChange={onChange}
+                      value={value ?? formState.defaultValues?.status}
+                    />
+                  )}
+                />
+
+                <div className="mt-6 max-w-[150px]">
+                  <Button type="submit">Save</Button>
+                </div>
+              </div>
+            </form>
           </div>
           <div>
             <h3 className="font-medium">Status</h3>
             <div className="mt-4 flex items-center gap-4">
               <Label
-                label="In Progress"
-                icon="Flag03"
-                type="warning"
+                label={formatWord(status.toLowerCase())}
+                icon={getMaintenanceRequestStatusIcon(status)}
+                type={getMaintenanceRequestStatusType(status)}
                 className="px-4 max-md:gap-1 max-md:text-sm md:px-5"
                 figureClassName="max-md:max-h-4 max-md:max-w-4"
               />
@@ -90,22 +278,11 @@ function MaintenanceRequestPage() {
                     className="max-md:hidden"
                   />
                   <IconBox size={18} icon="MessageCheckCircle" className="md:hidden" />
-                  See Comments
+                  Add Comments
                   <span></span>
                 </Link>
               </Button>
             </div>
-          </div>
-          <div className="grid grid-cols-4 gap-2 sm:gap-4">
-            {[3, 1, 2, 5].map((n) => (
-              <div
-                key={n}
-                style={{
-                  backgroundImage: `url("https://picsum.photos/id/${n * 10}/400/300")`,
-                }}
-                className="h-20 w-full rounded bg-cover sm:h-40 sm:rounded-md"
-              />
-            ))}
           </div>
         </div>
       </section>

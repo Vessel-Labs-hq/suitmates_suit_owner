@@ -11,8 +11,7 @@ import {
   SidebarElement,
 } from "@/components/atoms/HomeSharedUI";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
-import Image from "next/image";
-import Favicon from "public/favicon.png";
+import { FaviconLoader } from "@/components/atoms/Loader";
 
 const HomePage = () => {
   const { data, isLoading, isError, error } = useGetAllMaintenance();
@@ -22,7 +21,7 @@ const HomePage = () => {
       <DashboardLayout headerDesc="Track maintenance on your dashboard ">
         <div className="grid h-[500px] place-items-center">
           <div>
-            <Image src={Favicon} alt="" width={30} className="animate-bounce" />
+            <FaviconLoader />
           </div>
         </div>
       </DashboardLayout>

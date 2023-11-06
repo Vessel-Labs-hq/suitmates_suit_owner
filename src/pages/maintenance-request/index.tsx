@@ -1,4 +1,5 @@
 import Icons from "@/assets/icons";
+import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import HomeBento from "@/components/molecules/Cards/HomeBento";
 import MaintenanceRequestCard from "@/components/molecules/Cards/MaintenanceRequestCard";
@@ -6,8 +7,6 @@ import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import MaintenanceRequestActionRow from "@/components/molecules/MaintenanceActionRow";
 import { dateFn } from "@/utils";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
-import Image from "next/image";
-import Favicon from "public/favicon.png";
 
 const MaintenanceRequestPage = () => {
   const { data, isLoading, isError, error } = useGetAllMaintenance();
@@ -17,7 +16,7 @@ const MaintenanceRequestPage = () => {
       <DashboardLayout headerDesc="Track maintenance on your dashboard ">
         <div className="grid h-[500px] place-items-center">
           <div>
-            <Image src={Favicon} alt="" width={30} className="animate-bounce" />
+            <FaviconLoader />
           </div>
         </div>
       </DashboardLayout>

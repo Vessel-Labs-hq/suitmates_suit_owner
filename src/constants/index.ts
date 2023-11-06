@@ -83,3 +83,9 @@ export const MaintenanceRequestCategory = [
 ];
 
 export const SortOptions = ["Date", "Status"];
+
+export const AllMaintenanceRequestStatus: MaintenanceRequestStatus[] = [
+  "IN_PROGRESS",
+  "PENDING",
+  "COMPLETED",
+];
