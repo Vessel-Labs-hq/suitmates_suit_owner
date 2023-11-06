@@ -74,36 +74,42 @@ const MaintenanceRequestPage = () => {
           <MaintenanceRequestActionRow />
           <div className="flex items-start gap-4">
             <div className="grid w-full grid-cols-1 gap-6">
-              {data?.maintenanceRequests.map(
-                (
-                  {
-                    id,
-                    updated_at,
-                    description,
-                    status,
-                    priority,
-                    images,
-                    category,
-                    user,
-                    suite,
-                  },
-                  idx
-                ) => (
-                  <MaintenanceRequestCard
-                    key={id}
-                    href={{
-                      pathname: `/maintenance-request/${id}`,
-                    }}
-                    title={category ?? "N/A"}
-                    img={images.map(({ url }) => url)}
-                    label={priority.toLowerCase() as any}
-                    status={status as any}
-                    desc={description}
-                    date={dateFn(updated_at).format("DD MMM YYYY")}
-                    user={user}
-                    suite={`Suite ${suite.suite_number}`}
-                  />
+              {data && data.maintenanceRequests.length > 0 ? (
+                data?.maintenanceRequests.map(
+                  (
+                    {
+                      id,
+                      updated_at,
+                      description,
+                      status,
+                      priority,
+                      images,
+                      category,
+                      user,
+                      suite,
+                    },
+                    idx
+                  ) => (
+                    <MaintenanceRequestCard
+                      key={id}
+                      href={{
+                        pathname: `/maintenance-request/${id}`,
+                      }}
+                      title={category ?? "N/A"}
+                      img={images.map(({ url }) => url)}
+                      label={priority.toLowerCase() as any}
+                      status={status as any}
+                      desc={description}
+                      date={dateFn(updated_at).format("DD MMM YYYY")}
+                      user={user}
+                      suite={`Suite ${suite.suite_number}`}
+                    />
+                  )
                 )
+              ) : (
+                <div className="my-20 text-center text-xs">
+                  You are yet to create any maintenance request
+                </div>
               )}
             </div>
             <DueRequestSideBar />
