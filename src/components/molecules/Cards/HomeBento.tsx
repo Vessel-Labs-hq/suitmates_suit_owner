@@ -11,13 +11,14 @@ interface Props {
   isDecline?: boolean;
   value: string | number;
   className?: string;
+  text: string;
 }
 
 const HomeBento = (props: Props) => {
-  const { percentage, value, icon, title, isDecline, className } = props;
+  const { percentage, value, icon, title, isDecline, className, text } = props;
 
   return (
-    <div className={cn("@desktop:p-6 rounded-3xl bg-light-gray p-3", className)}>
+    <div className={cn("rounded-3xl bg-light-gray p-3 @desktop:p-6", className)}>
       <div className="flex items-center justify-between gap-4">
         <div className="grid grid-cols-1 gap-3">
           <Title level={3} weight="light" className="whitespace-nowrap text-base">
@@ -27,14 +28,19 @@ const HomeBento = (props: Props) => {
             {value}
           </Title>
           <div className="flex items-center gap-2 text-[11px]">
-            <div className="flex items-center justify-between gap-1 rounded-full bg-light-green p-1 px-2.5 text-[11px] leading-normal text-primary">
-              <IconBox size={14} icon="TrendUp01" />
+            <div
+              className={cn(
+                "flex items-center justify-between gap-1 rounded-full bg-light-green p-1 px-2.5 text-[11px] leading-normal text-primary",
+                isDecline && "bg-[hsla(0,88%,90%,1)] text-borderNegative"
+              )}
+            >
+              <IconBox size={14} icon={isDecline ? "TrendDown01" : "TrendUp01"} />
               <span className="font-bold">{percentage}</span>
             </div>
-            <span className="whitespace-nowrap">from last month</span>
+            <span className="whitespace-nowrap">{text}</span>
           </div>
         </div>
-        <div className="@desktop:p-[18px] rounded-full bg-light-green p-3">
+        <div className="rounded-full bg-light-green p-3 @desktop:p-[18px]">
           {typeof icon === "string" ? (
             <IconBox size={54} className="text-primary" icon={icon as Icon} />
           ) : (
