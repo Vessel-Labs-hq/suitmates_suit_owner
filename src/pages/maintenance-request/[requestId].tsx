@@ -12,6 +12,7 @@ import {
   getMaintenanceRequestStatusType,
 } from "@/utils/functions/helpers";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
+import useSession from "@/utils/hooks/useSession";
 import { InferSchema } from "@/utils/schema/helpers";
 import { UpdateMaintenanceRequestSchema } from "@/utils/schema/maintenance";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,19 +50,19 @@ const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) => ({
   value: ele,
 }));
 
+const WorkingHoursOptions = WorkingHours.map((time) => ({
+  label: time.label,
+  value: String(time.value),
+}));
+
 function MaintenanceRequestPage() {
   const router = useRouter();
 
   const { data, isLoading, isError } = useGetAllMaintenance();
 
-  const [chats, setChats] = useState<IChats[]>([
-    {
-      message:
-        "Unfortunately, this plumbing repair in progress is causing more problems. The technician seems unsure, and the situation appears to be getting messier.",
-      contact: "Dave Mariam",
-      idx: 1,
-    },
-  ]);
+  const profile = useSession();
+
+  const [chats, setChats] = useState<IChats[]>([]);
 
   const { requestId, view_comments } = router.query;
   const handleModalClose = () => router.push({ query: { requestId } });
@@ -101,18 +102,17 @@ function MaintenanceRequestPage() {
   useEffect(() => {
     if (selectedRequest) {
       const Chats: IChats[] = selectedRequest.comments.map(({ id, user, text }) => ({
-        idx: id,
+        id,
         message: text,
         contact: cn(user.first_name, user.last_name),
+        isSender: profile?.email === user.email,
       }));
 
       setChats(Chats);
     }
   }, [selectedRequest]);
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-  };
+  const onFormSubmit: SubmitHandler<Inputs> = (data) => {};
 
   const { assertFormError, unwrapFormError } = getFormStateError(formState);
 
@@ -146,8 +146,6 @@ function MaintenanceRequestPage() {
 
   const { updated_at, description, images, priority, status, suite, category, user } =
     selectedRequest;
-
-  console.log(selectedRequest);
 
   return (
     <DashboardLayout headerDesc="Track maintenance on your dashboard ">
@@ -190,10 +188,10 @@ function MaintenanceRequestPage() {
             </div>
           </div>
           <div>
-            <h3 className="font-medium">Resolve maintenance request</h3>
+            <h3 className="text-lg font-medium">Resolve maintenance request</h3>
             <form
               onSubmit={handleSubmit(onFormSubmit)}
-              className="mt-4 grid max-w-md grid-cols-2 gap-4"
+              className="mt-4 grid max-w-md grid-cols-2 gap-4 text-sm"
             >
               <Controller
                 control={control}
@@ -215,7 +213,7 @@ function MaintenanceRequestPage() {
                 name="repair_time"
                 render={({ field: { value, onChange } }) => (
                   <Select
-                    options={WorkingHours}
+                    options={WorkingHoursOptions}
                     placeholder="0:00 am"
                     label="Repair Time"
                     btnClassName="h-14 mt-1"
@@ -246,7 +244,9 @@ function MaintenanceRequestPage() {
                 />
 
                 <div className="mt-6 max-w-[150px]">
-                  <Button type="submit">Save</Button>
+                  <Button loading={formState.isSubmitting} type="submit">
+                    Save
+                  </Button>
                 </div>
               </div>
             </form>

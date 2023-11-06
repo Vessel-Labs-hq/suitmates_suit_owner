@@ -55,7 +55,7 @@ interface IChatMessage {
 }
 
 interface IChats extends IChatMessage {
-  idx: number | string;
+  id: number | string;
 }
 
 type SN = string | number;

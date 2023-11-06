@@ -96,7 +96,7 @@ class Details extends BaseAPIService {
       this.updateUserSession({
         ...rest,
         name: `${first_name} ${last_name}`,
-        role: "tenant",
+        role: "owner",
       });
       return res.data;
     } catch (error) {

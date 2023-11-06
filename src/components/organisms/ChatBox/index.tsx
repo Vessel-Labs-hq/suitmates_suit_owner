@@ -36,10 +36,10 @@ export const SendAResponseForm = ({ chats, onSubmit }: FormResponseProps) => {
   });
 
   const onFormSubmit: SubmitHandler<Inputs> = async ({ message }) => {
-    const idx: number | string = ((chats[chats.length - 1]?.idx ?? 0) as number) + 1;
+    const idx: number | string = ((chats[chats.length - 1]?.id ?? 0) as number) + 1;
 
     const chat: IChats = {
-      idx,
+      id: idx,
       status: "sending",
       message,
       isSender: true,
