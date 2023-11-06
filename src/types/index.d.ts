@@ -64,3 +64,7 @@ type SelectData<Type = string> = {
   label: Type;
   value: Type;
 };
+
+type TMaintenanceRequestPriority = "critical" | "trivial" | "medium";
+
+type MaintenanceRequestStatus = "IN_PROGRESS" | "PENDING" | "COMPLETED";

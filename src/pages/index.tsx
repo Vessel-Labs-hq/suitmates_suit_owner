@@ -11,9 +11,31 @@ import {
   SidebarElement,
 } from "@/components/atoms/HomeSharedUI";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
+import Image from "next/image";
+import Favicon from "public/favicon.png";
 
 const HomePage = () => {
-  const response = useGetAllMaintenance();
+  const { data, isLoading, isError, error } = useGetAllMaintenance();
+
+  if (isLoading) {
+    return (
+      <DashboardLayout headerDesc="Track maintenance on your dashboard ">
+        <div className="grid h-[500px] place-items-center">
+          <div>
+            <Image src={Favicon} alt="" width={30} className="animate-bounce" />
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <DashboardLayout headerDesc="Track maintenance on your dashboard ">
+        <div>Oops an error occurred</div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -37,8 +59,14 @@ const HomePage = () => {
             </div>
             <div className="w-full max-xxl:-mt-1 max-xxl:space-y-1">
               <div className="flex w-full items-center justify-between gap-2">
-                <HomeInfoCard title="Total Requests" value={120} />
-                <HomeInfoCard title="Pending Requests" value="010" />
+                <HomeInfoCard
+                  title="Total Requests"
+                  value={data?.totalMaintenanceRequests ?? "N/A"}
+                />
+                <HomeInfoCard
+                  title="Pending Requests"
+                  value={data?.pendingMaintenanceRequests ?? "N/A"}
+                />
               </div>
               <div className="flex items-center gap-2 text-[11px]">
                 <div className="flex items-center justify-between gap-1 rounded-full bg-light-green p-1 px-2.5 text-[11px] leading-normal text-primary">
@@ -52,8 +80,8 @@ const HomePage = () => {
         </div>
         <HomeRentGraph />
       </div>
-      <div className="flex flex-col gap-4 xl:flex-row">
-        <MaintenanceRequestTable />
+      <div className="flex flex-col items-start gap-4 xl:flex-row">
+        <MaintenanceRequestTable maintenanceRequests={data?.maintenanceRequests} />
         <SidebarElement className="rounded-3xl">
           <RentHistorySidebar />
         </SidebarElement>

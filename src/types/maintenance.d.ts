@@ -1,20 +1,3 @@
-interface DbGetAllMaintenanceRequest {
-  id: number;
-  user_id: number;
-  suite_id: number;
-  priority: string;
-  description: string;
-  repair_date: any;
-  repair_time: any;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  user: DbUpdatePersonalInfo;
-  suite: DbSuite;
-  images: DbImage[];
-  comments: any[];
-}
-
 interface DbSuite {
   id: number;
   suite_number: string;
@@ -34,4 +17,59 @@ interface DbImage {
   maintenance_request_id: number;
   created_at: string;
   updated_at: string;
+}
+
+interface DbGetAllMaintenanceRequest {
+  maintenanceRequests: DbMaintenanceRequest[];
+  totalMaintenanceRequests: number;
+  pendingMaintenanceRequests: number;
+}
+
+interface DbMaintenanceRequest {
+  id: number;
+  user_id: number;
+  suite_id: number;
+  priority: string;
+  category: any;
+  description: string;
+  repair_date: any;
+  repair_time: any;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  user: DbUser;
+  suite: DbSuite;
+  images: DbImage[];
+  comments: DbComment[];
+}
+
+interface DbUser {
+  id: number;
+  email: string;
+  first_name: string;
+  password: string;
+  last_name: string;
+  phone_number: string;
+  avatar: string;
+  bio: string;
+  stripe_customer_id: string;
+  stripe_payment_method_id: string;
+  card_last_digit: string;
+  card_name: string;
+  invited_by: number;
+  role: string;
+  onboarded: boolean;
+  verified: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+interface DbComment {
+  id: number;
+  text: string;
+  user_id: number;
+  maintenance_request_id: number;
+  created_at: string;
+  updated_at: string;
+  user: DbUser;
 }

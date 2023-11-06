@@ -17,8 +17,6 @@ const DashboardLayout = ({ children, headerDesc, seo }: Props) => {
 
   const _response = useGetProfile();
 
-  console.log(_response.data);
-
   return (
     <ProtectedLayout>
       <div className="flex max-md:pb-40 md:[&>*]:py-14">

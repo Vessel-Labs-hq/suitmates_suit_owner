@@ -130,3 +130,30 @@ export const assertReactQueryError = (error: unknown) => {
 
   return String(error);
 };
+
+// "warning" | "danger" | "success" | "neutral"
+export const getMaintenanceRequestStatusType = (status: MaintenanceRequestStatus) => {
+  switch (status) {
+    case "COMPLETED":
+      return "success";
+    case "IN_PROGRESS":
+      return "warning";
+    case "PENDING":
+      return "danger";
+    default:
+      return "warning";
+  }
+};
+
+export const getMaintenanceRequestStatusIcon = (status: MaintenanceRequestStatus) => {
+  switch (status) {
+    case "COMPLETED":
+      return "CheckCircleBroken";
+    case "IN_PROGRESS":
+      return "Flag03";
+    case "PENDING":
+      return "XCircle";
+    default:
+      return "Flag03";
+  }
+};
