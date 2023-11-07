@@ -27,7 +27,7 @@ const ChatText = (props: IChatMessage) => {
   return (
     <article className={cn("max-w-xs text-sm md:text-base", isSender && "ml-auto")}>
       {contact && (
-        <h4 className={cn("font-medium", isSender && "hidden text-right")}>
+        <h4 className={cn("hidden text-sm font-medium", isSender && "hidden text-right")}>
           {isSender ? "You" : contact}
         </h4>
       )}
