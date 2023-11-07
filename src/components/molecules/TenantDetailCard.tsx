@@ -12,7 +12,7 @@ interface TenantDetailCardProps {
   href: Href;
 }
 const buttonStyle = cn(
-  "flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
+  "relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
 );
 
 const FittedContainer = ({ className, children }: IProps) => (
@@ -40,6 +40,8 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
 
   return (
     <div className="relative grid grid-cols-3 items-center gap-2 gap-y-3 rounded-md bg-light-gray p-4 md:grid-cols-4">
+      <Link href={href} className="absolute inset-0" />
+
       <div className="flex items-center gap-2 max-md:col-span-2">
         <Avatar
           className="h-8 w-8 rounded-md sm:h-12 sm:w-12 md:h-16 md:w-16"
@@ -79,8 +81,6 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
           <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
         </div>
       </FittedContainer>
-
-      <Link href={href} className="absolute inset-0" />
     </div>
   );
 };
