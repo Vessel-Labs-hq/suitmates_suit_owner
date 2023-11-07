@@ -10,7 +10,7 @@ interface UserQuickInfoCardProps {
     avatar: string;
   };
   suite: string;
-  label: TMaintenanceRequestPriority | Capitalize<TMaintenanceRequestPriority>;
+  label: RequestPriority;
 }
 
 const UserQuickInfoCard = ({ suite, user, label }: UserQuickInfoCardProps) => (

@@ -29,7 +29,7 @@ interface DbMaintenanceRequest {
   id: number;
   user_id: number;
   suite_id: number;
-  priority: TMaintenanceRequestPriority | Capitalize<TMaintenanceRequestPriority>;
+  priority: RequestPriority;
   category: null | string;
   description: string;
   repair_date: string | null;

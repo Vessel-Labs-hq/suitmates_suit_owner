@@ -270,7 +270,7 @@ function MaintenanceRequestPage() {
                     className="max-md:hidden"
                   />
                   <IconBox size={18} icon="MessageCheckCircle" className="md:hidden" />
-                  Add Comments
+                  {selectedRequest.comments?.length > 0 ? "See Comments" : "Add Comments"}
                   <span></span>
                 </Link>
               </Button>

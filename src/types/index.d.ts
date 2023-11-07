@@ -67,4 +67,8 @@ type SelectData<Type = string> = {
 
 type TMaintenanceRequestPriority = "critical" | "trivial" | "medium";
 
+type RequestPriority =
+  | TMaintenanceRequestPriority
+  | Capitalize<TMaintenanceRequestPriority>;
+
 type MaintenanceRequestStatus = "IN_PROGRESS" | "PENDING" | "COMPLETED";

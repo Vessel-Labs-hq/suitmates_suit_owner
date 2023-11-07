@@ -146,9 +146,7 @@ export const getMaintenanceRequestStatusType = (status: MaintenanceRequestStatus
   }
 };
 
-export const getMaintenanceRequestPriorityType = (
-  status: TMaintenanceRequestPriority | Capitalize<TMaintenanceRequestPriority>
-) => {
+export const getMaintenanceRequestPriorityType = (status: RequestPriority) => {
   switch (status.toLowerCase()) {
     case "trivial":
       return "neutral";
