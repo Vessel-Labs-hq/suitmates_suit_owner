@@ -1,5 +1,6 @@
 import { MRCProps } from "@/components/molecules/Cards/MaintenanceRequestCard";
 import { NextPageWithLayout } from "@/pages/_app";
+import { formatWord } from "@/utils";
 import { AppProps } from "next/app";
 
 export interface AppPropsWithLayout extends AppProps {
@@ -89,3 +90,13 @@ export const AllMaintenanceRequestStatus: MaintenanceRequestStatus[] = [
   "PENDING",
   "COMPLETED",
 ];
+
+export const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) => ({
+  label: formatWord(ele.toLowerCase()),
+  value: ele,
+}));
+
+export const WorkingHoursOptions = WorkingHours.map((time) => ({
+  label: time.label,
+  value: String(time.value),
+}));

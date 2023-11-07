@@ -36,8 +36,8 @@ const MaintenanceRequestTable = (props: MaintenanceRequestTableProps) => {
       <div className="max-md:space-y-3">
         {maintenanceRequests && maintenanceRequests.length > 0 ? (
           maintenanceRequests.map(
-            ({ id, category, suite, user, status, priority, created_at }) => {
-              const date = dateFn(created_at).format("DD/MM/YYYY");
+            ({ id, category, suite, user, status, priority, updated_at }) => {
+              const date = dateFn(updated_at).format("DD/MM/YYYY");
 
               return (
                 <div

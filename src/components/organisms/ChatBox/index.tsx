@@ -1,10 +1,13 @@
 import ChatText from "@/components/atoms/ChatText";
 import { TextArea } from "@/components/atoms/TextArea";
+import maintenanceApi from "@/utils/apis/maintenance";
+import Alert from "@/utils/base/alerts";
 import { createStringSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@the_human_cipher/components-library";
 import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useQueryClient } from "react-query";
 import z from "zod";
 
 const SendAResponseSchema = z.object({
@@ -29,11 +32,14 @@ export const ChatFeed = ({ chats }: ChatFeedProps) => {
 interface FormResponseProps {
   onSubmit(chat: IChats[]): void;
   chats: IChats[];
+  requestId: SN;
 }
-export const SendAResponseForm = ({ chats, onSubmit }: FormResponseProps) => {
+export const SendAResponseForm = ({ chats, onSubmit, requestId }: FormResponseProps) => {
   const { handleSubmit, formState, register, reset } = useForm<Inputs>({
     resolver: zodResolver(SendAResponseSchema),
   });
+
+  const queryClient = useQueryClient();
 
   const onFormSubmit: SubmitHandler<Inputs> = async ({ message }) => {
     const idx: number | string = ((chats[chats.length - 1]?.id ?? 0) as number) + 1;
@@ -45,8 +51,14 @@ export const SendAResponseForm = ({ chats, onSubmit }: FormResponseProps) => {
       isSender: true,
     };
 
-    onSubmit([...chats, chat]);
-    reset();
+    try {
+      onSubmit([...chats, chat]);
+      reset();
+      await maintenanceApi.createComment({ requestId, text: message });
+      queryClient.invalidateQueries({ queryKey: ["get-all-maintenance"] });
+    } catch (error) {
+      Alert.error(error);
+    }
   };
 
   useEffect(() => {

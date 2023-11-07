@@ -1,8 +1,8 @@
 import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import UserQuickInfoCard from "@/components/molecules/UserQuickInfoCard";
-import { ChatFeed, SendAResponseForm } from "@/components/organisms/ChatBox";
-import { AllMaintenanceRequestStatus, WorkingHours } from "@/constants";
+import ChatBoxModal from "@/components/organisms/ChatboxModal";
+import { MaintenanceRequestArr, WorkingHoursOptions } from "@/constants";
 import maintenanceApi from "@/utils/apis/maintenance";
 import Alert from "@/utils/base/alerts";
 import {
@@ -23,7 +23,6 @@ import {
   DatePicker,
   IconBox,
   Label,
-  Modal,
   Select,
 } from "@the_human_cipher/components-library";
 import dayjs from "dayjs";
@@ -34,29 +33,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 
 type Inputs = InferSchema<typeof UpdateMaintenanceRequestSchema>;
-
-interface ContentLabelProps {
-  title: string;
-  value: string;
-}
-const ContentLabel = ({ title, value }: ContentLabelProps) => (
-  <div className="w-fit space-y-1 text-sm">
-    <p className="text-xs font-medium text-black md:text-sm">{title}</p>
-    <div className="w-fit rounded-md bg-light-gray p-4 leading-none max-md:text-xs">
-      <span>{value}</span>
-    </div>
-  </div>
-);
-
-const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) => ({
-  label: formatWord(ele.toLowerCase()),
-  value: ele,
-}));
-
-const WorkingHoursOptions = WorkingHours.map((time) => ({
-  label: time.label,
-  value: String(time.value),
-}));
 
 function MaintenanceRequestPage() {
   const router = useRouter();
@@ -123,7 +99,7 @@ function MaintenanceRequestPage() {
         data,
         requestId: selectedRequest?.id ?? "n/a",
       });
-
+      Alert.success("Maintenance request updated");
       queryClient.invalidateQueries({ queryKey: ["get-all-maintenance"] });
     } catch (error) {
       Alert.error(error);
@@ -301,47 +277,16 @@ function MaintenanceRequestPage() {
             </div>
           </div>
         </div>
+
+        {assertQuery(view_comments) && (
+          <ChatBoxModal
+            onClose={handleModalClose}
+            onSubmit={setChats}
+            chats={chats}
+            requestId={String(selectedRequest.id)}
+          />
+        )}
       </section>
-
-      {assertQuery(view_comments) && (
-        <Modal open onOpenChange={handleModalClose}>
-          <Modal.Body
-            enableBottomSheet
-            className="h-[500px] space-y-0 md:max-w-[450px] md:overflow-y-hidden"
-          >
-            <Modal.Title title="View Comments" />
-            <Modal.Content>
-              {({ ref }) => (
-                <div>
-                  <div>
-                    <ChatFeed chats={chats} />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 w-full border-t border-t-black/10 bg-white px-8 py-3">
-                    <SendAResponseForm
-                      chats={chats}
-                      onSubmit={(data) => {
-                        setChats(data);
-
-                        /**
-                         * https://stackoverflow.com/questions/43854653/how-to-force-a-chatbox-div-to-stay-displaying-the-bottom-as-new-messages-appear
-                         */
-                        if (ref) {
-                          setTimeout(() => {
-                            if (ref.current) {
-                              const { scrollHeight } = ref.current;
-                              ref.current.scrollTop = scrollHeight + 10;
-                            }
-                          }, 100);
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-            </Modal.Content>
-          </Modal.Body>
-        </Modal>
-      )}
     </DashboardLayout>
   );
 }

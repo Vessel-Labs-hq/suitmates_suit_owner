@@ -73,3 +73,12 @@ interface DbComment {
   updated_at: string;
   user: DbUser;
 }
+
+interface DbCreateCommentRes {
+  id: number;
+  text: string;
+  user_id: number;
+  maintenance_request_id: number;
+  created_at: string;
+  updated_at: string;
+}

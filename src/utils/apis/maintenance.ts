@@ -9,6 +9,11 @@ interface UpdateMaintenancePayload {
   data: InferSchema<typeof UpdateMaintenanceRequestSchema>;
 }
 
+interface CreateCommentPayload {
+  requestId: SN;
+  text: string;
+}
+
 class MaintenanceService extends BaseAPIService {
   async getAllMaintenanceRequest() {
     try {
@@ -30,6 +35,17 @@ class MaintenanceService extends BaseAPIService {
         repair_date,
       });
       return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createComment({ requestId, text }: CreateCommentPayload) {
+    type Res = APIResponse<DbCreateCommentRes>;
+    try {
+      const res = await API.post<Res>(`/maintenance/${requestId}/comments`, { text });
+
+      return res.data.data;
     } catch (error) {
       throw error;
     }
