@@ -26,7 +26,7 @@ export class BaseAPIService {
         const res = AuthResponseSchema.safeParse(JSON.parse(data));
 
         if (res.success) {
-          // window.dispatchEvent(new Event("UpdatedUserData"));
+          window.dispatchEvent(new Event("UpdatedUserData"));
           return res.data;
         }
       }
@@ -40,7 +40,6 @@ export class BaseAPIService {
 
     if (user) {
       this.storeUser({ ...user, ...data });
-      // console.log("data", data);
     }
     window.dispatchEvent(new Event("UpdatedUserData"));
   }
