@@ -61,12 +61,29 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
     new Array(amenities.length).fill(true)
   );
 
+  const handleCloseAmenities = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const updatedAmenities = amenities.filter((_, i) => i !== index);
+    setAmenities(updatedAmenities);
+
+    const updatedLabels = closeAmenities.slice(); // create a shallow copy
+    updatedLabels.splice(index, 1); // remove the element at the specified index
+    setCloseAmenities(updatedLabels);
+  };
+
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await onBoardingService.updateSpace(data);
+      const { space_name, space_address, space_size } = data;
+      const updatedData = {
+        space_name,
+        space_address,
+        space_size,
+        space_amenities: amenities,
+      };
+      const res = await onBoardingService.updateSpace(updatedData);
       console.log("space response", res);
       if (res) {
-        Alert.success("Space updated successfully");
+        Alert.success("Space information updated successfully");
       }
     } catch (error) {
       Alert.error(error);
@@ -80,15 +97,6 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
 
   const assertError = (key: keyof Inputs): boolean => {
     return Boolean(formState.errors[key]?.message);
-  };
-
-  const handleCloseAmenities = (index: number) => {
-    const updatedAmenities = amenities.filter((_, i) => i !== index);
-    setAmenities(updatedAmenities);
-
-    const updatedLabels = [...closeAmenities];
-    updatedLabels[index] = false;
-    setCloseAmenities(updatedLabels);
   };
 
   const { isSubmitting: isLoading } = formState;
@@ -127,7 +135,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                         placeholder="Select..."
                         onChange={(e) => {
                           onChange(e);
-                          setAmenities(e); // Assuming setAmenities is defined and handles updating the amenities state
+                          setAmenities(e);
                           setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
                         }}
                         defaultValue={amenities}
@@ -167,7 +175,11 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                         className="flex h-8 items-center justify-center rounded-lg bg-[#E8E8E8] px-3 py-2"
                       >
                         {amenity.label}
-                        <button className="mx-3" onClick={() => handleCloseAmenities(index)}>
+                        <button
+                          className="mx-3"
+                          onClick={(event) => handleCloseAmenities(index, event)}
+                          disabled={isEditMode}
+                        >
                           {Icons.XClose}
                         </button>
                       </label>

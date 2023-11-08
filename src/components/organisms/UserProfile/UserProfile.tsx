@@ -36,7 +36,7 @@ const UserProfile = () => {
   const profileId = user!.id;
 
   const { data } = useQuery({
-    queryKey: [`get-user-profile-${profileId}`],
+    queryKey: ["get-user-profile", profileId],
     queryFn: () => userProfileApi.getUserProfile(profileId),
     staleTime: 15 * (60 * 1000),
     cacheTime: 20 * (60 * 1000),

@@ -4,15 +4,17 @@ import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { onFormError } from "@/utils/functions/react-hook-form";
-import { PersonalInfoSchema } from "@/utils/schema/details";
+import useSession from "@/utils/hooks/useSession";
+import { EditPersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, PhoneInput } from "@the_human_cipher/components-library";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useQueryClient } from "react-query";
 
-type Inputs = InferSchema<typeof PersonalInfoSchema>;
+type Inputs = InferSchema<typeof EditPersonalInfoSchema>;
 
 type InputName = keyof Inputs;
 
@@ -43,18 +45,24 @@ const fields: Fields[] = [
 ];
 
 const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProps) => {
-  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
-    resolver: zodResolver(PersonalInfoSchema),
+  const { register, formState, handleSubmit, control, watch, setValue } = useForm<Inputs>({
+    resolver: zodResolver(EditPersonalInfoSchema),
     mode: "onChange",
     values: userProfile,
   });
 
-  const selectedFile = watch("avatar");
+  const queryClient = useQueryClient();
+
+  const [selectedFile, setSelectedFile] = useState("avatar");
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await onBoardingService.updateUserPersonalInfo(data);
+      const res = await onBoardingService.editPersonalInfo(data);
       if (res) {
+        queryClient.invalidateQueries({
+          queryKey: ["get-user-profile", userProfile.id],
+        });
         Alert.success("Personal information updated successfully");
       }
     } catch (error) {
@@ -74,6 +82,24 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
   const getFormError = (key: keyof Inputs) => {
     const err = formState.errors[key]?.message;
     return err ? String(err) : undefined;
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      setSelectedFile(file.name);
+      setValue("avatar", file);
+
+      // Read the file and set the image source
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          setImageSrc(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const { isSubmitting: isLoading } = formState;
@@ -101,7 +127,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                       <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                         {Icons.PhotoGallery}
                       </span>
-                      {selectedFile && (
+                      {selectedFile && (imageSrc || userProfile.avatar) && (
                         <span
                           className={cn(
                             "absolute bottom-0 left-0 right-0 top-0 flex h-[120px] w-full items-center justify-center bg-[#F3F3F3] object-cover pt-10 text-sm"
@@ -109,10 +135,9 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                         >
                           <Image
                             alt=""
-                            src={userProfile.avatar}
+                            src={imageSrc || userProfile.avatar}
                             width={120}
                             height={180}
-                            // name=""
                             className="h-[180px] w-full object-cover"
                           />
                         </span>
@@ -122,9 +147,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                         value={value?.fileName}
                         className="absolute inset-0 z-[1] hidden opacity-0"
                         type="file"
-                        onChange={(e) => {
-                          onChange(e.target.files?.[0]);
-                        }}
+                        onChange={handleFileChange}
                         disabled={isEditMode}
                       />
                       {selectedFile ? (
@@ -139,7 +162,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
               <div className="">
                 <Button
-                  className="md:w-38 mt-16 h-16 w-36 rounded-lg bg-[#3BAF75] px-4 text-base font-normal text-white md:mr-20 md:h-20 md:font-bold "
+                  className="md:w-38 mt-16 flex w-36 items-center justify-center whitespace-nowrap rounded-lg bg-[#3BAF75] px-4 text-base font-normal text-white md:mr-20 md:font-bold"
                   onClick={handleEditClick}
                 >
                   {isEditMode ? "Edit Information" : "Stop Editing"}
@@ -186,7 +209,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
             <div className="flex justify-end">
               <Button
-                className={`h-16 w-28 rounded-xl ${
+                className={`w-28 rounded-xl ${
                   isEditMode ? "cursor-not-allowed bg-[#f9f7f7]" : "bg-green-500 hover:bg-green-600"
                 } text-lg font-medium text-white`}
                 disabled={isEditMode}

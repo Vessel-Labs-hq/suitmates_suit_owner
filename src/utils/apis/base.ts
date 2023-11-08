@@ -40,6 +40,7 @@ export class BaseAPIService {
 
     if (user) {
       this.storeUser({ ...user, ...data });
+      // console.log("data", data);
     }
     window.dispatchEvent(new Event("UpdatedUserData"));
   }

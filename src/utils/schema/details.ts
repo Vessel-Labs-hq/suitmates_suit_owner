@@ -16,6 +16,17 @@ export const PersonalInfoSchema = z.object({
   bio: z.optional(createStringSchema({ key: "Bio" })),
 });
 
+export const EditPersonalInfoSchema = z
+  .object({
+    first_name: createStringSchema("First name"),
+    last_name: createStringSchema("Last name"),
+    phone_number: createStringSchema("Phone number"),
+    // email: createStringSchema("Email address"),
+    bio: createStringSchema("Bio"),
+    avatar: z.union([z.string(), createFileSchema({ key: "Profile Image" })]),
+  })
+  .deepPartial();
+
 export const SpaceInfoSchema = z.object({
   space_name: createStringSchema("Name"),
   space_address: createStringSchema("Address"),

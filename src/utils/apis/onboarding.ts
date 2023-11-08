@@ -41,8 +41,12 @@ class Details extends BaseAPIService {
     }
   }
 
-  async updateUserPersonalInfo(payload: PersonalInfoPayload) {
+  async editPersonalInfo(payload: PersonalInfoPayload) {
     type ResponseBody = APIResponse<DbUserProfileResponse>;
+    const { avatar, ...rest } = payload;
+    const hasAvatar = avatar && typeof avatar !== "string";
+
+    const cleanData = hasAvatar ? payload : rest;
 
     const data = objectToFormData({ ...payload });
 
@@ -51,6 +55,15 @@ class Details extends BaseAPIService {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+      });
+      const {
+        data: { first_name, last_name, ...rest },
+      } = res.data;
+
+      this.updateUserSession({
+        ...rest,
+        name: `${first_name} ${last_name}`,
+        role: "owner",
       });
       return res.data.data;
     } catch (error) {
