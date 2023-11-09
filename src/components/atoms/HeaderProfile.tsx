@@ -19,9 +19,7 @@ const getPlaceholder = (name: string) => {
 
 const HeaderProfile = ({ email, name, src, contentClass }: HeaderProfileProps) => (
   <div className="flex items-center gap-2">
-    <div>
-      <Avatar src={src} name={name} />
-    </div>
+    <Avatar src={src} name={name} />
     <div className={cn("w-full max-w-[150px]", contentClass)}>
       <h6 className="text-sm font-bold capitalize text-black">{name}</h6>
       <p className="line-clamp-1 max-w-full text-xs lowercase">{email}</p>

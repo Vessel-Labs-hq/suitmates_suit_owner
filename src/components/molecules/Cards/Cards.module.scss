@@ -1,0 +1,17 @@
+.custom_icon {
+  @media not all and (min-width: 1440px) {
+    svg {
+      height: 34px;
+      width: 34px;
+    }
+  }
+}
+
+.currency_wrapper {
+  @media not all and (min-width: 992px) {
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+}

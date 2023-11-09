@@ -46,3 +46,29 @@ interface APIResponse<TData> {
   data: Readonly<TData>;
   message: string;
 }
+
+interface IChatMessage {
+  message: string;
+  contact?: string;
+  isSender?: boolean;
+  status?: "sending" | "delivered";
+}
+
+interface IChats extends IChatMessage {
+  id: number | string;
+}
+
+type SN = string | number;
+
+type SelectData<Type = string> = {
+  label: Type;
+  value: Type;
+};
+
+type TMaintenanceRequestPriority = "critical" | "trivial" | "medium";
+
+type RequestPriority =
+  | TMaintenanceRequestPriority
+  | Capitalize<TMaintenanceRequestPriority>;
+
+type MaintenanceRequestStatus = "IN_PROGRESS" | "PENDING" | "COMPLETED";

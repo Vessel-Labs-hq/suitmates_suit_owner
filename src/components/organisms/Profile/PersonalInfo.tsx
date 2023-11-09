@@ -1,17 +1,29 @@
-import Icons from "@/assets/icons";
+import Icons, { IconSlot } from "@/assets/icons";
 import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { onFormError } from "@/utils/functions/react-hook-form";
+import useSession from "@/utils/hooks/useSession";
 import { PersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Title, Text, Input, Button, PhoneInput } from "@the_human_cipher/components-library";
+import {
+  Title,
+  Text,
+  Input,
+  Button,
+  PhoneInput,
+} from "@the_human_cipher/components-library";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 type Inputs = InferSchema<typeof PersonalInfoSchema>;
 
-type InputName = keyof Inputs;
+interface ExtendsInputs extends Inputs {
+  email: string;
+}
+
+type InputName = keyof ExtendsInputs;
 
 interface Fields {
   name: InputName;
@@ -42,19 +54,32 @@ const fields: Fields[] = [
     placeholder: "(999) 999-9999",
   },
   {
-    name: "bio",
-    label: "Bio",
-    placeholder: "Bio",
+    name: "email",
+    label: "Email",
+    placeholder: "email",
   },
 ];
 
 const PersonalInformation = ({ onSubmit, personId }: Props) => {
-  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
-    resolver: zodResolver(PersonalInfoSchema),
-    mode: "onChange",
-  });
+  const data = useSession();
+  const [hovered, setHovered] = useState(false);
+
+  const { register, formState, handleSubmit, control, watch, reset } =
+    useForm<ExtendsInputs>({
+      resolver: zodResolver(PersonalInfoSchema),
+      mode: "onChange",
+      defaultValues: {
+        email: data?.email,
+      },
+    });
 
   const selectedFile = watch("avatar");
+
+  useEffect(() => {
+    reset({
+      email: data?.email,
+    });
+  }, [data]);
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     if (personId) {
@@ -71,7 +96,7 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
     }
   };
 
-  const getFormError = (key: keyof Inputs) => {
+  const getFormError = (key: keyof ExtendsInputs) => {
     const err = formState.errors[key]?.message;
     return err ? String(err) : undefined;
   };
@@ -88,6 +113,8 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
           <div className="ml-4">
             <Text className="my-5 block font-bold">Personal Information </Text>
             <div className="w-[180px]">
+              {/** integrating controlled inputs
+               *   https://claritydev.net/blog/react-hook-form-multipart-form-data-file-uploads */}
               <Controller
                 control={control}
                 name="avatar"
@@ -105,13 +132,32 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
                       {Icons.PhotoGallery}
                     </span>
                     {selectedFile && (
-                      <span
+                      <div
                         className={cn(
-                          "absolute top-0 flex h-[120px] w-full items-center justify-center bg-[#F3F3F3] pt-10 text-sm "
+                          "absolute inset-0 top-0 z-[1] flex w-full items-center justify-center bg-[#F3F3F3] bg-cover bg-center text-sm hover:cursor-pointer"
                         )}
+                        style={{
+                          backgroundImage: `url(${URL.createObjectURL(selectedFile)})`,
+                        }}
+                        onMouseOver={() => setHovered(true)}
+                        onMouseLeave={() => setHovered(false)}
                       >
-                        {selectedFile?.name}
-                      </span>
+                        <div
+                          className={cn(
+                            "h-full w-full origin-center bg-black/0 duration-200",
+                            hovered && "bg-black/40"
+                          )}
+                        ></div>
+                        <div
+                          className={cn(
+                            "absolute top-[60%] flex -translate-y-1/2 items-center gap-2 rounded bg-slate-300 px-4 py-1 text-xs opacity-0 duration-500",
+                            hovered && "top-1/2 mt-2 -translate-y-1/2 opacity-100"
+                          )}
+                        >
+                          <IconSlot icon="Refresh" className="h-5 w-5" />
+                          Change
+                        </div>
+                      </div>
                     )}
                     <input
                       {...rest}
@@ -122,14 +168,17 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
                         onChange(e.target.files?.[0]);
                       }}
                     />
-                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2">Upload</span>
+                    <span className="absolute bottom-3 left-1/2 -translate-x-1/2">
+                      Upload
+                    </span>
                   </label>
                 )}
               />
               <div
                 className={cn(
                   "mt-2 max-h-0 origin-top overflow-hidden text-center text-sm text-white transition-all duration-300 ease-out",
-                  getFormError("avatar") && "max-h-[100px] text-borderNegative opacity-100"
+                  getFormError("avatar") &&
+                    "max-h-[100px] text-borderNegative opacity-100"
                 )}
               >
                 {getFormError("avatar")}
@@ -164,9 +213,11 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
             />
             <Input
               {...fields[3]}
-              {...register("bio")}
-              hint={getFormError("bio")}
-              isError={Boolean(getFormError("bio"))}
+              {...register("email")}
+              hint={getFormError("email")}
+              isError={Boolean(getFormError("email"))}
+              defaultValue={formState?.defaultValues?.email}
+              disabled
             />
           </div>
           <Button
