@@ -106,7 +106,7 @@ const MaintenanceRequestPage = () => {
                 )
               ) : (
                 <div className="my-20 text-center text-xs">
-                  You are yet to create any maintenance request
+                  You are yet to receive any maintenance request
                 </div>
               )}
             </div>

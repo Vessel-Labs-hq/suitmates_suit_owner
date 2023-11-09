@@ -94,7 +94,7 @@ const MaintenanceRequestTable = (props: MaintenanceRequestTableProps) => {
           )
         ) : (
           <div className="my-10 mt-14 text-center text-xs">
-            You are yet to create any maintenance request
+            You are yet to receive any maintenance request
           </div>
         )}
       </div>

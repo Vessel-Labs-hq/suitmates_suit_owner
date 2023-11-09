@@ -15,7 +15,7 @@ interface Props extends ModalProps {
 
 const ModalWrapper = ({ children, ...props }: ModalProps) => (
   <Modal {...props}>
-    <Modal.Body className="max-w-[600px]">
+    <Modal.Body enableBottomSheet className="max-w-[600px]">
       <Modal.Title title="Add Tenants" />
       <Modal.Content className="mx-auto grid min-h-[400px] w-full max-w-sm place-items-center">
         {children}
