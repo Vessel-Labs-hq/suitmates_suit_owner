@@ -21,7 +21,7 @@ export const EditPersonalInfoSchema = z
     first_name: createStringSchema("First name"),
     last_name: createStringSchema("Last name"),
     phone_number: createStringSchema("Phone number"),
-    // email: createStringSchema("Email address"),
+    email: createStringSchema("Email address"),
     bio: createStringSchema("Bio"),
     avatar: z.union([z.string(), createFileSchema({ key: "Profile Image" })]),
   })

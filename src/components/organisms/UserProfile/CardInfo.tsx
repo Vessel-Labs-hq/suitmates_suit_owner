@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const CardInfo = () => {
@@ -15,6 +16,12 @@ const CardInfo = () => {
             <p className="text-base font-normal">
               Next payment: <span className="text-[#3BAF75]">April 10, 2023</span>
             </p>
+          </div>
+
+          <div className="mt-2">
+            <span className="text-[#3BAF75] underline">
+              <Link href="#">Update Payment Information</Link>
+            </span>
           </div>
         </div>
       </div>

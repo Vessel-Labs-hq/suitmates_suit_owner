@@ -39,8 +39,8 @@ const fields: Fields[] = [
     label: "Phone Number",
   },
   {
-    name: "bio",
-    label: "Bio",
+    name: "email",
+    label: "Email Address",
   },
 ];
 
@@ -165,7 +165,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                   className="md:w-38 mt-16 flex w-36 items-center justify-center whitespace-nowrap rounded-lg bg-[#3BAF75] px-4 text-base font-normal text-white md:mr-20 md:font-bold"
                   onClick={handleEditClick}
                 >
-                  {isEditMode ? "Edit Information" : "Stop Editing"}
+                  {isEditMode ? "Edit Information" : "Cancel"}
                 </Button>
               </div>
             </div>
@@ -200,9 +200,9 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
               />
               <Input
                 {...fields[3]}
-                {...register("bio")}
-                hint={getFormError("bio")}
-                isError={Boolean(getFormError("bio"))}
+                {...register("email")}
+                hint={getFormError("email")}
+                isError={Boolean(getFormError("email"))}
                 disabled={isEditMode}
               />
             </div>

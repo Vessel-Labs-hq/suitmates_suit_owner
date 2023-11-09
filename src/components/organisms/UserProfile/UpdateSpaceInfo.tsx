@@ -138,7 +138,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                           setAmenities(e);
                           setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
                         }}
-                        defaultValue={amenities}
+                        value={amenities}
                         multiple
                         isError={assertError("space_amenities")}
                         hint={getFormError("space_amenities")}
