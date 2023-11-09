@@ -1,5 +1,6 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import AddTenantModal from "@/components/organisms/AddTenantModal";
+import ChangeSuiteModal from "@/components/organisms/ChangeSuiteModal";
 import { assertQuery } from "@/utils";
 import { Button } from "@the_human_cipher/components-library";
 import { useRouter } from "next/router";

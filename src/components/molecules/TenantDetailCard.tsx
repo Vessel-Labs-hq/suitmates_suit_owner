@@ -1,7 +1,10 @@
 import { Button, IconBox, Label, Title } from "@the_human_cipher/components-library";
 import Avatar from "../atoms/Avatar";
-import { ClassValues, clampText, cn } from "@/utils";
+import { ClassValues, clampText, cn, localLog } from "@/utils";
 import Link from "next/link";
+import { UrlObject } from "url";
+import { useRouter } from "next/router";
+import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 
 type Href = React.ComponentProps<typeof Link>["href"];
 
@@ -24,19 +27,32 @@ interface StyledButtonProps {
   icon: React.ComponentProps<typeof IconBox>["icon"];
   text: string;
   className?: string;
+  href: string | UrlObject;
 }
 
-const StyledButton = ({ icon, onClick, className, text }: StyledButtonProps) => {
+const StyledButton = ({ href, icon, onClick, className, text }: StyledButtonProps) => {
   return (
-    <Button className={cn(buttonStyle, className)} variant="dark" onClick={onClick}>
-      <IconBox icon={icon} className="max-md:h-3 max-md:w-3" />
-      <span>{text}</span>
-    </Button>
+    <Link href={href}>
+      <Button className={cn(buttonStyle, className)} variant="dark" onClick={onClick}>
+        <IconBox icon={icon} className="max-md:h-3 max-md:w-3" />
+        <span>{text}</span>
+      </Button>
+    </Link>
   );
 };
 
 const TenantDetailCard = (props: TenantDetailCardProps) => {
   const { onRemove, onSuiteChange, status, href } = props;
+
+  const router = useRouter();
+
+  // const { change_suite } = router.query;
+
+  const { data: profile } = useGetProfile();
+
+  localLog(profile);
+
+  // const handleClose = () => router.push({ query: {} });
 
   return (
     <div className="relative grid grid-cols-3 items-center gap-2 gap-y-3 rounded-md bg-light-gray p-4 md:grid-cols-4">
@@ -69,16 +85,36 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
         <div className="text-[10px] md:text-xs">Hairdresser</div>
       </FittedContainer>
       <FittedContainer className="max-md:hidden">
-        <StyledButton icon="RefreshCw03" text="Change Suite" onClick={onSuiteChange} />
+        <StyledButton
+          icon="RefreshCw03"
+          text="Change Suite"
+          onClick={onSuiteChange}
+          href={{ query: { change_suite: "true" } }}
+        />
       </FittedContainer>
       <FittedContainer className="max-md:hidden">
-        <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
+        <StyledButton
+          icon="Trash03"
+          text="Remove"
+          onClick={onRemove}
+          href={{ query: { remove_suite: "true" } }}
+        />
       </FittedContainer>
 
       <FittedContainer className="ml-auto flex w-full items-center justify-end max-md:col-span-3 md:hidden">
         <div className="flex gap-2">
-          <StyledButton icon="RefreshCw03" text="Change Suite" onClick={onSuiteChange} />
-          <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
+          <StyledButton
+            icon="RefreshCw03"
+            text="Change Suite"
+            onClick={onSuiteChange}
+            href={{ query: { change_suite: "true" } }}
+          />
+          <StyledButton
+            icon="Trash03"
+            text="Remove"
+            onClick={onRemove}
+            href={{ query: { remove_suite: "true" } }}
+          />
         </div>
       </FittedContainer>
     </div>

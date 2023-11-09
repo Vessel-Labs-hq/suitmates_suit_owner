@@ -3,6 +3,7 @@ import DashboardLayout from "@/components/layouts/DashboardLayout";
 import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import AddTenantModal from "@/components/organisms/AddTenantModal";
+import ChangeSuiteModal from "@/components/organisms/ChangeSuiteModal";
 import { DashboardSuiteInfoChart } from "@/components/organisms/DashboardCharts";
 import { assertQuery, cn, localLog } from "@/utils";
 import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
@@ -30,7 +31,7 @@ const IconButton = ({ href, icon, text, className }: IconButtonProps) => (
 const TenantPage = () => {
   const router = useRouter();
 
-  const { add_tenant } = router.query;
+  const { add_tenant, change_suite } = router.query;
 
   const { data: profile } = useGetProfile();
 
@@ -99,6 +100,8 @@ const TenantPage = () => {
       {assertQuery(add_tenant) && (
         <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
+
+      {assertQuery(change_suite) && <ChangeSuiteModal open onOpenChange={handleClose} />}
     </DashboardLayout>
   );
 };
