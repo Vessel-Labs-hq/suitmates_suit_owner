@@ -64,3 +64,67 @@ interface DbGetUserDetails extends DbUpdatePersonalInfo {
   card_name?: string;
   space: DbSpace;
 }
+
+interface DbUserProfileResponse {
+  id: 1;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  avatar: string;
+  bio: string;
+  role: string;
+  suite: null;
+  space?: {
+    id: number;
+    owner_id: number;
+    space_name: string;
+    space_address: string;
+    space_size: number;
+    space_amenities: string;
+    account_number: string;
+    account_name: string;
+    routing_number: string;
+    created_at: string;
+    updated_at: string;
+    deleted: null;
+    suites: DbCreateSuite[];
+  };
+  businesses: [
+    {
+      business_name: string;
+      hours_of_business_open: string;
+      hours_of_business_close: string;
+      days_of_business: string;
+      occupation: string;
+      website: string;
+      license: string;
+    },
+  ];
+
+  onboarded: true;
+  verified: false;
+  stripe_customer_id: null;
+  stripe_payment_method_id: null;
+  card_last_digit: null;
+  card_name: null;
+  created_at: string;
+  updated_at: string;
+  deleted: null;
+}
+
+// [
+//       {
+//         id: number;
+//         suite_number: string;
+//         suite_type: string;
+//         suite_size: string;
+//         suite_cost: number;
+//         timing: string;
+//         tenant_id: any;
+//         space_id: number;
+//         created_at: string;
+//         updated_at: string;
+//         deleted: any;
+//       },
+//     ];

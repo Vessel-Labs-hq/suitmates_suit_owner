@@ -8,129 +8,41 @@ import Icons from "@/assets/icons";
 import Alert from "@/utils/base/alerts";
 import onBoardingService from "@/utils/apis/onboarding";
 import { onFormError } from "@/utils/functions/react-hook-form";
-import ChangeSuiteInfoRow from "./ChangeSuiteInfoRow";
-
-interface Props {
-  onSubmit(): void;
-  url: string;
-}
-
-type Inputs = InferSchema<typeof SuiteInfoSchema>;
-
-const DefaultValues = {
-  suite_cost: "",
-  suite_number: "",
-  suite_size: "",
-  suite_type: { label: "", value: "" },
-  timing: { label: "", value: "" },
-};
+// import ChangeSuiteInfoRow from "./ChangeSuiteInfoRow";
+import SuiteOccupied from "./SuiteOccupied";
+import NewSuiteInformation from "./NewSuiteInformation";
+import { useQuery } from "react-query";
+import authService from "@/utils/apis/auth";
+import { useGetSpace } from "@/utils/hooks/api/useGetSpace";
+import userProfileApi from "@/utils/hooks/api/userprofile";
 
 /**
  * guide on how to do multiple fields
  *
  * https://www.cluemediator.com/dynamic-form-with-react-hook-form-using-usefieldarray
  */
-const ChangeSuiteInformation = ({ onSubmit, url }: Props) => {
-  const { control, handleSubmit, register, formState } = useForm<Inputs>({
-    resolver: zodResolver(SuiteInfoSchema),
-    mode: "onChange",
-    defaultValues: {
-      suites: [DefaultValues],
-    },
-  });
-  const { fields, append, remove } = useFieldArray<Inputs>({
-    control,
-    name: "suites",
+
+const ChangeSuiteInformation = () => {
+  const user = authService.getSession();
+  const profileId = user!.id;
+
+  const { data } = useQuery({
+    queryKey: ["get-user-profile", profileId],
+    queryFn: () => userProfileApi.getUserProfile(profileId),
+    staleTime: 15 * (60 * 1000),
+    cacheTime: 20 * (60 * 1000),
   });
 
-  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
-    // if (spaceId) {
-    //   try {
-    //     const res = await onBoardingService.createSuite({
-    //       spaceId,
-    //       suites: data.suites,
-    //     });
-    //     if (res) {
-    //       onSubmit();
-    //     }
-    //   } catch (error) {
-    //     Alert.error(error);
-    //   }
-    // } else {
-    //   Alert.error("Space Id is undefined, error creating Suite");
-    // }
-  };
+  const userSuite = data?.data;
 
   return (
-    <div className="mx-auto my-4 mt-16 w-full pt-10">
-      <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
-        <div className="ml-4 sm:ml-8">
-          <Text className="my-5 block font-bold">Current Suite Occupied</Text>
-        </div>
-        <div className="rounded-2xl bg-[#F3F3F3] p-5 pt-8">
-          <div className="relative">
-            <div className="space-y-10 ">
-              {fields.map((field, idx) => (
-                <div key={field.id}>
-                  <ChangeSuiteInfoRow
-                    idx={idx}
-                    register={register}
-                    formState={formState}
-                    control={control}
-                  />
-                  {idx > 0 && (
-                    <button
-                      type="button"
-                      className="-mt-1 ml-auto block w-fit text-right text-xs text-red-600"
-                      onClick={() => remove(idx)}
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </form>
+    <div className="mx-auto w-full rounded-xl bg-[#F3F3F3]">
+      <div className="">{/* <SuiteOccupied  /> */}</div>
 
       {/* second form */}
-      <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
-        <div className="ml-4 sm:ml-8">
-          <Text className="my-5 block font-bold">Current Suite Occupied</Text>
-        </div>
-        <div className="rounded-2xl bg-[#F3F3F3] p-5 pt-8">
-          <div className="relative">
-            <div className="space-y-10 ">
-              {fields.map((field, idx) => (
-                <div key={field.id}>
-                  <ChangeSuiteInfoRow
-                    idx={idx}
-                    register={register}
-                    formState={formState}
-                    control={control}
-                  />
-                  {idx > 0 && (
-                    <button
-                      type="button"
-                      className="-mt-1 ml-auto block w-fit text-right text-xs text-red-600"
-                      onClick={() => remove(idx)}
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="mx-auto mt-8 max-w-sm">
-          <Button className="" type="submit" loading={formState.isSubmitting}>
-            Change Suite
-          </Button>
-        </div>
-      </form>
+      <div>
+        <NewSuiteInformation />
+      </div>
     </div>
   );
 };

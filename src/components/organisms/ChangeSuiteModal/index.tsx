@@ -18,23 +18,28 @@ import {
 import { SuiteInfoSchema } from "@/utils/schema/details";
 import ChangeSuiteInfoRow from "./ChangeSuiteInfoRow";
 import ChangeSuiteInformation from "./ChangeSuiteInformation";
+import { useQuery } from "react-query";
+// import onBoardingService from "@/utils/apis/onboarding";
+// import authService from "@/utils/apis/auth";
+// import userProfileApi from "@/utils/hooks/api/userprofile";
 
 type ModalProps = React.ComponentProps<typeof Modal>;
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
-interface Props extends ModalProps {
-  onSuiteChange(): void;
-  control: Control<FormValues>;
-  register: UseFormRegister<FormValues>;
-  idx: number;
-  formState: FormState<FormValues>;
-  //   spaceId: string;
-}
+// interface Props extends ModalProps {
+//   onSuiteChange(): void;
+//   control: Control<FormValues>;
+//   register: UseFormRegister<FormValues>;
+//   idx: number;
+//   formState: FormState<FormValues>;
+//   //   spaceId: string;
+// }
 
 const ModalWrapper = ({ children, ...props }: ModalProps) => (
   <Modal {...props}>
-    <Modal.Body enableBottomSheet className="min-h-[600px] max-w-[980px]">
-      <Modal.Title title="Change Suite" />
+    <Modal.Body enableBottomSheet className="min-h-[800px] max-w-[1280px]">
+      <Modal.Title title="Change Suite" className="mt-4" />
+      <span>Change suite for tenant as requested</span>
       <Modal.Content className="mx-auto grid h-full w-full place-items-center">
         {children}
       </Modal.Content>
@@ -42,15 +47,9 @@ const ModalWrapper = ({ children, ...props }: ModalProps) => (
   </Modal>
 );
 
-const ChangeSuiteModal = ({
-  onSuiteChange,
-  control,
-  register,
-  idx,
-  formState,
-  ...props
-}: Props) => {
+const ChangeSuiteModal = ({ ...props }) => {
   const { data: profile, isLoading, isError, error } = useGetProfile();
+  // console.log("profile", profile);
 
   //   const parsedSuite = useMemo(
   //     () =>
@@ -63,37 +62,28 @@ const ChangeSuiteModal = ({
 
   const router = useRouter();
 
-  const handleSuiteChange = () => {
-    router.push({
-      query: {
-        ...router.query,
-        mode: "change_suite",
-      },
-    });
-  };
+  // const handleSuiteChange = () => {
+  //   router.push({
+  //     query: {
+  //       ...router.query,
+  //       mode: "change_suite",
+  //     },
+  //   });
+  // };
 
   const renderModalSelection = () => {
     switch (router.query.mode) {
       case "change_suite":
-        return (
-          <ChangeSuiteModal
-            onSuiteChange={handleSuiteChange}
-            // onSubmit={onSuiteChange}
-            control={control}
-            register={register}
-            idx={idx}
-            formState={formState}
-          />
-        );
+        return <ChangeSuiteModal />;
       case "success":
         return <div />;
       default:
         return (
           <ChangeSuiteInformation
-            onSubmit={onSuiteChange}
-            url="/add-tenant?step=personal-information"
-            // spaceId={spaceId}
-            //   onClick={handleInviteClick}
+          // onSubmit={onSuiteChange}
+          // url="/change-suite?step=personal-information"
+          // spaceId={spaceId}
+          //   onClick={handleInviteClick}
           />
         );
     }

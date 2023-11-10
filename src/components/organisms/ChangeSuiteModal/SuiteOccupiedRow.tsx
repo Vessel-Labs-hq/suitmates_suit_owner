@@ -55,7 +55,7 @@ interface Props {
   // onSubmit(): void;
 }
 
-const ChangeSuiteInfoRow = ({ control, register, idx, formState }: Props) => {
+const SuiteOccupiedRow = ({ control, register, idx, formState }: Props) => {
   const getFormError = (key: keyof Inputs) => {
     if (["timing", "suite_type"].includes(key)) {
       const err = (
@@ -143,4 +143,4 @@ const ChangeSuiteInfoRow = ({ control, register, idx, formState }: Props) => {
   );
 };
 
-export default ChangeSuiteInfoRow;
+export default SuiteOccupiedRow;
