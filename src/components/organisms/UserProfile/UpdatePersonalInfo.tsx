@@ -1,16 +1,13 @@
 import Icons, { IconSlot } from "@/assets/icons";
-import Avatar from "@/components/atoms/Avatar";
 import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { onFormError } from "@/utils/functions/react-hook-form";
-import useSession from "@/utils/hooks/useSession";
 import { EditPersonalInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Title, Text, Input, Button, PhoneInput } from "@the_human_cipher/components-library";
-import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Input, Button, PhoneInput } from "@the_human_cipher/components-library";
+import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useQueryClient } from "react-query";
 

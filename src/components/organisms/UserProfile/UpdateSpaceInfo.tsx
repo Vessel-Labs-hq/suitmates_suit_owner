@@ -42,6 +42,8 @@ const fields: Field[] = [
   },
 ];
 
+const SuiteAmenitiesArr = SuiteAmenities.map(({ value }) => value);
+
 const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProps) => {
   const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
     resolver: zodResolver(UpdateSpaceInfoSchema),
@@ -53,7 +55,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
       space_amenities: [],
     },
   });
-  const [amenities, setAmenities] = useState<any[]>(
+  const [amenities, setAmenities] = useState<{ label: string; value: string }[]>(
     JSON.parse(userProfile.space?.space_amenities as string) ?? []
   );
   console.log("Amenities", amenities);
@@ -131,15 +133,17 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                     <div>
                       <Select
                         {...rest}
-                        options={SuiteAmenities}
+                        options={SuiteAmenitiesArr}
                         label="Space amenities"
                         placeholder="Select..."
-                        onChange={(e) => {
-                          onChange(e);
-                          setAmenities(e);
-                          setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
+                        onChange={(amenity) => {
+                          const amenitiesArr = amenity.map((ele) => ({ label: ele, value: ele }));
+
+                          onChange(amenitiesArr);
+                          setAmenities(amenitiesArr);
+                          // setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
                         }}
-                        defaultValue={amenities}
+                        value={amenities.map(({ value }) => value)}
                         multiple
                         isError={assertError("space_amenities")}
                         hint={getFormError("space_amenities")}
