@@ -56,6 +56,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
   const [amenities, setAmenities] = useState<any[]>(
     JSON.parse(userProfile.space?.space_amenities as string) ?? []
   );
+  console.log("Amenities", amenities);
 
   const [closeAmenities, setCloseAmenities] = useState<boolean[]>(
     new Array(amenities.length).fill(true)
@@ -138,7 +139,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                           setAmenities(e);
                           setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
                         }}
-                        value={amenities}
+                        defaultValue={amenities}
                         multiple
                         isError={assertError("space_amenities")}
                         hint={getFormError("space_amenities")}

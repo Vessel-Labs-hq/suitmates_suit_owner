@@ -1,4 +1,4 @@
-import Icons from "@/assets/icons";
+import Icons, { IconSlot } from "@/assets/icons";
 import Avatar from "@/components/atoms/Avatar";
 import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
@@ -55,6 +55,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
   const [selectedFile, setSelectedFile] = useState("avatar");
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [hovered, setHovered] = useState(false);
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -128,19 +129,32 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                         {Icons.PhotoGallery}
                       </span>
                       {selectedFile && (imageSrc || userProfile.avatar) && (
-                        <span
+                        <div
                           className={cn(
-                            "absolute bottom-0 left-0 right-0 top-0 flex h-[120px] w-full items-center justify-center bg-[#F3F3F3] object-cover pt-10 text-sm"
+                            "absolute inset-0 top-0 z-[1] flex w-full items-center justify-center bg-[#F3F3F3] bg-cover bg-center text-sm hover:cursor-pointer"
                           )}
+                          style={{
+                            backgroundImage: `url(${imageSrc ? imageSrc : userProfile.avatar})`,
+                          }}
+                          onMouseOver={() => setHovered(true)}
+                          onMouseLeave={() => setHovered(false)}
                         >
-                          <Image
-                            alt=""
-                            src={imageSrc || userProfile.avatar}
-                            width={120}
-                            height={180}
-                            className="h-[180px] w-full object-cover"
-                          />
-                        </span>
+                          <div
+                            className={cn(
+                              "h-full w-full origin-center bg-black/0 duration-200",
+                              hovered && "bg-black/40"
+                            )}
+                          ></div>
+                          <div
+                            className={cn(
+                              "absolute top-[60%] flex -translate-y-1/2 items-center gap-2 rounded bg-slate-300 px-4 py-1 text-xs opacity-0 duration-500",
+                              hovered && "top-1/2 mt-2 -translate-y-1/2 opacity-100"
+                            )}
+                          >
+                            <IconSlot icon="Refresh" className="h-5 w-5" />
+                            Change
+                          </div>
+                        </div>
                       )}
                       <input
                         {...rest}
