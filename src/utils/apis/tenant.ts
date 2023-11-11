@@ -28,6 +28,17 @@ class TenantService extends BaseAPIService {
       throw error;
     }
   }
+
+  async getAllTenants() {
+    type RESPONSE = APIResponse<DbGetAllTenants[]>;
+
+    try {
+      const res = await API.get<RESPONSE>("/user/tenants");
+      return res.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const tenantAPI = new TenantService();
