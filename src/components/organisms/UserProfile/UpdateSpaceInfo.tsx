@@ -58,7 +58,6 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
   const [amenities, setAmenities] = useState<{ label: string; value: string }[]>(
     JSON.parse(userProfile.space?.space_amenities as string) ?? []
   );
-  console.log("Amenities", amenities);
 
   const [closeAmenities, setCloseAmenities] = useState<boolean[]>(
     new Array(amenities.length).fill(true)
@@ -107,7 +106,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
   return (
     <section>
       <div className="my-4 mt-16">
-        <form onSubmit={handleSubmit(onFormSubmit, (error) => console.log(error))}>
+        <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="mx-auto max-w-[1180px]">
             <div className="mt-12">
               <span className="text-base font-bold text-[#333333]">Space Information</span>
