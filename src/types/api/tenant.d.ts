@@ -19,5 +19,19 @@ interface DbGetAllTenants {
   updated_at: string;
   deleted: any;
   suite?: DbSuite;
-  businesses: any[];
+  businesses: DbBusiness[];
+}
+
+interface DbBusiness {
+  id: number;
+  business_name: string;
+  days_of_business: string;
+  occupation: string;
+  hours_of_business_open: string;
+  hours_of_business_close: string;
+  website: string;
+  license: any;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
 }

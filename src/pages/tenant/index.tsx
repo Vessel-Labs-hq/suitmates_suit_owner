@@ -20,7 +20,7 @@ const TenantPage = () => {
   const { data: allTenants, isLoading, isError, error } = useGetAllTenants();
   const { data: profile } = useGetProfile();
 
-  const { add_tenant } = router.query;
+  const { add_tenant, add_suite } = router.query;
 
   localLog(allTenants);
 
@@ -100,6 +100,10 @@ const TenantPage = () => {
       </main>
 
       {assertQuery(add_tenant) && (
+        <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
+      )}
+
+      {assertQuery(add_suite) && (
         <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
     </DashboardLayout>
