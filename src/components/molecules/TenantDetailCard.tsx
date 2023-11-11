@@ -10,6 +10,10 @@ interface TenantDetailCardProps {
   onSuiteChange(): void;
   onRemove(): void;
   href: Href;
+  user: {
+    avatar?: string;
+    name: string;
+  };
 }
 const buttonStyle = cn(
   "relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
@@ -36,7 +40,9 @@ const StyledButton = ({ icon, onClick, className, text }: StyledButtonProps) => 
 };
 
 const TenantDetailCard = (props: TenantDetailCardProps) => {
-  const { onRemove, onSuiteChange, status, href } = props;
+  const { onRemove, onSuiteChange, status, href, user } = props;
+
+  const { avatar, name } = user;
 
   return (
     <div className="relative grid grid-cols-3 items-center gap-2 gap-y-3 rounded-md bg-light-gray p-4 md:grid-cols-4">
@@ -45,12 +51,12 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
       <div className="flex items-center gap-2 max-md:col-span-2">
         <Avatar
           className="h-8 w-8 rounded-md sm:h-12 sm:w-12 md:h-16 md:w-16"
-          src="https://picsum.photos/id/237/200/300"
-          name="rehk mansa"
+          src={avatar}
+          name={name}
         />
         <div className="md:space-y-1">
           <Title className="md:text-lg" weight="bold" level={4}>
-            Rehkmansa
+            {name}
           </Title>
           <Label
             type={status === "due" ? "danger" : "success"}

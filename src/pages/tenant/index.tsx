@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import type { UrlObject } from "url";
 import Placeholder from "@/assets/svg/invite-00.svg";
 import Image from "next/image";
+import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 
 interface IconButtonProps {
   href: string | UrlObject;
@@ -34,6 +35,7 @@ const TenantPage = () => {
   const router = useRouter();
 
   const { data: allTenants, isLoading, isError, error } = useGetAllTenants();
+  const { data: profile } = useGetProfile();
 
   const { add_tenant } = router.query;
 
@@ -71,82 +73,67 @@ const TenantPage = () => {
 
   return (
     <DashboardLayout>
-      {allTenants.length > 0 ? (
-        <main>
-          <section className="flex items-start justify-between gap-4">
-            <div className="flex h-full w-full flex-col gap-4">
-              <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
-                <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
-                  <HomeInfoCard title="Vacant Suites" value={10} />
-                  <HomeInfoCard title="Occupied Suites" value={12} />
-                </div>
-                <DashboardSuiteInfoChart />
-              </div>
-              <div className="mt-auto hidden w-fit md:block">
-                <div className="flex items-center gap-4">
-                  <IconButton
-                    icon="Plus"
-                    text="Add Tenat"
-                    href={{ query: { add_tenant: "true" } }}
-                  />
-
-                  <IconButton icon="Edit05" text="Edit Suite" href="#" />
-                </div>
-              </div>
-            </div>
-            <DueRequestSideBar length={3} />
-          </section>
-          <section className="mt-10 md:mt-6">
-            <div className="flex items-center justify-between">
-              <Title level={4} weight="bold" className="text-lg text-black">
-                All Tenants
-              </Title>
-
-              <IconButton
-                icon="Plus"
-                text="Add Tenat"
-                href={{ query: { add_tenant: "true" } }}
-                className="w-fit gap-0.5 rounded-md px-2 py-2 text-xs md:hidden"
-              />
-            </div>
-
-            <div className="mt-4 space-y-4">
-              {allTenants.map((ele, idx) => (
-                <TenantDetailCard
-                  key={idx}
-                  onRemove={() => {
-                    console.log("removed");
-                  }}
-                  onSuiteChange={() => {
-                    console.log("suite changed");
-                  }}
-                  href={"#"}
-                  status={idx % 2 === 0 ? "paid" : "due"}
+      <main>
+        <section className="flex items-start justify-between gap-4">
+          <div className="flex h-full w-full flex-col gap-4">
+            <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
+                <HomeInfoCard
+                  title="Vacant Suites"
+                  value={profile?.space.suite?.length ?? 0}
                 />
-              ))}
+                <HomeInfoCard
+                  title="Occupied Suites"
+                  value={profile?.space.suite?.length ?? 0}
+                />
+              </div>
+              <DashboardSuiteInfoChart />
             </div>
-          </section>
-        </main>
-      ) : (
-        <section className="grid h-[70vh] place-content-center">
-          <Image src={Placeholder} alt="" className="w-[400px]" />
-          <div className="mt-7 max-w-sm space-y-2 text-center">
-            <h4 className="text-xl font-bold ">Get Started with Tenant Management</h4>
-            <p className="text-sm">
-              Add tenants to begin organizing your properties. Click Add Tenant to start
-              building your tenant list.
-            </p>
-            <div className="mx-auto max-w-[150px] pt-4 text-sm">
-              <IconButton
-                icon="Plus"
-                text="Add Tenat"
-                href={{ query: { add_tenant: "true" } }}
-                className="flex h-12 items-center justify-center rounded"
-              />
+            <div className="mt-auto hidden w-fit md:block">
+              <div className="flex items-center gap-4">
+                <IconButton
+                  icon="Plus"
+                  text="Add Tenat"
+                  href={{ query: { add_tenant: "true" } }}
+                />
+
+                <IconButton icon="Edit05" text="Edit Suite" href="#" />
+              </div>
             </div>
           </div>
+          <DueRequestSideBar length={3} />
         </section>
-      )}
+        <section className="mt-10 md:mt-6">
+          <div className="flex items-center justify-between">
+            <Title level={4} weight="bold" className="text-lg text-black">
+              All Tenants
+            </Title>
+
+            <IconButton
+              icon="Plus"
+              text="Add Tenat"
+              href={{ query: { add_tenant: "true" } }}
+              className="h-10 w-fit gap-0.5 rounded-md px-2 py-2 text-xs md:hidden"
+            />
+          </div>
+
+          <div className="mt-4 space-y-4">
+            {allTenants.map(({ avatar, first_name, last_name }, idx) => (
+              <TenantDetailCard
+                key={idx}
+                onRemove={() => {}}
+                onSuiteChange={() => {}}
+                href="#"
+                status={idx % 2 === 0 ? "paid" : "due"}
+                user={{
+                  avatar,
+                  name: cn(first_name ?? "-", last_name ?? "-"),
+                }}
+              />
+            ))}
+          </div>
+        </section>
+      </main>
 
       {assertQuery(add_tenant) && (
         <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
