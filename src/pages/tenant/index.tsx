@@ -120,7 +120,7 @@ const TenantPage = () => {
             />
           </div>
 
-          <div>
+          <div className="mt-5">
             <Tabs defaultValue="">
               <Tabs.Header tablist={tablist} />
               <Tabs.Content value={tablist[0]}>
