@@ -116,7 +116,8 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                     <label
                       className={cn(
                         "relative flex h-[180px] w-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-[6px] border-[#F0D0BE]",
-                        getFormError("avatar") && "border-borderNegative/70"
+                        getFormError("avatar") && "border-borderNegative/70",
+                        isEditMode && "pointer-events-none" // Disable pointer events in edit mode
                       )}
                     >
                       <span className="h-full w-full [&>*]:h-full [&>*]:w-full">
