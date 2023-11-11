@@ -20,19 +20,16 @@ const Header = <T extends Extension>(props: TabHeaderProps<T>) => {
 
   return (
     <Primitives.List
-      className={cn(
-        "hide-scrollbar flex items-start justify-start overflow-x-auto overflow-y-hidden border-b border-gray pb-1 text-sm",
-        className
-      )}
+      className={cn("hide-scrollbar flex border-b border-gray py-1 text-sm", className)}
       {...prop}
     >
       {tablist.map((tab) => (
         <Primitives.Trigger
           {...triggerProp}
           className={cn(
-            "relative px-4 py-3 outline-none",
+            "relative h-full px-4 py-3 outline-none focus:ring-1 focus:ring-gray",
             "before:absolute before:bottom-0 before:left-0 before:h-1 before:w-full before:translate-y-1 data-[state='active']:before:bg-primary",
-            "data-[state='active']:border-b-primary data-[state='active']:font-medium data-[state='active']:text-primaryDark",
+            "data-[state='active']:border-b-primary data-[state='active']:font-medium data-[state='active']:text-primaryDark ",
             triggerClass
           )}
           value={tab}
@@ -50,7 +47,15 @@ interface TabContentProps<T extends Extension> extends Primitives.TabsContentPro
 }
 
 const Content = <T extends Extension>({ className, ...props }: TabContentProps<T>) => {
-  return <Primitives.Content {...props} className={cn("mt-4", className)} />;
+  return (
+    <Primitives.Content
+      {...props}
+      className={cn(
+        "mt-4 outline-none focus:ring-1 focus:ring-custom-black/60",
+        className
+      )}
+    />
+  );
 };
 
 Tabs.Content = Content;

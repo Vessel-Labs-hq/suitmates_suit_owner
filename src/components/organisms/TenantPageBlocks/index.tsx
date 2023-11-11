@@ -8,6 +8,7 @@ import Tabs from "../Tabs";
 import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
 import { cn } from "@/utils";
+import dayjs from "dayjs";
 
 interface IconButtonProps {
   href: string | UrlObject;
@@ -95,18 +96,25 @@ export const TenantPageTab = ({ activeTenants, inActiveTenants }: TenantPageTabP
         </div>
       </Tabs.Content>
       <Tabs.Content value={tablist[1]}>
-        {inActiveTenants.map(({ avatar, first_name, last_name }, idx) => (
-          <TenantDetailCard
-            key={idx}
-            onRemove={() => {}}
-            onSuiteChange={() => {}}
-            href="#"
-            status={idx % 2 === 0 ? "paid" : "due"}
-            user={{
-              avatar,
-              name: cn(first_name ?? "-", last_name ?? "-"),
-            }}
-          />
+        {inActiveTenants.map(({ email, created_at }) => (
+          <div
+            className="relative grid grid-cols-2 items-center gap-5 gap-y-3 rounded-md bg-light-gray p-4 text-sm lg:grid-cols-3"
+            key={email}
+          >
+            <div className="text-xs md:text-sm">{email}</div>
+            <div className="mx-auto w-48 max-lg:hidden">
+              Sent: {dayjs(created_at).format("MMMM D, YYYY")}
+            </div>
+            <div className="ml-auto w-fit">
+              <Button
+                className="relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
+                variant="dark"
+              >
+                <IconBox icon="RefreshCw03" className="max-md:h-3 max-md:w-3" />
+                <span>Resend Email</span>
+              </Button>
+            </div>
+          </div>
         ))}
       </Tabs.Content>
     </Tabs>

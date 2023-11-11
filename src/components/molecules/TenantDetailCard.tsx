@@ -14,6 +14,9 @@ interface TenantDetailCardProps {
     avatar?: string;
     name: string;
   };
+  onboarded?: true;
+  suite?: DbSuite;
+  business?: unknown;
 }
 const buttonStyle = cn(
   "relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
@@ -40,7 +43,8 @@ const StyledButton = ({ icon, onClick, className, text }: StyledButtonProps) => 
 };
 
 const TenantDetailCard = (props: TenantDetailCardProps) => {
-  const { onRemove, onSuiteChange, status, href, user } = props;
+  const { onRemove, onSuiteChange, status, href, user, suite, business, onboarded } =
+    props;
 
   const { avatar, name } = user;
 
