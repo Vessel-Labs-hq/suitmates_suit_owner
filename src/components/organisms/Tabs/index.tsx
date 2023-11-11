@@ -1,25 +1,19 @@
 import { cn } from "@/utils";
 import * as Primitives from "@radix-ui/react-tabs";
 
-/**
- * Anatomy of tabs
- * ```tsx
- * <Tabs>
- *   <Tabs.Header tablist={["active", "inactive"]} />
- *   <Tabs.Content value="active"/>
- *   <Tabs.Content value="inactive"/>
- * <Tabs/>
- * ```
- */
+type Extension = string[] | readonly string[];
+
 const Tabs = ({ className, ...props }: Primitives.TabsProps) => (
   <Primitives.Root className={cn(className)} {...props} />
 );
 
-interface TabHeaderProps extends Omit<Primitives.TabsListProps, "children"> {
+interface TabHeaderProps<T extends Extension>
+  extends Omit<Primitives.TabsListProps, "children"> {
   triggerProps?: Omit<Primitives.TabsTriggerProps, "children">;
-  tablist: string[];
+  tablist: T;
 }
-const Header = (props: TabHeaderProps) => {
+
+const Header = <T extends Extension>(props: TabHeaderProps<T>) => {
   const { tablist, triggerProps, className, ...prop } = props;
 
   const { className: triggerClass, ...triggerProp } = triggerProps ?? {};
@@ -40,11 +34,16 @@ const Header = (props: TabHeaderProps) => {
   );
 };
 
-const Content = (props: Primitives.TabsContentProps) => {
+interface TabContentProps<T extends Extension> extends Primitives.TabsContentProps {
+  value: T[number];
+}
+
+const Content = <T extends Extension>(props: TabContentProps<T>) => {
   return <Primitives.Content {...props} />;
 };
 
-Tabs.Header = Header;
 Tabs.Content = Content;
+
+Tabs.Header = Header;
 
 export default Tabs;

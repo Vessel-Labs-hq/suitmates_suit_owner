@@ -14,6 +14,7 @@ import type { UrlObject } from "url";
 import Placeholder from "@/assets/svg/invite-00.svg";
 import Image from "next/image";
 import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
+import Tabs from "@/components/organisms/Tabs";
 
 interface IconButtonProps {
   href: string | UrlObject;
@@ -30,6 +31,8 @@ const IconButton = ({ href, icon, text, className }: IconButtonProps) => (
     </Link>
   </Button>
 );
+
+const tablist = ["Active", "Inactive"] as const;
 
 const TenantPage = () => {
   const router = useRouter();
@@ -117,20 +120,42 @@ const TenantPage = () => {
             />
           </div>
 
-          <div className="mt-4 space-y-4">
-            {allTenants.map(({ avatar, first_name, last_name }, idx) => (
-              <TenantDetailCard
-                key={idx}
-                onRemove={() => {}}
-                onSuiteChange={() => {}}
-                href="#"
-                status={idx % 2 === 0 ? "paid" : "due"}
-                user={{
-                  avatar,
-                  name: cn(first_name ?? "-", last_name ?? "-"),
-                }}
-              />
-            ))}
+          <div>
+            <Tabs defaultValue="">
+              <Tabs.Header tablist={tablist} />
+              <Tabs.Content value={tablist[0]}>
+                <div className="mt-4 space-y-4">
+                  {allTenants.map(({ avatar, first_name, last_name }, idx) => (
+                    <TenantDetailCard
+                      key={idx}
+                      onRemove={() => {}}
+                      onSuiteChange={() => {}}
+                      href="#"
+                      status={idx % 2 === 0 ? "paid" : "due"}
+                      user={{
+                        avatar,
+                        name: cn(first_name ?? "-", last_name ?? "-"),
+                      }}
+                    />
+                  ))}
+                </div>
+              </Tabs.Content>
+              <Tabs.Content value={tablist[1]}>
+                {allTenants.map(({ avatar, first_name, last_name }, idx) => (
+                  <TenantDetailCard
+                    key={idx}
+                    onRemove={() => {}}
+                    onSuiteChange={() => {}}
+                    href="#"
+                    status={idx % 2 === 0 ? "paid" : "due"}
+                    user={{
+                      avatar,
+                      name: cn(first_name ?? "-", last_name ?? "-"),
+                    }}
+                  />
+                ))}
+              </Tabs.Content>
+            </Tabs>
           </div>
         </section>
       </main>
