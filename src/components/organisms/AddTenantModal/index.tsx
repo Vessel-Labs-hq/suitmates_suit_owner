@@ -1,10 +1,6 @@
 import { useRouter } from "next/router";
 import AddTenantUI from "./AddTenantUI";
 import InviteTenantForm from "./InviteTennatForm";
-import { assertReactQueryError } from "@/utils";
-import { SpinnerLoader } from "@/components/atoms/Loader";
-import { useMemo } from "react";
-import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 import { Modal } from "@the_human_cipher/components-library";
 
 type ModalProps = React.ComponentProps<typeof Modal>;
@@ -25,17 +21,6 @@ const ModalWrapper = ({ children, ...props }: ModalProps) => (
 );
 
 const AddTenantModal = ({ onTenantAdded, ...props }: Props) => {
-  const { data: profile, isLoading, isError, error } = useGetProfile();
-
-  const parsedSuite = useMemo(
-    () =>
-      (profile?.space?.suite ?? []).map((ele) => ({
-        label: `Suite ${ele.suite_number}`,
-        value: String(ele.id),
-      })),
-    [profile]
-  );
-
   const router = useRouter();
 
   const handleInviteClick = () => {
@@ -50,7 +35,7 @@ const AddTenantModal = ({ onTenantAdded, ...props }: Props) => {
   const renderModalSelection = () => {
     switch (router.query.mode) {
       case "invite":
-        return <InviteTenantForm onSubmit={onTenantAdded} suites={parsedSuite} />;
+        return <InviteTenantForm onSubmit={onTenantAdded} />;
       case "success":
         return <div />;
       default:
@@ -62,30 +47,6 @@ const AddTenantModal = ({ onTenantAdded, ...props }: Props) => {
         );
     }
   };
-
-  if (isLoading) {
-    return (
-      <ModalWrapper {...props}>
-        <SpinnerLoader />
-      </ModalWrapper>
-    );
-  }
-
-  if (isError) {
-    return (
-      <ModalWrapper {...props}>
-        <div>{assertReactQueryError(error)}</div>
-      </ModalWrapper>
-    );
-  }
-
-  if (!profile) {
-    return (
-      <ModalWrapper {...props}>
-        <SpinnerLoader />
-      </ModalWrapper>
-    );
-  }
 
   return <ModalWrapper {...props}>{renderModalSelection()}</ModalWrapper>;
 };
