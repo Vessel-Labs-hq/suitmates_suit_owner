@@ -23,7 +23,7 @@ const TenantPage = () => {
   const { data: allTenants, isLoading, isError, error } = useGetAllTenants();
   const { data: profile } = useGetProfile();
 
-  const { add_tenant, add_suite } = router.query;
+  const { add_tenant, suite_tenant } = router.query;
 
   localLog(allTenants);
 
@@ -38,6 +38,10 @@ const TenantPage = () => {
   );
 
   const handleClose = () => router.push({ query: {} });
+
+  const handleQueryChange = (q: Record<string, any>) => {
+    router.push({ query: { ...router.query, ...q } });
+  };
 
   if (isLoading) {
     return (
@@ -91,6 +95,10 @@ const TenantPage = () => {
             <TenantPageTab
               activeTenants={activeTenants}
               inActiveTenants={inActiveTenants}
+              onAddSuite={(id) => handleQueryChange({ suite_tenant: id })}
+              onSuiteChange={(id) => {
+                throw new Error("Function not implemented");
+              }}
             />
           ) : (
             <EmptyScreen
@@ -106,8 +114,13 @@ const TenantPage = () => {
         <InviteTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
 
-      {assertQuery(add_suite) && (
-        <AttachTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
+      {assertQuery(suite_tenant) && (
+        <AttachTenantModal
+          email={allTenants.find(({ id }) => id === Number(suite_tenant))?.email ?? "n/a"}
+          open
+          onOpenChange={handleClose}
+          onTenantAdded={handleClose}
+        />
       )}
     </DashboardLayout>
   );

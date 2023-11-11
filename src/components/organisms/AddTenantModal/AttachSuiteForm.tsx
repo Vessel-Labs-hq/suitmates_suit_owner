@@ -4,26 +4,35 @@ import Alert from "@/utils/base/alerts";
 import { InferSchema } from "@/utils/schema/helpers";
 import { AttachTenantSchema } from "@/utils/schema/tenant";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Select } from "@the_human_cipher/components-library";
+import { Button, Select } from "@the_human_cipher/components-library";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
 
 type Inputs = InferSchema<typeof AttachTenantSchema>;
 
 interface Props {
   onSubmit(): void;
   suites: SelectData<SN>[];
+  email: string;
 }
 
-const AttachSuiteForm = ({ onSubmit, suites }: Props) => {
-  const { handleSubmit, register, control, formState } = useForm<Inputs>({
+const AttachSuiteForm = ({ onSubmit, suites, email }: Props) => {
+  const queryClient = useQueryClient();
+
+  const { handleSubmit, control, formState } = useForm<Inputs>({
     mode: "onChange",
     resolver: zodResolver(AttachTenantSchema),
+    defaultValues: {
+      email,
+    },
   });
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       await tenantAPI.addTenant(data);
+      queryClient.invalidateQueries({ queryKey: ["get-all-tenants"] });
       Alert.success("Tenant added to suite");
+
       onSubmit();
     } catch (error) {
       Alert.error(error);
@@ -37,13 +46,6 @@ const AttachSuiteForm = ({ onSubmit, suites }: Props) => {
       className="w-full space-y-6 max-md:text-sm"
       onSubmit={handleSubmit(onFormSubmit)}
     >
-      <Input
-        placeholder="Please enter tenant email"
-        {...register("email")}
-        label="Tenant Email Address"
-        hint={unwrapFormError("email")}
-        isError={assertFormError("email")}
-      />
       <Controller
         control={control}
         name="suite_id"

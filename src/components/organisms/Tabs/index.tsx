@@ -20,14 +20,17 @@ const Header = <T extends Extension>(props: TabHeaderProps<T>) => {
 
   return (
     <Primitives.List
-      className={cn("hide-scrollbar flex border-b border-gray py-1 text-sm", className)}
+      className={cn(
+        "hide-scrollbar flex overflow-x-auto border-b border-gray py-1 text-sm",
+        className
+      )}
       {...prop}
     >
       {tablist.map((tab) => (
         <Primitives.Trigger
           {...triggerProp}
           className={cn(
-            "relative h-full px-4 py-3 outline-none focus:ring-1 focus:ring-gray",
+            "relative h-full whitespace-nowrap px-4 py-3 outline-none focus:ring-1 focus:ring-gray",
             "before:absolute before:bottom-0 before:left-0 before:h-1 before:w-full before:translate-y-1 data-[state='active']:before:bg-primary",
             "data-[state='active']:border-b-primary data-[state='active']:font-medium data-[state='active']:text-primaryDark ",
             triggerClass

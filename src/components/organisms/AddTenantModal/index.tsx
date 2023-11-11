@@ -58,7 +58,14 @@ export const InviteTenantModal = ({ onTenantAdded, ...props }: Props) => {
   return <ModalWrapper {...props}>{renderModalSelection()}</ModalWrapper>;
 };
 
-export const AttachTenantModal = ({ onTenantAdded, ...props }: Props) => {
+interface AddTenantModalProps extends Props {
+  email: string;
+}
+export const AttachTenantModal = ({
+  onTenantAdded,
+  email,
+  ...props
+}: AddTenantModalProps) => {
   const { data: profile, isLoading, isError, error } = useGetProfile();
 
   const parsedSuite = useMemo(
@@ -96,7 +103,7 @@ export const AttachTenantModal = ({ onTenantAdded, ...props }: Props) => {
 
   return (
     <ModalWrapper title="Add Tenant to Suite" {...props}>
-      <AttachSuiteForm onSubmit={onTenantAdded} suites={parsedSuite} />
+      <AttachSuiteForm onSubmit={onTenantAdded} suites={parsedSuite} email={email} />
     </ModalWrapper>
   );
 };
