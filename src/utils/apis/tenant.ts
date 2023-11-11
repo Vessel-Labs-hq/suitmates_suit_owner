@@ -1,9 +1,9 @@
 import { API } from "../base/axios";
 import { InferSchema } from "../schema/helpers";
-import { AddTenantByInviteSchema } from "../schema/tenant";
+import { AttachTenantSchema } from "../schema/tenant";
 import { BaseAPIService } from "./base";
 
-type AddTenantPayload = InferSchema<typeof AddTenantByInviteSchema>;
+type AddTenantPayload = InferSchema<typeof AttachTenantSchema>;
 
 class TenantService extends BaseAPIService {
   async addTenant({ email, suite_id }: AddTenantPayload) {

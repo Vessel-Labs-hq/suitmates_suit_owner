@@ -63,6 +63,7 @@ export const TenantPageHeader = ({
 interface TenantPageTabProps {
   activeTenants: DbGetAllTenants[];
   inActiveTenants: DbGetAllTenants[];
+  // onRemove
 }
 const tablist = ["Onboarded", "Pending Invites"] as const;
 

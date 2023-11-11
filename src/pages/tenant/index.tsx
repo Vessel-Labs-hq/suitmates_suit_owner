@@ -1,6 +1,9 @@
 import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import AddTenantModal from "@/components/organisms/AddTenantModal";
+import {
+  InviteTenantModal,
+  AttachTenantModal,
+} from "@/components/organisms/AddTenantModal";
 import { assertQuery, localLog } from "@/utils";
 import { useGetAllTenants } from "@/utils/hooks/api/tenant";
 import { Title } from "@the_human_cipher/components-library";
@@ -100,11 +103,11 @@ const TenantPage = () => {
       </main>
 
       {assertQuery(add_tenant) && (
-        <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
+        <InviteTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
 
       {assertQuery(add_suite) && (
-        <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
+        <AttachTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
     </DashboardLayout>
   );
