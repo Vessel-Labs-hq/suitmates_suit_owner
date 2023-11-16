@@ -1,5 +1,5 @@
 import { SidebarElement } from "@/components/atoms/HomeSharedUI";
-import NotificationUI from "@/components/atoms/NotificationUI";
+import NotificationUI from "@/components/molecules/Notifications/NotificationUI";
 import { Title } from "@the_human_cipher/components-library";
 
 interface DueRequestSideBarProps {

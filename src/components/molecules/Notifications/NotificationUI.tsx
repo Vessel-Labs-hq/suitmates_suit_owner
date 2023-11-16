@@ -1,5 +1,5 @@
 import { Label, LabelProps } from "@the_human_cipher/components-library";
-import Avatar, { AvatarProps } from "./Avatar";
+import Avatar, { AvatarProps } from "../../atoms/Avatar";
 import { cn } from "@/utils";
 
 type RowAvatarProps = Omit<AvatarProps, "className"> & {
@@ -25,7 +25,9 @@ const NotificationContent = (props: NotificationContentProps) => {
     <div className={cn("flex items-center gap-2", wrapperStyle)}>
       <Avatar size={34} src="https://picsum.photos/id/30/400/300" {...avatarProps} />
       <div className={cn("text-xs font-medium text-borderNegative", contentStyle)}>
-        <h4 className={cn("mb-0.5 text-base  font-bold text-suite-dark", titleStyle)}>{title}</h4>
+        <h4 className={cn("mb-0.5 text-base  font-bold text-suite-dark", titleStyle)}>
+          {title}
+        </h4>
         {typeof children === "string" ? <p>{children}</p> : children}
       </div>
     </div>
@@ -41,12 +43,22 @@ const NotificationLabel = (props: NotificationLabelProps) => {
   const { children, className, ...rest } = props;
 
   return (
-    <Label dots small {...rest} className={cn("text-xs md:text-xs", className)} label={children} />
+    <Label
+      dots
+      small
+      {...rest}
+      className={cn("text-xs md:text-xs", className)}
+      label={children}
+    />
   );
 };
 
 const NotificationUI = ({ children, className }: IProps) => {
-  return <div className={cn("flex items-center justify-between gap-4", className)}>{children}</div>;
+  return (
+    <div className={cn("flex items-center justify-between gap-4", className)}>
+      {children}
+    </div>
+  );
 };
 
 NotificationUI.Content = NotificationContent;
