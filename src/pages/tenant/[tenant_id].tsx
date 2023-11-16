@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import AddTenantModal from "@/components/organisms/AddTenantModal";
+import { InviteTenantModal } from "@/components/organisms/AddTenantModal";
 import { assertQuery } from "@/utils";
 import { Button } from "@the_human_cipher/components-library";
 import { useRouter } from "next/router";
@@ -35,7 +35,7 @@ const TenantSinglePage = () => {
       </div>
 
       {assertQuery(add_tenant) && (
-        <AddTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
+        <InviteTenantModal open onOpenChange={handleClose} onTenantAdded={handleClose} />
       )}
     </DashboardLayout>
   );

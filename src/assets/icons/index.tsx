@@ -142,6 +142,40 @@ const Icons = {
       />
     </svg>
   ),
+  UsersPlus: (
+    <svg
+      width="190"
+      height="189"
+      viewBox="0 0 190 189"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M149.903 164.709V117.649M126.373 141.179H173.433M95 117.649H63.6266C49.0085 117.649 41.6994 117.649 35.9339 120.037C28.2466 123.222 22.139 129.329 18.9548 137.017C16.5667 142.782 16.5667 150.091 16.5667 164.709M122.452 25.8098C133.949 30.4639 142.06 41.7361 142.06 54.9026C142.06 68.0691 133.949 79.3413 122.452 83.9954M106.765 54.9026C106.765 72.2296 92.7187 86.276 75.3916 86.276C58.0646 86.276 44.0183 72.2296 44.0183 54.9026C44.0183 37.5756 58.0646 23.5293 75.3916 23.5293C92.7187 23.5293 106.765 37.5756 106.765 54.9026Z"
+        stroke="#E5E5E5"
+        strokeWidth="5.43"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  Inbox: (
+    <svg
+      fill="none"
+      height="24"
+      shape-rendering="geometricPrecision"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+      aria-label="Empty inbox"
+    >
+      <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
+      <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"></path>
+    </svg>
+  ),
 };
 
 export default Icons;
