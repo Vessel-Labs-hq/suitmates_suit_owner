@@ -52,13 +52,15 @@ const Notifications = (props: NotificationsProps) => {
           className={cn(
             "data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=top]:animate-slideDownAndFade",
             "data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade",
-            "h-[400px] w-[300px] rounded-xl border border-black border-opacity-[0.05] bg-light-gray p-4",
-            "overflow-y-auto shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] outline-none xs:w-[360px]"
+            "w-[300px] rounded-xl border border-black border-opacity-[0.05] bg-light-gray p-4",
+            "overflow-y-auto shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] outline-none xs:w-[360px]",
+            "max-h-[400px]",
+            notifications.length < 1 && "h-[400px]"
           )}
         >
           {notifications.length > 0 ? (
             <ul className="space-y-6">
-              {notifications.slice(0, length).map((_, idx) => (
+              {notifications.map((_, idx) => (
                 <li key={idx}>
                   <NotificationUI>
                     <NotificationUI.Content

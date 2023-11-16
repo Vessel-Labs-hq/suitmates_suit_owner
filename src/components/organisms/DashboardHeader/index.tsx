@@ -1,6 +1,7 @@
 import HeaderProfile from "@/components/atoms/HeaderProfile";
 import Notifications from "@/components/molecules/Notifications";
-import { cn } from "@/utils";
+import { cn, localLog } from "@/utils";
+import { useGetNotifications } from "@/utils/hooks/api/notifications";
 import Image from "next/image";
 import LogoDark from "public/logo-dark.png";
 
@@ -31,6 +32,10 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
 
   const { firstName, lastName } = assertName(name);
 
+  const { data: notifications } = useGetNotifications();
+
+  localLog(notifications);
+
   return (
     <header className="flex flex-col-reverse justify-between gap-5  md:flex-row md:gap-4">
       <div className="space-y-2 text-sm text-suite-dark xl:text-xl">
@@ -42,7 +47,10 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
           <Image className="max-w-[150px]" src={LogoDark} alt="Suitemates" />
         </div>
         <div className="flex items-start gap-2 max-md:ml-auto md:gap-4">
-          <Notifications notifications={[]} hasNewNotifications />
+          <Notifications
+            notifications={["X", "x", "X", "x"] as any}
+            hasNewNotifications
+          />
           <HeaderProfile
             email={email}
             name={cn(firstName, lastName)}
