@@ -16,11 +16,11 @@ const assertName = (name?: string) => {
   const assertValue = (value: string) => (value === "null" ? "" : value);
 
   if (name) {
-    const [firstName, lastName, ...rest] = name.trim().split(" ");
+    const [firstName, lastName, ..._] = name.trim().split(" ");
 
     return {
       firstName: assertValue(firstName),
-      lastName: assertValue(lastName) ?? "",
+      lastName: assertValue(lastName),
     };
   }
 
@@ -47,10 +47,7 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
           <Image className="max-w-[150px]" src={LogoDark} alt="Suitemates" />
         </div>
         <div className="flex items-start gap-2 max-md:ml-auto md:gap-4">
-          <Notifications
-            notifications={["X", "x", "X", "x"] as any}
-            hasNewNotifications
-          />
+          <Notifications notifications={["X", "x"]} hasNewNotifications />
           <HeaderProfile
             email={email}
             name={cn(firstName, lastName)}

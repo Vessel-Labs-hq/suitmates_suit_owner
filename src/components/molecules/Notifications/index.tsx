@@ -4,7 +4,7 @@ import NotificationUI from "./NotificationUI";
 import { IconSlot } from "@/assets/icons";
 
 interface NotificationsProps {
-  notifications: [];
+  notifications: string[];
   hasNewNotifications?: boolean;
 }
 const Notifications = (props: NotificationsProps) => {

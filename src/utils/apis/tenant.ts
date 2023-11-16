@@ -39,6 +39,12 @@ class TenantService extends BaseAPIService {
       throw error;
     }
   }
+
+  async removeTenant(tenantId: SN) {
+    const res = await API.post(`/space/tenant/${tenantId}/remove`);
+
+    return res.data;
+  }
 }
 
 const tenantAPI = new TenantService();

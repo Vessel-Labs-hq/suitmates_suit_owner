@@ -7,8 +7,13 @@ import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import Tabs from "../Tabs";
 import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
-import { cn } from "@/utils";
+import { cn, localLog } from "@/utils";
 import dayjs from "dayjs";
+import { useState } from "react";
+import tenantAPI from "@/utils/apis/tenant";
+import Alert from "@/utils/base/alerts";
+import { SpinnerLoader } from "@/components/atoms/Loader";
+import { useQueryClient } from "react-query";
 
 interface IconButtonProps {
   href: string | UrlObject;
@@ -69,10 +74,28 @@ interface TenantPageTabProps {
 const tablist = ["Onboarded", "Pending Invites"] as const;
 
 export const TenantPageTab = (props: TenantPageTabProps) => {
+  const [loading, setLoading] = useState(false);
   const { activeTenants, inActiveTenants, onSuiteChange, onAddSuite } = props;
+
+  const queryClient = useQueryClient();
+
+  const handleRemove = async (id: SN) => {
+    setLoading(true);
+    try {
+      const res = await tenantAPI.removeTenant(id);
+      localLog(res);
+      queryClient.invalidateQueries({ queryKey: ["get-all-tenants"] });
+      Alert.success("Tenant removed successfully");
+    } catch (error) {
+      Alert.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="mt-5">
+      {loading && <SpinnerLoader fullScreen wrapperClass="bg-white/60 z-40" />}
       <Tabs defaultValue={tablist[0]}>
         <Tabs.Header tablist={tablist} />
         <Tabs.Content value={tablist[0]}>
@@ -87,7 +110,7 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                   <TenantDetailCard
                     key={idx}
                     {...rest}
-                    onRemove={() => {}}
+                    onRemove={() => handleRemove(id)}
                     onSuiteChange={(hasSuite) => {
                       if (hasSuite) {
                         onSuiteChange(id);
