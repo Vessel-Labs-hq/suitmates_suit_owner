@@ -5,6 +5,11 @@ import { BaseAPIService } from "./base";
 
 type AddTenantPayload = InferSchema<typeof AttachTenantSchema>;
 
+interface ChangeSuitePayload {
+  tenantId: SN;
+  suiteId: SN;
+}
+
 class TenantService extends BaseAPIService {
   async addTenant({ email, suite_id }: AddTenantPayload) {
     try {
@@ -43,6 +48,12 @@ class TenantService extends BaseAPIService {
   async removeTenant(tenantId: SN) {
     const res = await API.post(`/space/tenant/${tenantId}/remove`);
 
+    return res.data;
+  }
+
+  async changeSuite(data: ChangeSuitePayload) {
+    const { suiteId, tenantId } = data;
+    const res = await API.post(`/space/tenant/${tenantId}/suite/${suiteId}/change`);
     return res.data;
   }
 }
