@@ -26,7 +26,6 @@ export class BaseAPIService {
         const res = AuthResponseSchema.safeParse(JSON.parse(data));
 
         if (res.success) {
-          window.dispatchEvent(new Event("UpdatedUserData"));
           return res.data;
         }
       }

@@ -87,10 +87,23 @@ class AuthService extends BaseAPIService {
           return window.location.replace(locationToRedirectTo);
         }
 
-        const url = `${locationToRedirectTo}?callbackUrl=${encodeURIComponent(currentLocation)}`;
+        const url = `${locationToRedirectTo}?callbackUrl=${encodeURIComponent(
+          currentLocation
+        )}`;
 
         return window.location.replace(url);
       }
+    }
+  }
+
+  async getUserDetails() {
+    const user = this.getSession();
+
+    try {
+      const res = await API.get<APIResponse<DbGetUserDetails>>(`/user/${user?.id}`);
+      return res.data.data;
+    } catch (error) {
+      throw error;
     }
   }
 }

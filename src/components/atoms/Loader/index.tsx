@@ -1,4 +1,7 @@
 import { cn } from "@/utils";
+import style from "./Loader.module.scss";
+import Image from "next/image";
+import Favicon from "public/favicon.png";
 
 type Variant = "primary" | "gray" | "light" | "dark";
 
@@ -49,3 +52,29 @@ export const SpinnerLoader = (props: IndicatorProps) => {
     </div>
   );
 };
+
+interface TDLProps extends IClass {
+  /** use hex */
+  color?: string;
+  /** use offset color to make a perfect circle */
+  offsetColor?: string;
+  useCSSVar?: true;
+}
+export const ThreeDotsLoader = (props: TDLProps) => {
+  const { className, color } = props;
+
+  return (
+    <div
+      className={cn(style.alternate_loader, "relative flex w-10", className)}
+      style={{ "--loader-color": color ?? "#d9d9d9" } as React.CSSProperties}
+    />
+  );
+};
+
+interface FaviconLoaderProps extends IClass {
+  width?: number;
+}
+
+export const FaviconLoader = ({ width = 30, className }: FaviconLoaderProps) => (
+  <Image src={Favicon} alt="" width={width} className={cn("animate-bounce", className)} />
+);

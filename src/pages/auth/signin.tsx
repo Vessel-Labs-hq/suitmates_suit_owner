@@ -11,11 +11,19 @@ import Link from "next/link";
 import authService from "@/utils/apis/auth";
 import Alert from "@/utils/base/alerts";
 import SEO from "@/components/layouts/SEO";
+import { useEffect, useState } from "react";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
   const router = useRouter();
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
@@ -48,6 +56,8 @@ const LoginPage = () => {
   };
 
   const { isSubmitting } = formState;
+
+  if (!loaded) return <div />;
 
   return (
     <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-7">

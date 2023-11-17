@@ -1,5 +1,5 @@
 import { BaseAPIService } from "./base";
-import { objectToFormData } from "..";
+import { objectToFormData, parseDbSelectRecords } from "..";
 import { API } from "../base/axios";
 import {
   SpaceInfoSchema,
@@ -30,7 +30,7 @@ class Details extends BaseAPIService {
     const data = objectToFormData({ ...payload });
 
     try {
-      const res = await API.patch<ResponseBody>(`/user/${personId}`, data, {
+      const res = await API.patch<ResponseBody>(`/user`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -113,7 +113,7 @@ class Details extends BaseAPIService {
     const { accountDetails, spaceId } = data;
     type ResponseBody = APIResponse<DbCreateSpace>;
     try {
-      const res = await API.patch<ResponseBody>(`/space/${spaceId}`, accountDetails);
+      const res = await API.patch<ResponseBody>(`/space`, accountDetails);
       return res.data;
     } catch (error) {
       throw error;
@@ -155,13 +155,35 @@ class Details extends BaseAPIService {
     const data = objectToFormData({ onboarded: true });
 
     try {
-      const res = await API.patch<ResponseBody>(`/user/${personId}`, data);
+      const res = await API.patch<ResponseBody>(`/user`, data);
+
+      const {
+        data: { first_name, last_name, ...rest },
+      } = res.data;
 
       this.updateUserSession({
-        ...res.data.data,
+        ...rest,
+        name: `${first_name} ${last_name}`,
         role: "owner",
       });
       return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserSpace(spaceId: SN) {
+    try {
+      const res = await API.get<APIResponse<DbSpace>>(`/space/${spaceId}`);
+
+      const { space_amenities, ...rest } = res.data.data;
+
+      const data = {
+        ...rest,
+        space_amenities: parseDbSelectRecords(space_amenities),
+      };
+
+      return data;
     } catch (error) {
       throw error;
     }

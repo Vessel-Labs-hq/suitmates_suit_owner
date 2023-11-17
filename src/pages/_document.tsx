@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+        <link href="https://fonts.cdnfonts.com/css/inter" rel="stylesheet" />
       </Head>
       <body>
         <Main />

@@ -4,5 +4,5 @@
   "singleQuote": false,
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindFunctions": ["cn", "cnFn"],
-  "printWidth": 100
+  "printWidth": 90
 }

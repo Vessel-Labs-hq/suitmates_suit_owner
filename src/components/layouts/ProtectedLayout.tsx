@@ -1,9 +1,14 @@
 import authService from "@/utils/apis/auth";
 import { SpinnerLoader } from "../atoms/Loader";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function ProtectedLayout({ children }: IChildren) {
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
+
   const { isLoading, isError } = useQuery({
     queryFn: () => authService.validateSession(),
     queryKey: ["validate-session"],
@@ -16,7 +21,8 @@ export default function ProtectedLayout({ children }: IChildren) {
 
   useEffect(() => {
     if (isError) {
-      authService.redirectLogin();
+      queryClient.invalidateQueries();
+      authService.redirectLogin({ router });
     }
   }, [isError]);
 
