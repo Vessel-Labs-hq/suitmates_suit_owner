@@ -2,22 +2,24 @@ import { getFormStateError } from "@/utils";
 import tenantAPI from "@/utils/apis/tenant";
 import Alert from "@/utils/base/alerts";
 import { InferSchema } from "@/utils/schema/helpers";
-import { AddTenantByInviteSchema } from "@/utils/schema/tenant";
+import { InviteTenantSchema } from "@/utils/schema/tenant";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Select } from "@the_human_cipher/components-library";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Button, Input } from "@the_human_cipher/components-library";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
 
-type Inputs = InferSchema<typeof AddTenantByInviteSchema>;
+type Inputs = InferSchema<typeof InviteTenantSchema>;
 
 interface Props {
   onSubmit(): void;
-  suites: SelectData<SN>[];
 }
 
-const InviteTenantForm = ({ onSubmit, suites }: Props) => {
-  const { handleSubmit, register, control, formState } = useForm<Inputs>({
+const InviteTenantForm = ({ onSubmit }: Props) => {
+  const queryClient = useQueryClient();
+
+  const { handleSubmit, register, formState } = useForm<Inputs>({
     mode: "onChange",
-    resolver: zodResolver(AddTenantByInviteSchema),
+    resolver: zodResolver(InviteTenantSchema),
   });
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -25,8 +27,8 @@ const InviteTenantForm = ({ onSubmit, suites }: Props) => {
       const res = await tenantAPI.inviteTenant(data);
 
       if (res) {
-        await tenantAPI.addTenant(data);
-        Alert.success("Tenant added successfully");
+        Alert.success("Invite has been sent to tenant");
+        queryClient.invalidateQueries({ queryKey: ["get-all-tenants"] });
         onSubmit();
       }
     } catch (error) {
@@ -48,22 +50,6 @@ const InviteTenantForm = ({ onSubmit, suites }: Props) => {
         hint={unwrapFormError("email")}
         isError={assertFormError("email")}
       />
-      <Controller
-        control={control}
-        name="suite_id"
-        render={({ field: { onChange, value } }) => (
-          <Select
-            options={suites}
-            onChange={onChange}
-            defaultValue={value}
-            label="Assign Suite Space"
-            placeholder="Select..."
-            hint={unwrapFormError("suite_id") ?? "Select the suite they occupy"}
-            isError={assertFormError("suite_id")}
-          />
-        )}
-      />
-
       <Button type="submit" loading={formState.isSubmitting}>
         Add
       </Button>

@@ -1,18 +1,23 @@
 import { Button, IconBox, Label, Title } from "@the_human_cipher/components-library";
 import Avatar from "../atoms/Avatar";
-import { ClassValues, clampText, cn, localLog } from "@/utils";
+import { ClassValues, clampText, cn } from "@/utils";
 import Link from "next/link";
-import { UrlObject } from "url";
-import { useRouter } from "next/router";
-import { useGetProfile } from "@/utils/hooks/api/useGetProfile";
 
 type Href = React.ComponentProps<typeof Link>["href"];
 
 interface TenantDetailCardProps {
   status: "paid" | "due";
-  onSuiteChange(): void;
+  onSuiteChange(hasSuite: boolean): void;
   onRemove(): void;
   href: Href;
+  user: {
+    avatar?: string;
+    name: string;
+  };
+  onboarded?: boolean;
+  suite?: DbSuite;
+  business?: DbBusiness;
+  email: string;
 }
 const buttonStyle = cn(
   "relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
@@ -27,32 +32,27 @@ interface StyledButtonProps {
   icon: React.ComponentProps<typeof IconBox>["icon"];
   text: string;
   className?: string;
-  href: string | UrlObject;
 }
 
-const StyledButton = ({ href, icon, onClick, className, text }: StyledButtonProps) => {
+const StyledButton = ({ icon, onClick, className, text }: StyledButtonProps) => {
   return (
-    <Link href={href}>
-      <Button className={cn(buttonStyle, className)} variant="dark" onClick={onClick}>
-        <IconBox icon={icon} className="max-md:h-3 max-md:w-3" />
-        <span>{text}</span>
-      </Button>
-    </Link>
+    <Button className={cn(buttonStyle, className)} variant="dark" onClick={onClick}>
+      <IconBox icon={icon} className="max-md:h-3 max-md:w-3" />
+      <span>{text}</span>
+    </Button>
   );
 };
 
 const TenantDetailCard = (props: TenantDetailCardProps) => {
-  const { onRemove, onSuiteChange, status, href } = props;
+  const { onRemove, onSuiteChange, status, href, user, suite, business, email } = props;
 
-  const router = useRouter();
+  const { avatar, name } = user;
 
-  // const { change_suite } = router.query;
+  const suiteText = suite ? "Change Suite" : "Assign Suite";
 
-  const { data: profile } = useGetProfile();
-
-  localLog(profile);
-
-  // const handleClose = () => router.push({ query: {} });
+  const handSuiteChange = () => {
+    return onSuiteChange(Boolean(suite));
+  };
 
   return (
     <div className="relative grid grid-cols-3 items-center gap-2 gap-y-3 rounded-md bg-light-gray p-4 md:grid-cols-4">
@@ -61,12 +61,12 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
       <div className="flex items-center gap-2 max-md:col-span-2">
         <Avatar
           className="h-8 w-8 rounded-md sm:h-12 sm:w-12 md:h-16 md:w-16"
-          src="https://picsum.photos/id/237/200/300"
-          name="rehk mansa"
+          src={avatar}
+          name={name}
         />
         <div className="md:space-y-1">
           <Title className="md:text-lg" weight="bold" level={4}>
-            Rehkmansa
+            {name}
           </Title>
           <Label
             type={status === "due" ? "danger" : "success"}
@@ -75,46 +75,37 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
             className="gap-1 py-0.5 text-[10px] capitalize max-md:hidden md:!py-1 md:!text-xs"
             label={cn("rent", status)}
           />
-          <div className="text-[10px] leading-none md:hidden">
-            {clampText("godspowernathaniel25@gmail.com")}
-          </div>
+          <div className="text-[10px] leading-none md:hidden">{clampText(email)}</div>
         </div>
       </div>
-      <FittedContainer className="max-md:ml-auto max-md:mr-0">
-        <div className="max-md:text-sm">Suite14C</div>
-        <div className="text-[10px] md:text-xs">Hairdresser</div>
+      <FittedContainer className="text-center max-md:ml-auto max-md:mr-0 max-md:text-xs">
+        <div className="max-md:text-sm">
+          {suite ? suite.suite_number : "Not Assigned"}
+        </div>
+        <div className="text-[10px] md:text-xs">
+          <span className="xs:hidden"> {clampText(business?.occupation ?? "", 16)}</span>
+          <span className="max-xs:hidden"> {business?.occupation}</span>
+        </div>
       </FittedContainer>
       <FittedContainer className="max-md:hidden">
         <StyledButton
-          icon="RefreshCw03"
-          text="Change Suite"
-          onClick={onSuiteChange}
-          href={{ query: { change_suite: "true" } }}
+          icon={suite ? "RefreshCw03" : "Plus"}
+          text={suiteText}
+          onClick={handSuiteChange}
         />
       </FittedContainer>
       <FittedContainer className="max-md:hidden">
-        <StyledButton
-          icon="Trash03"
-          text="Remove"
-          onClick={onRemove}
-          href={{ query: { remove_suite: "true" } }}
-        />
+        <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
       </FittedContainer>
 
       <FittedContainer className="ml-auto flex w-full items-center justify-end max-md:col-span-3 md:hidden">
         <div className="flex gap-2">
           <StyledButton
-            icon="RefreshCw03"
-            text="Change Suite"
-            onClick={onSuiteChange}
-            href={{ query: { change_suite: "true" } }}
+            icon={suite ? "RefreshCw03" : "Plus"}
+            text={suiteText}
+            onClick={handSuiteChange}
           />
-          <StyledButton
-            icon="Trash03"
-            text="Remove"
-            onClick={onRemove}
-            href={{ query: { remove_suite: "true" } }}
-          />
+          <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
         </div>
       </FittedContainer>
     </div>

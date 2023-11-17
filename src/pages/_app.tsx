@@ -12,8 +12,17 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
+const QueryConfig = {
+  defaultOptions: {
+    queries: {
+      staleTime: 15 * (60 * 1000), // Default stale time for all queries
+      cacheTime: 20 * (60 * 1000), // Default cache time for all queries
+    },
+  },
+};
+
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient(QueryConfig));
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(

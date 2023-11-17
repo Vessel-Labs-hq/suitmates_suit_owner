@@ -2,7 +2,7 @@ import { encryptionHandler } from "../functions/encrypt";
 import { AuthResponse, AuthResponseSchema } from "../schema/login";
 
 export class BaseAPIService {
-  protected storeIndex = "d-suite-tenant";
+  protected storeIndex = "d-suite-owner";
 
   protected storeUser(user: AuthResponse) {
     const res = encryptionHandler({
