@@ -7,7 +7,7 @@ import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import Tabs from "../Tabs";
 import TenantDetailCard from "@/components/molecules/TenantDetailCard";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
-import { cn, localLog } from "@/utils";
+import { cn } from "@/utils";
 import dayjs from "dayjs";
 import { useState } from "react";
 import tenantAPI from "@/utils/apis/tenant";
@@ -82,8 +82,7 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
   const handleRemove = async (id: SN) => {
     setLoading(true);
     try {
-      const res = await tenantAPI.removeTenant(id);
-      localLog(res);
+      await tenantAPI.removeTenant(id);
       queryClient.invalidateQueries({ queryKey: ["get-all-tenants"] });
       Alert.success("Tenant removed successfully");
     } catch (error) {

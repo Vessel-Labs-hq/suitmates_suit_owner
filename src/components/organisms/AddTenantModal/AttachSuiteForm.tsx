@@ -14,9 +14,11 @@ interface Props {
   onSubmit(): void;
   suites: SelectData<SN>[];
   email: string;
+  isReassign?: boolean;
+  tenantId: SN;
 }
 
-const AttachSuiteForm = ({ onSubmit, suites, email }: Props) => {
+const AttachSuiteForm = ({ onSubmit, suites, email, isReassign, tenantId }: Props) => {
   const queryClient = useQueryClient();
 
   const { handleSubmit, control, formState } = useForm<Inputs>({
@@ -29,15 +31,26 @@ const AttachSuiteForm = ({ onSubmit, suites, email }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      await tenantAPI.addTenant(data);
+      if (!isReassign) {
+        await tenantAPI.addTenant(data);
+      } else {
+        await tenantAPI.changeSuite({
+          suiteId: data.suite_id.value,
+          tenantId,
+        });
+      }
+
       queryClient.invalidateQueries({ queryKey: ["get-all-tenants"] });
       Alert.success("Tenant added to suite");
-
       onSubmit();
     } catch (error) {
       Alert.error(error);
     }
   };
+
+  const Label = isReassign
+    ? "Select the new suite they should occupy"
+    : "Select the suite they should occupy";
 
   const { unwrapFormError, assertFormError } = getFormStateError(formState);
 
@@ -54,16 +67,16 @@ const AttachSuiteForm = ({ onSubmit, suites, email }: Props) => {
             options={suites}
             onChange={onChange}
             defaultValue={value}
-            label="Assign Suite Space"
+            label={isReassign ? "Select New Suite" : "Assign Suite Space"}
             placeholder="Select..."
-            hint={unwrapFormError("suite_id") ?? "Select the suite they occupy"}
+            hint={unwrapFormError("suite_id") ?? Label}
             isError={assertFormError("suite_id")}
           />
         )}
       />
 
       <Button type="submit" loading={formState.isSubmitting}>
-        Add
+        {isReassign ? "Reassign" : "Add"}
       </Button>
     </form>
   );

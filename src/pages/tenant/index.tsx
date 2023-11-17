@@ -23,7 +23,7 @@ const TenantPage = () => {
   const { data: allTenants, isLoading, isError, error } = useGetAllTenants();
   const { data: profile } = useGetProfile();
 
-  const { add_tenant, suite_tenant } = router.query;
+  const { add_tenant, suite_tenant, intent } = router.query;
 
   localLog(allTenants);
 
@@ -35,6 +35,11 @@ const TenantPage = () => {
   const activeTenants = useMemo(
     () => (allTenants ?? []).filter(({ onboarded }) => onboarded),
     [allTenants]
+  );
+
+  const selectedTenant = useMemo(
+    () => (allTenants ?? []).find(({ id }) => id === Number(suite_tenant)),
+    [allTenants, suite_tenant]
   );
 
   const handleClose = () => router.push({ query: {} });
@@ -95,10 +100,18 @@ const TenantPage = () => {
             <TenantPageTab
               activeTenants={activeTenants}
               inActiveTenants={inActiveTenants}
-              onAddSuite={(id) => handleQueryChange({ suite_tenant: id })}
-              onSuiteChange={(id) => {
-                throw new Error("Function not implemented");
-              }}
+              onAddSuite={(id) =>
+                handleQueryChange({
+                  suite_tenant: id,
+                  intent: "assign",
+                })
+              }
+              onSuiteChange={(id) =>
+                handleQueryChange({
+                  suite_tenant: id,
+                  intent: "reassign",
+                })
+              }
             />
           ) : (
             <EmptyScreen
@@ -116,10 +129,13 @@ const TenantPage = () => {
 
       {assertQuery(suite_tenant) && (
         <AttachTenantModal
-          email={allTenants.find(({ id }) => id === Number(suite_tenant))?.email ?? "n/a"}
+          email={selectedTenant?.email ?? "n/a"}
           open
           onOpenChange={handleClose}
+          tenantId={suite_tenant}
           onTenantAdded={handleClose}
+          isReassign={intent === "reassign"}
+          tenant={selectedTenant}
         />
       )}
     </DashboardLayout>

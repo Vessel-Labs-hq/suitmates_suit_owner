@@ -60,22 +60,35 @@ export const InviteTenantModal = ({ onTenantAdded, ...props }: Props) => {
 
 interface AddTenantModalProps extends Props {
   email: string;
+  isReassign?: boolean;
+  tenantId: SN;
+  tenant?: DbGetAllTenants;
 }
-export const AttachTenantModal = ({
-  onTenantAdded,
-  email,
-  ...props
-}: AddTenantModalProps) => {
+export const AttachTenantModal = (props: AddTenantModalProps) => {
+  const { onTenantAdded, email, isReassign, tenantId, tenant, ...prop } = props;
   const { data: profile, isLoading, isError, error } = useGetProfile();
 
   const parsedSuite = useMemo(
     () =>
-      (profile?.space?.suite ?? []).map((ele) => ({
-        label: `Suite ${ele.suite_number}`,
-        value: String(ele.id),
-      })),
-    [profile]
+      (profile?.space?.suite ?? [])
+        .filter(({ id }) => {
+          // using filter to remove already existing suite for tenant
+          if (!isReassign) return true;
+
+          if (id === tenant?.suite?.id) {
+            return false;
+          }
+
+          return true;
+        })
+        .map((ele) => ({
+          label: `Suite ${ele.suite_number}`,
+          value: String(ele.id),
+        })),
+    [profile, isReassign, tenant]
   );
+
+  console.log(parsedSuite);
 
   if (isLoading) {
     return (
@@ -102,8 +115,17 @@ export const AttachTenantModal = ({
   }
 
   return (
-    <ModalWrapper title="Add Tenant to Suite" {...props}>
-      <AttachSuiteForm onSubmit={onTenantAdded} suites={parsedSuite} email={email} />
+    <ModalWrapper
+      title={isReassign ? "Reassign Tenant" : "Add Tenant to Suite"}
+      {...prop}
+    >
+      <AttachSuiteForm
+        onSubmit={onTenantAdded}
+        suites={parsedSuite}
+        isReassign={isReassign}
+        email={email}
+        tenantId={tenantId}
+      />
     </ModalWrapper>
   );
 };
