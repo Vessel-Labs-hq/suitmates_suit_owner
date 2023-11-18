@@ -26,7 +26,7 @@ const TenantPage = () => {
 
   const { add_tenant, suite_tenant, intent, edit_suite } = router.query;
 
-  localLog(allTenants);
+  localLog(profile);
 
   const inActiveTenants = useMemo(
     () => (allTenants ?? []).filter(({ onboarded }) => !onboarded),
@@ -140,7 +140,13 @@ const TenantPage = () => {
         />
       )}
 
-      {assertQuery(edit_suite) && <EditSuiteModal open onOpenChange={handleClose} />}
+      {assertQuery(edit_suite) && (
+        <EditSuiteModal
+          open
+          onOpenChange={handleClose}
+          suites={profile?.space.suite ?? []}
+        />
+      )}
     </DashboardLayout>
   );
 };

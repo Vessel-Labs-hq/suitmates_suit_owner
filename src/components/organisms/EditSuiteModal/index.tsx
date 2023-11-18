@@ -6,11 +6,14 @@ import { SuiteInfoSchema } from "@/utils/schema/details";
 import { InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Modal, Text } from "@the_human_cipher/components-library";
+import { useRef } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 type ModalProps = React.ComponentProps<typeof Modal>;
 
-interface EditSuiteModalProps extends ModalProps {}
+interface EditSuiteModalProps extends ModalProps {
+  suites: DbCreateSuite[];
+}
 
 type Inputs = InferSchema<typeof SuiteInfoSchema>;
 
@@ -22,12 +25,22 @@ const DefaultValues = {
   timing: { label: "", value: "" },
 };
 
-export const EditSuiteModal = (props: EditSuiteModalProps) => {
+export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
+  const cachedSuite = useRef(
+    suites.map(({ suite_cost, suite_number, suite_size, suite_type, timing }) => ({
+      suite_cost: String(suite_cost),
+      suite_number,
+      suite_size,
+      suite_type: JSON.parse(suite_type),
+      timing: JSON.parse(timing),
+    }))
+  );
+
   const { control, handleSubmit, register, formState } = useForm<Inputs>({
     resolver: zodResolver(SuiteInfoSchema),
     mode: "onChange",
     defaultValues: {
-      suites: [DefaultValues, DefaultValues, DefaultValues],
+      suites: cachedSuite.current,
     },
   });
 
@@ -36,13 +49,15 @@ export const EditSuiteModal = (props: EditSuiteModalProps) => {
     name: "suites",
   });
 
+  console.log(suites);
+
   const onFormSubmit: SubmitHandler<Inputs> = async () => {};
 
   return (
     <Modal {...props}>
       <Modal.Body enableBottomSheet className="md:max-w-[1100px]">
         <Modal.Title title="Make changes to the suites in this space" />
-        <Modal.Content className="py-0">
+        <Modal.Content className="py-0 max-md:pb-10">
           <div className="">
             <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
               <div className="pb-2">
