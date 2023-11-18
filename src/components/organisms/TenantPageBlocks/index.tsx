@@ -53,11 +53,15 @@ export const TenantPageHeader = ({
         <div className="flex items-center gap-4">
           <IconButton
             icon="Plus"
-            text="Add Tenat"
+            text="Add Tenant"
             href={{ query: { add_tenant: "true" } }}
           />
 
-          <IconButton icon="Edit05" text="Edit Suite" href="#" />
+          <IconButton
+            icon="Edit05"
+            text="Edit Suite"
+            href={{ query: { edit_suite: true } }}
+          />
         </div>
       </div>
     </div>
