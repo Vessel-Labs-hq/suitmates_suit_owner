@@ -1,13 +1,15 @@
 import Icons from "@/assets/icons";
 import SuiteInfoInputRow from "@/components/molecules/SuiteInfoInputRow";
-import { cn } from "@/utils";
+import onBoardingService from "@/utils/apis/onboarding";
+import Alert from "@/utils/base/alerts";
 import { onFormError } from "@/utils/functions/react-hook-form";
-import { SuiteInfoSchema } from "@/utils/schema/details";
+import { EditSuiteInfoSchema, SuiteInfoSchema } from "@/utils/schema/details";
 import { InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Modal, Text } from "@the_human_cipher/components-library";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
 
 type ModalProps = React.ComponentProps<typeof Modal>;
 
@@ -16,8 +18,12 @@ interface EditSuiteModalProps extends ModalProps {
 }
 
 type Inputs = InferSchema<typeof SuiteInfoSchema>;
+type InputsII = InferSchema<typeof EditSuiteInfoSchema>;
+
+type SuitesRow = InputsII["suites"][number];
 
 const DefaultValues = {
+  id: "new-element",
   suite_cost: "",
   suite_number: "",
   suite_size: "",
@@ -25,19 +31,23 @@ const DefaultValues = {
   timing: { label: "", value: "" },
 };
 
-export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
-  const cachedSuite = useRef(
-    suites.map(({ suite_cost, suite_number, suite_size, suite_type, timing }) => ({
-      suite_cost: String(suite_cost),
-      suite_number,
-      suite_size,
-      suite_type: JSON.parse(suite_type),
-      timing: JSON.parse(timing),
-    }))
-  );
+const convertSuite = (suites: DbSuite[]) =>
+  suites.map(({ suite_cost, suite_number, suite_size, suite_type, timing, id }) => ({
+    suite_cost: String(suite_cost),
+    suite_number,
+    suite_size,
+    suite_type: JSON.parse(suite_type),
+    timing: JSON.parse(timing),
+    id: String(id),
+  }));
 
-  const { control, handleSubmit, register, formState } = useForm<Inputs>({
-    resolver: zodResolver(SuiteInfoSchema),
+export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
+  const cachedSuite = useRef(convertSuite(suites));
+  const queryClient = useQueryClient();
+  const requestStatus = useRef(false);
+
+  const { control, handleSubmit, register, formState, reset } = useForm<Inputs>({
+    resolver: zodResolver(EditSuiteInfoSchema),
     mode: "onChange",
     defaultValues: {
       suites: cachedSuite.current,
@@ -49,17 +59,51 @@ export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
     name: "suites",
   });
 
-  console.log(suites);
+  const onFormSubmit: SubmitHandler<InputsII> = async (data) => {
+    const { suites } = data;
 
-  const onFormSubmit: SubmitHandler<Inputs> = async () => {};
+    const sendRequest = async ({ id: suiteId, ...payload }: SuitesRow) => {
+      try {
+        await onBoardingService.updateSuite({
+          data: payload,
+          suiteId,
+        });
+      } catch (error) {
+        requestStatus.current = true;
+        Alert.error(`Error updating suite information for ${payload.suite_number}`);
+      }
+    };
+
+    try {
+      const res = await Promise.allSettled(suites.map(sendRequest));
+      if (!requestStatus.current) {
+        console.log({ res, status: requestStatus.current });
+        Alert.success("Suites Updated Successfully");
+        queryClient.invalidateQueries({ queryKey: ["get-user-details"] });
+      }
+    } catch (error) {
+      Alert.error("An error occurred while updating one or more suites");
+      console.error("At least one request failed", error);
+    } finally {
+      requestStatus.current = false;
+    }
+  };
+
+  useEffect(() => {
+    const suiteII = convertSuite(suites);
+    cachedSuite.current = suiteII;
+    reset({
+      suites: suiteII,
+    });
+  }, [suites]);
 
   return (
     <Modal {...props}>
-      <Modal.Body enableBottomSheet className="md:max-w-[1100px]">
+      <Modal.Body enableBottomSheet className="pb-4 md:max-w-[1100px]">
         <Modal.Title title="Make changes to the suites in this space" />
-        <Modal.Content className="py-0 max-md:pb-10">
-          <div className="">
-            <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
+        <Modal.Content className="py-0">
+          <div className="pb-10">
+            <form onSubmit={handleSubmit(onFormSubmit as any, onFormError)}>
               <div className="pb-2">
                 <Text className="">You can add as many as is available</Text>
               </div>
@@ -87,14 +131,15 @@ export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
                     ))}
                   </div>
                 </div>
-                <Button
-                  type="button"
-                  dark
-                  className="mt-4 flex max-w-[140px] items-center justify-center gap-4 bg-[#333333] max-sm:py-3 max-sm:text-sm"
-                  onClick={() => append(DefaultValues)}
-                >
-                  {Icons.Plus} Add Field
-                </Button>
+                {false && (
+                  <Button
+                    type="button"
+                    className="mt-4 flex max-w-[140px] items-center justify-center gap-4 bg-[#333333] max-sm:py-3 max-sm:text-sm"
+                    onClick={() => append(DefaultValues)}
+                  >
+                    {Icons.Plus} Add Field
+                  </Button>
+                )}
               </div>
 
               <div className="mx-auto mt-8 max-w-sm">
