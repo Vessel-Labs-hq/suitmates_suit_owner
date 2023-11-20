@@ -2,6 +2,7 @@ import HeaderProfile from "@/components/atoms/HeaderProfile";
 import Notifications from "@/components/molecules/Notifications";
 import { cn, localLog } from "@/utils";
 import { useGetNotifications } from "@/utils/hooks/api/notifications";
+import { useGetAllTenants } from "@/utils/hooks/api/tenant";
 import Image from "next/image";
 import LogoDark from "public/logo-dark.png";
 
@@ -33,6 +34,7 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
   const { firstName, lastName } = assertName(name);
 
   const { data: notifications } = useGetNotifications();
+  const { data: tenants = [] } = useGetAllTenants();
 
   localLog({ notifications });
 
@@ -47,7 +49,11 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
           <Image className="max-w-[150px]" src={LogoDark} alt="Suitemates" />
         </div>
         <div className="flex items-start gap-2 max-md:ml-auto md:gap-4">
-          <Notifications notifications={["X", "x"]} hasNewNotifications />
+          <Notifications
+            notifications={notifications ?? []}
+            hasNewNotifications={notifications && notifications.length > 0}
+            tenants={tenants}
+          />
           <HeaderProfile
             email={email}
             name={cn(firstName, lastName)}
