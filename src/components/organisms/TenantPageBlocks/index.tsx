@@ -165,8 +165,8 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
             ))
           ) : (
             <EmptyScreen
-              desc="You have no pending invites"
-              title="No inactive tenant"
+              desc="You are yet to send out any invite"
+              title="No pending invites"
               className="min-h-[38vh]"
             />
           )}

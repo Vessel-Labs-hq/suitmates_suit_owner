@@ -34,7 +34,7 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
 
   const { data: notifications } = useGetNotifications();
 
-  localLog(notifications);
+  localLog({ notifications });
 
   return (
     <header className="flex flex-col-reverse justify-between gap-5  md:flex-row md:gap-4">

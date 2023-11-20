@@ -72,3 +72,14 @@ type RequestPriority =
   | Capitalize<TMaintenanceRequestPriority>;
 
 type MaintenanceRequestStatus = "IN_PROGRESS" | "PENDING" | "COMPLETED";
+
+interface DbNotification {
+  id: number;
+  text: string;
+  user_id: number;
+  opened: boolean;
+  service: string;
+  serviceId: number;
+  created_at: string;
+  updated_at: string;
+}
