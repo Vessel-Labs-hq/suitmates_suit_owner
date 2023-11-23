@@ -77,7 +77,6 @@ export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
     try {
       const res = await Promise.allSettled(suites.map(sendRequest));
       if (!requestStatus.current) {
-        console.log({ res, status: requestStatus.current });
         Alert.success("Suites Updated Successfully");
         queryClient.invalidateQueries({ queryKey: ["get-user-details"] });
       }
