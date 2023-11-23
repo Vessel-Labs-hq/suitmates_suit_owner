@@ -23,7 +23,7 @@ const UserQuickInfoCard = ({ suite, user, label }: UserQuickInfoCardProps) => (
         <Label
           label={label}
           type={getMaintenanceRequestPriorityType(label)}
-          className="max-sm:tex-[7px] px-3 text-[10px] capitalize max-md:px-2 max-md:py-0.5 md:text-xs"
+          className="px-3 text-[10px] capitalize max-md:px-2 max-md:py-0.5 max-sm:text-[7px] md:text-xs"
           small
           dots
         />

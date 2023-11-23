@@ -9,6 +9,7 @@ const config: Config = {
       center: true,
     },
     screens: {
+      xxs: "425px",
       xs: "450px",
       sm: "576px",
       md: "768px",
