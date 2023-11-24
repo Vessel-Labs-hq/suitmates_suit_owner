@@ -92,7 +92,7 @@ const RentHistoryTable = () => {
               {row.cells.map((cell) => (
                 <td
                   {...cell.getCellProps()}
-                  className={`p-4 text-center text-base font-bold ${
+                  className={`bg-[#F8F8FC] p-4 text-center text-base font-bold ${
                     cell.column.Header === "Amount"
                       ? "text-[#3BAF75]"
                       : cell.column.Header === "From"
@@ -108,9 +108,9 @@ const RentHistoryTable = () => {
                         Success
                       </NotificationUI.Label>
                     </div>
-                  ) : cell.column.Header === "empty" ? (
-                    <div className="w-[15px] rounded-full bg-light-green text-primary">
-                      <IconBox size={14} icon="ArrowNarrowDownLeft" />
+                  ) : cell.column.Header === "" ? (
+                    <div className="w-[40px] rounded-full bg-light-green text-primary">
+                      <IconBox size={40} icon="ArrowNarrowDownLeft" />
                     </div>
                   ) : (
                     cell.render("Cell")
