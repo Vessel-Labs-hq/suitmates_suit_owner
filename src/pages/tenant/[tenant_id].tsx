@@ -81,9 +81,8 @@ const TenantSinglePage = () => {
           </Link>
         </div>
 
-        {/* Tenant details wrapper */}
-        <div className="flex w-full justify-between rounded-xl bg-light-gray px-8 py-6 md:flex-col lg:flex-row">
-          <div className="flex gap-x-9 xxs:gap-x-2 md:gap-x-9 lg:gap-x-9">
+        <div className="flex w-full flex-col justify-between rounded-xl bg-light-gray py-6 sl:px-1 md:px-8 lg:flex-row">
+          <div className="flex xxs:gap-x-2 md:gap-x-8">
             <div>
               <label className="flex h-[120px] w-[120px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-3xl">
                 <img src={avatar} alt="Avatar" className="h-full w-full object-cover" />
@@ -91,12 +90,14 @@ const TenantSinglePage = () => {
             </div>
             <div className="mt-8 flex flex-col">
               <span className="text-2xl font-semibold">{`${first_name} ${last_name}`}</span>
-              <span className="text-base font-normal">{email}</span>
+              <span className="hidden text-base font-normal sl:block xxs:block lg:block">
+                {email}
+              </span>
             </div>
           </div>
 
           <div className="flex justify-between md:pl-[158px] lg:w-1/2 lg:items-center lg:gap-x-4 lg:pl-0">
-            <div className="">
+            <div className="hidden md:block">
               <div className="flex gap-x-2 md:flex-row lg:flex-row">
                 <span className="text-2xl font-semibold">
                   {selectedTenant.suite?.suite_number
@@ -115,13 +116,12 @@ const TenantSinglePage = () => {
               <span className="text-base font-normal">{tenantOccupation.label}</span>
             </div>
 
-            <div className="flex flex-col xxs:hidden md:flex lg:flex">
+            <div className="hidden flex-col md:flex">
               <span className="text-2xl font-semibold md:text-xl">{phone_number}</span>
               <span className="text-base font-normal">{`www.${websiteWithoutProtocol}`}</span>
             </div>
           </div>
         </div>
-        {/* End */}
 
         <div className="max-w-[900px] space-y-8 pb-40">
           <div>
@@ -133,7 +133,7 @@ const TenantSinglePage = () => {
                 </label>
               </div>
 
-              <div className="mt-10 flex gap-9 md:flex-row">
+              <div className="mt-10 flex flex-col gap-9 md:flex-row">
                 <div className="flex flex-col gap-y-2">
                   <span className="text-base font-bold">Business Name</span>
                   <label className="w-58 flex h-12 items-center justify-center rounded-lg bg-light-gray px-4 text-center text-base font-normal">
@@ -158,7 +158,7 @@ const TenantSinglePage = () => {
                 </label>
               </div>
 
-              <div className="mt-10 flex gap-9 md:flex-row">
+              <div className="mt-10 flex items-center gap-9 xsl:flex-col sl:flex-col md:flex-row">
                 <div className="flex flex-col gap-y-2">
                   <span className="text-base font-bold">Documents</span>
                   <label className="flex h-12 w-48 items-center justify-center rounded-lg bg-light-gray px-4 text-center text-base font-normal">
