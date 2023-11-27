@@ -16,6 +16,7 @@ import {
   TenantPageTab,
 } from "@/components/organisms/TenantPageBlocks";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
+import { EditSuiteModal } from "@/components/organisms/EditSuiteModal";
 
 const TenantPage = () => {
   const router = useRouter();
@@ -23,9 +24,9 @@ const TenantPage = () => {
   const { data: allTenants, isLoading, isError, error } = useGetAllTenants();
   const { data: profile } = useGetProfile();
 
-  const { add_tenant, suite_tenant, intent } = router.query;
+  const { add_tenant, suite_tenant, intent, edit_suite } = router.query;
 
-  localLog(allTenants);
+  localLog(profile);
 
   const inActiveTenants = useMemo(
     () => (allTenants ?? []).filter(({ onboarded }) => !onboarded),
@@ -91,7 +92,7 @@ const TenantPage = () => {
 
             <IconButton
               icon="Plus"
-              text="Add Tenat"
+              text="Add Tenant"
               href={{ query: { add_tenant: "true" } }}
               className="h-10 w-fit gap-0.5 rounded-md px-2 py-2 text-xs md:hidden"
             />
@@ -136,6 +137,14 @@ const TenantPage = () => {
           onTenantAdded={handleClose}
           isReassign={intent === "reassign"}
           tenant={selectedTenant}
+        />
+      )}
+
+      {assertQuery(edit_suite) && (
+        <EditSuiteModal
+          open
+          onOpenChange={handleClose}
+          suites={profile?.space.suite ?? []}
         />
       )}
     </DashboardLayout>

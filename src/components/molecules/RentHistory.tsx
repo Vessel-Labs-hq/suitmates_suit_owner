@@ -7,7 +7,9 @@ const RentNotification = () => (
         <div className="w-[15px] rounded-full bg-light-green text-primary">
           <IconBox size={14} icon="ArrowNarrowDownLeft" />
         </div>
-        <span className="w-[calc(100%-15px)] whitespace-nowrap text-xs">Rent Payment</span>
+        <span className="w-[calc(100%-15px)] whitespace-nowrap text-xs">
+          Rent Payment
+        </span>
       </div>
       <div>
         <Title level={5} weight="bold" className="leading-none text-primary">

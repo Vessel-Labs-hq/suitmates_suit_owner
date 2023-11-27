@@ -53,11 +53,15 @@ export const TenantPageHeader = ({
         <div className="flex items-center gap-4">
           <IconButton
             icon="Plus"
-            text="Add Tenat"
+            text="Add Tenant"
             href={{ query: { add_tenant: "true" } }}
           />
 
-          <IconButton icon="Edit05" text="Edit Suite" href="#" />
+          <IconButton
+            icon="Edit05"
+            text="Edit Suite"
+            href={{ query: { edit_suite: true } }}
+          />
         </div>
       </div>
     </div>
@@ -163,8 +167,8 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
             ))
           ) : (
             <EmptyScreen
-              desc="You have no pending invites"
-              title="No inactive tenant"
+              desc="You are yet to send out any invite"
+              title="No pending invites"
               className="min-h-[38vh]"
             />
           )}

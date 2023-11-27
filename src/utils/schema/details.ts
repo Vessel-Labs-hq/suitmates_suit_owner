@@ -16,6 +16,17 @@ export const PersonalInfoSchema = z.object({
   bio: z.optional(createStringSchema({ key: "Bio" })),
 });
 
+export const EditPersonalInfoSchema = z
+  .object({
+    first_name: createStringSchema("First name"),
+    last_name: createStringSchema("Last name"),
+    phone_number: createStringSchema("Phone number"),
+    email: createStringSchema("Email address"),
+    bio: createStringSchema("Bio"),
+    avatar: z.union([z.string(), createFileSchema({ key: "Profile Image" })]),
+  })
+  .deepPartial();
+
 export const SpaceInfoSchema = z.object({
   space_name: createStringSchema("Name"),
   space_address: createStringSchema("Address"),
@@ -29,6 +40,10 @@ export const SpaceInfoSchema = z.object({
   }),
 });
 
+export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({
+  space_size: z.optional(z.any()),
+});
+
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
   suite_size: createStringSchema("Size"),
@@ -37,9 +52,20 @@ export const SuiteDetailSchema = z.object({
   timing: createSelectSchema("Duration"),
 });
 
+export const EditSuiteDetailSchema = SuiteDetailSchema.extend({
+  id: createStringSchema("Suite Id"),
+});
+
 export const SuiteInfoSchema = z.object(
   {
     suites: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
+  },
+  { ...createDefaultError("Suite Info") }
+);
+
+export const EditSuiteInfoSchema = z.object(
+  {
+    suites: z.array(EditSuiteDetailSchema).min(1, "Suite Info is required"),
   },
   { ...createDefaultError("Suite Info") }
 );
