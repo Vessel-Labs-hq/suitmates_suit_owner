@@ -1,22 +1,17 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import { InviteTenantModal } from "@/components/organisms/AddTenantModal";
-import { assertQuery } from "@/utils";
-import { Button, IconBox, Input } from "@the_human_cipher/components-library";
+import { IconBox } from "@the_human_cipher/components-library";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import UserQuickInfoCard from "@/components/molecules/UserQuickInfoCard";
 import { useGetAllTenants } from "@/utils/hooks/api/tenant";
-import useSession from "@/utils/hooks/useSession";
-import { useQueryClient } from "react-query";
+
 import { useMemo } from "react";
 import { FaviconLoader } from "@/components/atoms/Loader";
 import Icons from "@/assets/icons";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 const TenantSinglePage = () => {
   const router = useRouter();
 
-  const { add_tenant, tenant_id } = router.query;
+  const { tenant_id } = router.query;
 
   const { data, isLoading, isError } = useGetAllTenants();
 
@@ -53,11 +48,6 @@ const TenantSinglePage = () => {
       </DashboardLayout>
     );
   }
-
-  const handleClose = () =>
-    router.push({
-      query: { tenant_id },
-    });
 
   const websiteUrl = new URL(selectedTenant.businesses[0].website);
   const websiteWithoutProtocol = websiteUrl.hostname;
