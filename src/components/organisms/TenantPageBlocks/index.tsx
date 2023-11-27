@@ -121,9 +121,7 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                         onAddSuite(id);
                       }
                     }}
-                    href={{
-                      pathname: `/#`,
-                    }}
+                    href="#"
                     status={idx % 2 === 0 ? "paid" : "due"}
                     user={{
                       avatar,
