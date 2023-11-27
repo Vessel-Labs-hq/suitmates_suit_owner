@@ -113,23 +113,6 @@ export function DashboardRentHistoryChart() {
   );
 }
 
-// const config = {
-//   type: "line",
-//   data: data,
-//   options: {
-//     responsive: true,
-//     plugins: {
-//       legend: {
-//         position: "top",
-//       },
-//       title: {
-//         display: true,
-//         text: "Chart.js Line Chart",
-//       },
-//     },
-//   },
-// };
-
 const MissedRentData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
   datasets: [
@@ -159,7 +142,7 @@ export function MissedRentHistoryChart() {
     <Line
       data={MissedRentData}
       options={{
-        responsive: false,
+        responsive: true,
         maintainAspectRatio: false,
         scales: {
           y: {

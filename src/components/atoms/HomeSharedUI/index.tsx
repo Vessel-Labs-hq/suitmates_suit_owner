@@ -33,7 +33,7 @@ export const HomeRentGraph = () => (
         <IconBox icon="CurrencyDollarCircle" size={26} className="translate-y-[1px]" />
       </div>
       <Title level={4} className="text-white" weight="bold">
-        Rent Paid this Month{" "}
+        Rent Paid this
       </Title>
     </div>
     <h2 className="mt-1 text-xl font-bold text-white md:text-4xl xxl:text-center">

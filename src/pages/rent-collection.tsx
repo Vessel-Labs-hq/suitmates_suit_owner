@@ -11,13 +11,13 @@ const RentCollectionPage = () => (
     <div className="flex flex-col gap-4 md:mb-8 md:flex-row">
       <div className="w-full">
         <HomeBentoWrapper>
-          <div>
+          <div className="w-full">
             <div className="flex flex-col">
               <span>Total Income</span>
               <span className="text-2xl font-bold text-[#3BAF75]">$ 350,007.89</span>
             </div>
 
-            <div className="">
+            <div className="w-full">
               <MissedRentHistoryChart />
             </div>
           </div>

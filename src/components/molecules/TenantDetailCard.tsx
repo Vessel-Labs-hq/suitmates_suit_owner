@@ -83,15 +83,8 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
           {suite ? suite.suite_number : "Not Assigned"}
         </div>
         <div className="text-[10px] md:text-xs">
-          <span className="xs:hidden">
-            {clampText(
-              business?.occupation ? JSON.parse(business?.occupation)?.label : "",
-              16
-            )}
-          </span>
-          <span className="max-xs:hidden">
-            {business?.occupation && JSON.parse(business?.occupation)?.label}
-          </span>
+          <span className="xs:hidden">{clampText(business?.occupation ?? "", 16)}</span>
+          <span className="max-xs:hidden">{business?.occupation}</span>
         </div>
       </FittedContainer>
       <FittedContainer className="max-md:hidden">
