@@ -17,7 +17,7 @@ const RentCollectionPage = () => (
               <span className="text-2xl font-bold text-[#3BAF75]">$ 350,007.89</span>
             </div>
 
-            <div className="w-full">
+            <div className="h-64 w-full">
               <MissedRentHistoryChart />
             </div>
           </div>

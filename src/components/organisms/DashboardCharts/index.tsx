@@ -120,6 +120,7 @@ const MissedRentData = {
       label: "Rent",
       data: [1000, 1400, 1300, 2001, 3000, 3500],
       borderColor: "#3BAF75",
+      backgroundColor: "#3BAF75",
     },
   ],
 };
