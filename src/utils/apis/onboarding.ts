@@ -9,8 +9,9 @@ import {
 } from "../schema/details";
 import { InferSchema } from "../schema/helpers";
 
+type SUITES = InferSchema<typeof SuiteInfoSchema>["suites"];
 interface CreateSuitePayload {
-  suites: InferSchema<typeof SuiteInfoSchema>["suites"];
+  suites: SUITES;
   spaceId: string;
 }
 
@@ -21,6 +22,11 @@ interface AddAccountPayload {
 
 interface UpdateAccountPayload {
   accountDetails: InferSchema<typeof AccountInoSchema>;
+}
+
+interface UpdateSuitePayload {
+  suiteId: SN;
+  data: SUITES[number];
 }
 
 class Details extends BaseAPIService {
@@ -107,6 +113,24 @@ class Details extends BaseAPIService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async updateSuite({ suiteId, data }: UpdateSuitePayload) {
+    type RES = APIResponse<unknown>;
+
+    const { suite_cost, timing, suite_type, ...rest } = data;
+
+    const payload = {
+      ...rest,
+      suite_cost: Number(suite_cost),
+      suite_type: JSON.stringify(suite_type),
+      timing: JSON.stringify(timing),
+    };
+
+    // space/update/suite
+
+    const res = await API.post<RES>(`/space/update/suite/${suiteId}`, payload);
+    return res.data.data;
   }
 
   async addAccountDetails(data: AddAccountPayload) {
