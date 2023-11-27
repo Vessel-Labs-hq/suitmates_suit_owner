@@ -122,7 +122,7 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                       }
                     }}
                     href={{
-                      pathname: `/tenant/${id}`,
+                      pathname: `/#`,
                     }}
                     status={idx % 2 === 0 ? "paid" : "due"}
                     user={{
