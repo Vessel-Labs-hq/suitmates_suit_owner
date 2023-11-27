@@ -2,13 +2,18 @@ import { cn } from "@/utils";
 import * as Popover from "@radix-ui/react-popover";
 import NotificationUI from "./NotificationUI";
 import { IconSlot } from "@/assets/icons";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 interface NotificationsProps {
-  notifications: string[];
+  notifications: DbNotification[];
   hasNewNotifications?: boolean;
+  tenants: DbGetAllTenants[] | readonly DbGetAllTenants[];
 }
 const Notifications = (props: NotificationsProps) => {
-  const { notifications, hasNewNotifications } = props;
+  const { notifications, hasNewNotifications, tenants } = props;
 
   return (
     <Popover.Root>
@@ -60,24 +65,36 @@ const Notifications = (props: NotificationsProps) => {
         >
           {notifications.length > 0 ? (
             <ul className="space-y-6">
-              {notifications.map((_, idx) => (
-                <li key={idx}>
-                  <NotificationUI>
-                    <NotificationUI.Content
-                      title={`Water heater Issues (${idx + 1})`}
-                      style={{ titleStyle: "text-sm whitespace-nowrap" }}
-                      avatarProps={{ name: "Suite 14c" }}
-                    >
-                      <div className="flex items-center gap-1">
-                        <span>2wks ago</span>
-                        <span className="text-suite-dark">•</span>
-                        <span className="text-suite-dark">Suite 12b</span>
-                      </div>
-                    </NotificationUI.Content>
-                    <div className="flex h-1.5 w-1.5 rounded-full bg-black bg-opacity-50" />
-                  </NotificationUI>
-                </li>
-              ))}
+              {notifications.map(({ created_at, id, text, service, user_id }) => {
+                const selectedTenant = tenants.find(
+                  ({ id: tenantId }) => tenantId == user_id
+                );
+
+                const { first_name, last_name } = selectedTenant ?? {};
+
+                return (
+                  <li key={id} className="w-full">
+                    <NotificationUI className="w-full">
+                      <NotificationUI.Content
+                        title={text}
+                        style={{
+                          titleStyle: "text-sm",
+                          wrapperStyle: "w-full overflow-hidden",
+                        }}
+                        avatarProps={{ name: cn(first_name, last_name) }}
+                      >
+                        <div className="mt-1 flex items-center gap-1">
+                          <span>{dayjs().to(dayjs(created_at))}</span>
+                          <span className="text-suite-dark">•</span>
+                          <span className="capitalize text-suite-dark">
+                            {service.replaceAll("-", " ")}
+                          </span>
+                        </div>
+                      </NotificationUI.Content>
+                    </NotificationUI>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <div className="grid h-full place-content-center text-center">

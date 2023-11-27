@@ -37,9 +37,20 @@ export const SuiteDetailSchema = z.object({
   timing: createSelectSchema("Duration"),
 });
 
+export const EditSuiteDetailSchema = SuiteDetailSchema.extend({
+  id: createStringSchema("Suite Id"),
+});
+
 export const SuiteInfoSchema = z.object(
   {
     suites: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
+  },
+  { ...createDefaultError("Suite Info") }
+);
+
+export const EditSuiteInfoSchema = z.object(
+  {
+    suites: z.array(EditSuiteDetailSchema).min(1, "Suite Info is required"),
   },
   { ...createDefaultError("Suite Info") }
 );
