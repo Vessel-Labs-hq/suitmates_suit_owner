@@ -1,3 +1,0 @@
-interface ProfileProps {
-  userSuite: DbUserProfileResponse;
-}
