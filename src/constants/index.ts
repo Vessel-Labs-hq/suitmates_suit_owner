@@ -57,16 +57,16 @@ export const SalonOccupations: TSalonOccupations[] = [
 ];
 
 export const SuiteAmenities = [
-  { label: "Event/conference room", value: "Event/conference room" },
-  { label: "Wifi / high-speed internet", value: "Wifi / high-speed internet" },
-  { label: "Laundry room", value: "Laundry room" },
-  { label: "24/7hr door access", value: "24/7hr door access" },
-  { label: "Cleaning services", value: "Cleaning services" },
-  { label: "Parking", value: "Parking" },
-  { label: "Utilities", value: "Utilities" },
-  { label: "Security", value: "Security" },
-  { label: "Furniture", value: "Furniture" },
-  { label: "Pet friendly", value: "Pet friendly" },
+  "Event/conference room",
+  "Wifi / high-speed internet",
+  "Laundry room",
+  "24/7hr door access",
+  "Cleaning services",
+  "Parking",
+  "Utilities",
+  "Security",
+  "Furniture",
+  "Pet friendly",
 ];
 
 export const MaintenanceQueries = {

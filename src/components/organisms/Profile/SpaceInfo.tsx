@@ -45,7 +45,7 @@ const fields: Field[] = [
 ];
 
 const SpaceInformation = ({ onSubmit }: Props) => {
-  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
+  const { register, formState, handleSubmit, control } = useForm<Inputs>({
     resolver: zodResolver(SpaceInfoSchema),
     mode: "onChange",
   });
@@ -70,8 +70,6 @@ const SpaceInformation = ({ onSubmit }: Props) => {
   const assertError = (key: keyof Inputs): boolean => {
     return Boolean(formState.errors[key]?.message);
   };
-
-  const watchAmenities = watch("space_amenities");
 
   const { isSubmitting } = formState;
 
@@ -100,29 +98,26 @@ const SpaceInformation = ({ onSubmit }: Props) => {
               control={control}
               name="space_amenities"
               render={({ field: { value, onChange, ...rest } }) => (
-                <div>
-                  <Select
-                    {...rest}
-                    options={SuiteAmenities}
-                    label="Space amenities"
-                    placeholder="Select..."
-                    onChange={(e) => onChange(e)}
-                    value={watchAmenities}
-                    multiple
-                    isError={assertError("space_amenities")}
-                    hint={getFormError("space_amenities") ?? "Select all that is offered"}
-                    hideMultipleSelectedValue
-                    multipleSelectedLabel={
-                      <span className="lowercase first-letter:uppercase">
-                        Selected +{watchAmenities?.length} option(s)
-                      </span>
-                    }
-                  />
-                </div>
+                <Select
+                  {...rest}
+                  options={SuiteAmenities}
+                  label="Space amenities"
+                  placeholder="Select..."
+                  onChange={(e) => onChange(e)}
+                  value={value}
+                  multiple
+                  isError={assertError("space_amenities")}
+                  hint={getFormError("space_amenities") ?? "Select all that is offered"}
+                  hideMultipleSelectedValue
+                />
               )}
             />
           </div>
-          <Button type="submit" className="mx-auto mt-10 block max-w-xs" loading={isSubmitting}>
+          <Button
+            type="submit"
+            className="mx-auto mt-10 block max-w-xs"
+            loading={isSubmitting}
+          >
             Next
           </Button>
         </form>

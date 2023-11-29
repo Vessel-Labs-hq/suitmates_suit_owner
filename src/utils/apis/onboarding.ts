@@ -100,9 +100,9 @@ class Details extends BaseAPIService {
 
     const data = suites.map(({ suite_cost, suite_type, timing, ...rest }) => ({
       ...rest,
+      suite_type,
+      timing,
       suite_cost: Number(suite_cost),
-      suite_type: JSON.stringify(suite_type),
-      timing: JSON.stringify(timing),
     }));
 
     try {

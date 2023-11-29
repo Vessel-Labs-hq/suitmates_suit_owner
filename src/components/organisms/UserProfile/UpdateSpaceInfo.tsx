@@ -42,8 +42,6 @@ const fields: Field[] = [
   },
 ];
 
-const SuiteAmenitiesArr = SuiteAmenities.map(({ value }) => value);
-
 const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProps) => {
   const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
     resolver: zodResolver(UpdateSpaceInfoSchema),
@@ -55,7 +53,7 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
       space_amenities: [],
     },
   });
-  const [amenities, setAmenities] = useState<{ label: string; value: string }[]>(
+  const [amenities, setAmenities] = useState(
     JSON.parse(userProfile.space?.space_amenities as string) ?? []
   );
 
@@ -63,7 +61,10 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
     new Array(amenities.length).fill(true)
   );
 
-  const handleCloseAmenities = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCloseAmenities = (
+    index: number,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
     const updatedAmenities = amenities.filter((_, i) => i !== index);
     setAmenities(updatedAmenities);
@@ -109,7 +110,9 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="mx-auto max-w-[1180px]">
             <div className="mt-12">
-              <span className="text-base font-bold text-[#333333]">Space Information</span>
+              <span className="text-base font-bold text-[#333333]">
+                Space Information
+              </span>
             </div>
             <div className="mt-10 grid gap-x-28 gap-y-6 md:grid-cols-2 md:gap-y-10">
               <label>
@@ -132,11 +135,14 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
                     <div>
                       <Select
                         {...rest}
-                        options={SuiteAmenitiesArr}
+                        options={SuiteAmenities}
                         label="Space amenities"
                         placeholder="Select..."
                         onChange={(amenity) => {
-                          const amenitiesArr = amenity.map((ele) => ({ label: ele, value: ele }));
+                          const amenitiesArr = amenity.map((ele) => ({
+                            label: ele,
+                            value: ele,
+                          }));
 
                           onChange(amenitiesArr);
                           setAmenities(amenitiesArr);
@@ -194,7 +200,9 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
             <div className="mt-8 flex justify-end">
               <Button
                 className={`h-16 w-28 rounded-xl ${
-                  isEditMode ? "cursor-not-allowed bg-[#f9f7f7]" : "bg-green-500 hover:bg-green-600"
+                  isEditMode
+                    ? "cursor-not-allowed bg-[#f9f7f7]"
+                    : "bg-green-500 hover:bg-green-600"
                 } text-lg font-medium text-white`}
                 disabled={isEditMode}
                 type="submit"
