@@ -22,6 +22,10 @@ API.interceptors.request.use(
   (config) => {
     const user = authService.getSession();
 
+    // if (config.method?.toLowerCase() === "get") {
+    //   config.headers["ngrok-skip-browser-warning"] = "69420";
+    // }
+
     if (user) {
       config.headers.Authorization = `Bearer ${user.accessToken}`;
     }

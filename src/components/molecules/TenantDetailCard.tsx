@@ -95,7 +95,11 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
         />
       </FittedContainer>
       <FittedContainer className="max-md:hidden">
-        <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
+        {suite ? (
+          <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
+        ) : (
+          "No Suite Added"
+        )}
       </FittedContainer>
 
       <FittedContainer className="ml-auto flex w-full items-center justify-end max-md:col-span-3 md:hidden">
@@ -105,7 +109,9 @@ const TenantDetailCard = (props: TenantDetailCardProps) => {
             text={suiteText}
             onClick={handSuiteChange}
           />
-          <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
+          {suite ? (
+            <StyledButton icon="Trash03" text="Remove" onClick={onRemove} />
+          ) : null}
         </div>
       </FittedContainer>
     </div>

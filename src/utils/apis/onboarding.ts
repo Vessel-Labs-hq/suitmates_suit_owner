@@ -123,8 +123,8 @@ class Details extends BaseAPIService {
     const payload = {
       ...rest,
       suite_cost: Number(suite_cost),
-      suite_type: JSON.stringify(suite_type),
-      timing: JSON.stringify(timing),
+      suite_type,
+      timing,
     };
 
     // space/update/suite
