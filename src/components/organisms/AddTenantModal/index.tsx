@@ -88,8 +88,6 @@ export const AttachTenantModal = (props: AddTenantModalProps) => {
     [profile, isReassign, tenant]
   );
 
-  console.log(parsedSuite);
-
   if (isLoading) {
     return (
       <ModalWrapper {...props}>

@@ -23,7 +23,6 @@ const UserProfile = () => {
   });
 
   const userProfile = data?.data;
-  console.log("user profile", userProfile);
 
   return userProfile ? (
     <>

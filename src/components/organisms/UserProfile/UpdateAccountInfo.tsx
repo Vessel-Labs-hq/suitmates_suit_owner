@@ -46,7 +46,6 @@ const UpdateAccountInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfilePr
       const res = await onBoardingService.updateAccountDetails({
         accountDetails: data,
       });
-      console.log("response", res);
 
       if (res) {
         Alert.success("Account updated successfully");
@@ -87,7 +86,9 @@ const UpdateAccountInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfilePr
             <div className="mt-4 flex justify-end">
               <Button
                 className={`h-16 w-28 rounded-xl ${
-                  isEditMode ? "cursor-not-allowed bg-[#f9f7f7]" : "bg-green-500 hover:bg-green-600"
+                  isEditMode
+                    ? "cursor-not-allowed bg-[#f9f7f7]"
+                    : "bg-green-500 hover:bg-green-600"
                 } text-lg font-medium text-white`}
                 disabled={isEditMode}
                 type="submit"

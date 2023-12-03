@@ -84,7 +84,6 @@ const UpdateSpaceInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProp
         space_amenities: amenities,
       };
       const res = await onBoardingService.updateSpace(updatedData);
-      console.log("space response", res);
       if (res) {
         Alert.success("Space information updated successfully");
       }
