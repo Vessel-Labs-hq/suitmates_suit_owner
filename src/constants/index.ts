@@ -25,7 +25,7 @@ while (time < 25) {
   time++;
 }
 
-export const WorkingHours = timeArr;
+export const WorkingHours = timeArr.map((ele) => ele.label);
 
 export const DaysOfTheWeek = [
   "monday",
@@ -91,12 +91,6 @@ export const AllMaintenanceRequestStatus: MaintenanceRequestStatus[] = [
   "COMPLETED",
 ];
 
-export const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) => ({
-  label: formatWord(ele.toLowerCase()),
-  value: ele,
-}));
-
-export const WorkingHoursOptions = WorkingHours.map((time) => ({
-  label: time.label,
-  value: String(time.value),
-}));
+export const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) =>
+  formatWord(ele.toLowerCase())
+);
