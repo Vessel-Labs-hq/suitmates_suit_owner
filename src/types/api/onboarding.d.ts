@@ -116,7 +116,7 @@ interface DbUserProfileResponse {
     created_at: string;
     updated_at: string;
     deleted: null;
-    suite: Suite[];
+    suite: DbSuite[];
   };
 
   onboarded: true;
@@ -136,5 +136,4 @@ interface UpdateAccountPayload {
   space_name: string;
   space_address: string;
   space_size: string;
-  // spaceId: string;
 }

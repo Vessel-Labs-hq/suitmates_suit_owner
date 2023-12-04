@@ -34,7 +34,9 @@ export const SpaceInfoSchema = z.object({
    * https://github.com/colinhacks/zod/discussions/330#discussioncomment-7097769
    */
   space_size: createInputNumberSchema("Size"),
-  space_amenities: z.array(createStringSchema("Amenities")),
+  space_amenities: z
+    .array(createStringSchema("Amenities"))
+    .min(1, "Space Amenities cannot be empty"),
 });
 
 export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({

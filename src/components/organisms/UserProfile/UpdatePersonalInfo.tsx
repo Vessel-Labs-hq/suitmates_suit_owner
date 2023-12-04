@@ -42,7 +42,7 @@ const fields: Fields[] = [
 ];
 
 const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProps) => {
-  const { register, formState, handleSubmit, control, watch, setValue } = useForm<Inputs>({
+  const { register, formState, handleSubmit, control, setValue } = useForm<Inputs>({
     resolver: zodResolver(EditPersonalInfoSchema),
     mode: "onChange",
     values: userProfile,
@@ -68,13 +68,26 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
     }
   };
 
-  const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const handleEditClick = () => {
     if (isEditMode) {
       setIsEditMode(false);
     } else {
       setIsEditMode(true);
     }
+
+    // better explained here
+
+    let aVar = true;
+
+    if (aVar) {
+      aVar = false;
+    } else {
+      aVar = true;
+    }
+
+    // better done as
+
+    aVar = !aVar;
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -117,7 +130,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                       className={cn(
                         "relative flex h-[180px] w-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-[6px] border-[#F0D0BE]",
                         getFormError("avatar") && "border-borderNegative/70",
-                        isEditMode && "pointer-events-none" // Disable pointer events in edit mode
+                        isEditMode && "pointer-events-none"
                       )}
                     >
                       <span className="h-full w-full [&>*]:h-full [&>*]:w-full">
@@ -132,7 +145,9 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                             "absolute inset-0 top-0 z-[1] flex w-full items-center justify-center bg-[#F3F3F3] bg-cover bg-center text-sm hover:cursor-pointer"
                           )}
                           style={{
-                            backgroundImage: `url(${imageSrc ? imageSrc : userProfile.avatar})`,
+                            backgroundImage: `url(${
+                              imageSrc ? imageSrc : userProfile.avatar
+                            })`,
                           }}
                           onMouseOver={() => setHovered(true)}
                           onMouseLeave={() => setHovered(false)}
@@ -165,7 +180,9 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                       {selectedFile ? (
                         ""
                       ) : (
-                        <span className="absolute bottom-3 left-1/2 -translate-x-1/2">Upload</span>
+                        <span className="absolute bottom-3 left-1/2 -translate-x-1/2">
+                          Upload
+                        </span>
                       )}
                     </label>
                   )}
@@ -221,9 +238,10 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
             <div className="flex justify-end">
               <Button
-                className={`w-28 rounded-xl ${
-                  isEditMode ? "cursor-not-allowed bg-[#f9f7f7]" : "bg-green-500 hover:bg-green-600"
-                } text-lg font-medium text-white`}
+                className={cn(
+                  "flex h-12 max-w-[200px] items-center justify-center",
+                  isEditMode && "bg-gray"
+                )}
                 disabled={isEditMode}
                 type="submit"
                 loading={isLoading}
