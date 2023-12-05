@@ -1,3 +1,4 @@
+import { cn } from "@/utils";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { AccountInoSchema } from "@/utils/schema/details";
@@ -46,7 +47,6 @@ const UpdateAccountInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfilePr
       const res = await onBoardingService.updateAccountDetails({
         accountDetails: data,
       });
-      console.log("response", res);
 
       if (res) {
         Alert.success("Account updated successfully");

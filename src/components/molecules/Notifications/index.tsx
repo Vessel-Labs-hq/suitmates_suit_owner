@@ -65,7 +65,7 @@ const Notifications = (props: NotificationsProps) => {
         >
           {notifications.length > 0 ? (
             <ul className="space-y-6">
-              {notifications.map(({ created_at, id, text, service, user_id }) => {
+              {notifications?.map(({ created_at, id, text, service, user_id }) => {
                 const selectedTenant = tenants.find(
                   ({ id: tenantId }) => tenantId == user_id
                 );

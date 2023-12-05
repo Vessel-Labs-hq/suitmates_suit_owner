@@ -70,13 +70,26 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
     }
   };
 
-  const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const handleEditClick = () => {
     if (isEditMode) {
       setIsEditMode(false);
     } else {
       setIsEditMode(true);
     }
+
+    // better explained here
+
+    let aVar = true;
+
+    if (aVar) {
+      aVar = false;
+    } else {
+      aVar = true;
+    }
+
+    // better done as
+
+    aVar = !aVar;
   };
 
   const getFormError = (key: keyof Inputs) => {
@@ -119,7 +132,7 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
                       className={cn(
                         "relative flex h-[180px] w-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-[6px] border-[#F0D0BE]",
                         getFormError("avatar") && "border-borderNegative/70",
-                        isEditMode && "pointer-events-none" // Disable pointer events in edit mode
+                        isEditMode && "pointer-events-none"
                       )}
                     >
                       <span className="h-full w-full [&>*]:h-full [&>*]:w-full">

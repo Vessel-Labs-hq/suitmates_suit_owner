@@ -27,8 +27,8 @@ const DefaultValues = {
   suite_cost: "",
   suite_number: "",
   suite_size: "",
-  suite_type: { label: "", value: "" },
-  timing: { label: "", value: "" },
+  suite_type: "",
+  timing: "",
 };
 
 const convertSuite = (suites: DbSuite[]) =>
@@ -36,8 +36,8 @@ const convertSuite = (suites: DbSuite[]) =>
     suite_cost: String(suite_cost),
     suite_number,
     suite_size,
-    suite_type: JSON.parse(suite_type),
-    timing: JSON.parse(timing),
+    suite_type,
+    timing,
     id: String(id),
   }));
 

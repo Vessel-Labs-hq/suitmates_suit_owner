@@ -25,7 +25,7 @@ while (time < 25) {
   time++;
 }
 
-export const WorkingHours = timeArr;
+export const WorkingHours = timeArr.map((ele) => ele.label);
 
 export const DaysOfTheWeek = [
   "monday",
@@ -57,16 +57,16 @@ export const SalonOccupations: TSalonOccupations[] = [
 ];
 
 export const SuiteAmenities = [
-  { label: "Event/conference room", value: "Event/conference room" },
-  { label: "Wifi / high-speed internet", value: "Wifi / high-speed internet" },
-  { label: "Laundry room", value: "Laundry room" },
-  { label: "24/7hr door access", value: "24/7hr door access" },
-  { label: "Cleaning services", value: "Cleaning services" },
-  { label: "Parking", value: "Parking" },
-  { label: "Utilities", value: "Utilities" },
-  { label: "Security", value: "Security" },
-  { label: "Furniture", value: "Furniture" },
-  { label: "Pet friendly", value: "Pet friendly" },
+  "Event/conference room",
+  "Wifi / high-speed internet",
+  "Laundry room",
+  "24/7hr door access",
+  "Cleaning services",
+  "Parking",
+  "Utilities",
+  "Security",
+  "Furniture",
+  "Pet friendly",
 ];
 
 export const MaintenanceQueries = {
@@ -91,12 +91,6 @@ export const AllMaintenanceRequestStatus: MaintenanceRequestStatus[] = [
   "COMPLETED",
 ];
 
-export const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) => ({
-  label: formatWord(ele.toLowerCase()),
-  value: ele,
-}));
-
-export const WorkingHoursOptions = WorkingHours.map((time) => ({
-  label: time.label,
-  value: String(time.value),
-}));
+export const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) =>
+  formatWord(ele.toLowerCase())
+);

@@ -125,7 +125,7 @@ const MaintenanceRequestCard = (props: MRCProps) => {
                   <span>{date}</span> | <span>2:53pm</span>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm">{desc}</p>
+              <p className="line-clamp-2 text-xs sm:text-sm">{desc}</p>
             </div>
           </div>
         </div>

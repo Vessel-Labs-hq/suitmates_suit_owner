@@ -49,21 +49,10 @@ interface Props {
   wrapperClass?: string;
 }
 
-const SuiteInfoInputRow = ({
-  control,
-  register,
-  idx,
-  formState,
-  wrapperClass,
-}: Props) => {
-  const getFormError = (key: keyof Inputs) => {
-    if (["timing", "suite_type"].includes(key)) {
-      const err = (
-        (formState.errors?.suites?.[idx]?.[key] as any)?.value?.message as string
-      )?.replace("Value", key.replace("suite_", ""));
+const SuiteInfoInputRow = (props: Props) => {
+  const { control, register, idx, formState, wrapperClass } = props;
 
-      return err ? capitalizeFirstLetter(String(err)) : undefined;
-    }
+  const getFormError = (key: keyof Inputs) => {
     const err = formState.errors?.suites?.[idx]?.[key]?.message;
     return err ? String(err) : undefined;
   };
@@ -94,10 +83,7 @@ const SuiteInfoInputRow = ({
             {/* remove this class */}
             <Select
               label="Suite Type"
-              options={[
-                { label: "Single", value: "single" },
-                { label: "Double", value: "double" },
-              ]}
+              options={["Single", "Double"]}
               placeholder="Suite Type"
               onChange={onChange}
               value={value}
@@ -128,11 +114,7 @@ const SuiteInfoInputRow = ({
             name={`suites.${idx}.timing`}
             render={({ field: { name, onChange, value } }) => (
               <Select
-                options={[
-                  { label: "Daily", value: "Daily" },
-                  { label: "Weekly", value: "Weekly" },
-                  { label: "Monthly", value: "Monthly" },
-                ]}
+                options={["Daily", "Weekly", "Monthly"]}
                 placeholder="Range"
                 onChange={onChange}
                 value={value}

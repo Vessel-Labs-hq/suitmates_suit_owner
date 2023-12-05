@@ -6,6 +6,6 @@ export const UpdateMaintenanceRequestSchema = z.object({
     required_error: "Repair date is needed",
     invalid_type_error: "Please provide a valid type for date",
   }),
-  repair_time: createSelectSchema("Repair time"),
-  status: createSelectSchema("Status"),
+  repair_time: createStringSchema("Repair time"),
+  status: createStringSchema("Status"),
 });
