@@ -33,17 +33,10 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
     createAmenities(userProfile.space?.space_amenities) ?? []
   );
 
-  const handleCloseAmenities = (
-    index: number,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-    const updatedAmenities = amenities.filter((_, i) => i !== index);
-    setAmenities(updatedAmenities);
+  const handleCloseAmenities = (index: number) => {
+    const newArr = amenities.filter((_, idx) => idx !== index);
 
-    const updatedLabels = closeAmenities.slice(); // create a shallow copy
-    updatedLabels.splice(index, 1); // remove the element at the specified index
-    setCloseAmenities(updatedLabels);
+    setAmenities(newArr);
   };
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -112,14 +105,8 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
                         label="Space amenities"
                         placeholder="Select..."
                         onChange={(amenity) => {
-                          const amenitiesArr = amenity.map((ele) => ({
-                            label: ele,
-                            value: ele,
-                          }));
-
-                          onChange(amenitiesArr);
-                          setAmenities(amenitiesArr);
-                          // setCloseAmenities(new Array(e.length).fill(true)); // Update closeAmenities when amenities change
+                          onChange(amenity);
+                          setAmenities(amenity);
                         }}
                         value={amenities}
                         multiple
@@ -165,11 +152,10 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
             </div>
             <div className="mt-8 flex justify-end">
               <Button
-                className={`h-16 w-28 rounded-xl ${
-                  isEditMode
-                    ? "cursor-not-allowed bg-[#f9f7f7]"
-                    : "bg-green-500 hover:bg-green-600"
-                } text-lg font-medium text-white`}
+                className={cn(
+                  "flex h-12 max-w-[200px] items-center justify-center",
+                  isEditMode && "bg-gray"
+                )}
                 disabled={isEditMode}
                 type="submit"
                 loading={isLoading}
