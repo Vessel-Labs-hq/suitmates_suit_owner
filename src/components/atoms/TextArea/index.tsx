@@ -36,7 +36,17 @@ export const HintBlock = ({ hint, className }: HintProps) => (
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, InputProps>(
   (
-    { className, label, labelClass, wrapperClass, handleChange, isError, isValid, hint, ...props },
+    {
+      className,
+      label,
+      labelClass,
+      wrapperClass,
+      handleChange,
+      isError,
+      isValid,
+      hint,
+      ...props
+    },
     ref
   ) => {
     const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -49,7 +59,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, InputProps>(
             className={cn(
               "rounded-md border-2 border-tertiary-background bg-tertiary-background",
               "focus:border-2 focus:border-black focus:bg-white",
-              "placeholder:text-input-placeholder w-full px-4 py-3.5 font-light outline-transparent focus-visible:outline-none",
+              "w-full px-4 py-3.5 font-light outline-transparent placeholder:text-input-placeholder focus-visible:outline-none",
               isError && "border-borderNegative",
               isValid && "border-primary bg-white",
               className

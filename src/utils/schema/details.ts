@@ -16,6 +16,17 @@ export const PersonalInfoSchema = z.object({
   bio: z.optional(createStringSchema({ key: "Bio" })),
 });
 
+export const EditPersonalInfoSchema = z
+  .object({
+    first_name: createStringSchema("First name"),
+    last_name: createStringSchema("Last name"),
+    phone_number: createStringSchema("Phone number"),
+    email: createStringSchema("Email address"),
+    bio: createStringSchema("Bio"),
+    avatar: z.union([z.string(), createFileSchema({ key: "Profile Image" })]),
+  })
+  .deepPartial();
+
 export const SpaceInfoSchema = z.object({
   space_name: createStringSchema("Name"),
   space_address: createStringSchema("Address"),
@@ -23,23 +34,37 @@ export const SpaceInfoSchema = z.object({
    * https://github.com/colinhacks/zod/discussions/330#discussioncomment-7097769
    */
   space_size: createInputNumberSchema("Size"),
-  space_amenities: z.array(createSelectSchema("Amenities"), {
-    invalid_type_error: "Space amenities cannot be blank",
-    required_error: "Space amenities is required",
-  }),
+  space_amenities: z
+    .array(createStringSchema("Amenities"))
+    .min(1, "Space Amenities cannot be empty"),
+});
+
+export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({
+  space_size: z.optional(createInputNumberSchema("Size")),
 });
 
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
   suite_size: createStringSchema("Size"),
   suite_cost: createInputNumberSchema("Cost"),
-  suite_type: createSelectSchema("Type"),
-  timing: createSelectSchema("Duration"),
+  suite_type: createStringSchema("Type"),
+  timing: createStringSchema("Duration"),
+});
+
+export const EditSuiteDetailSchema = SuiteDetailSchema.extend({
+  id: createStringSchema("Suite Id"),
 });
 
 export const SuiteInfoSchema = z.object(
   {
     suites: z.array(SuiteDetailSchema).min(1, "Suite Info is required"),
+  },
+  { ...createDefaultError("Suite Info") }
+);
+
+export const EditSuiteInfoSchema = z.object(
+  {
+    suites: z.array(EditSuiteDetailSchema).min(1, "Suite Info is required"),
   },
   { ...createDefaultError("Suite Info") }
 );

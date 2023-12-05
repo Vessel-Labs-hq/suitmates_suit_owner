@@ -15,7 +15,8 @@ const getPlaceholder = (name: string) => {
 
   const joinValues = (str: string) => str.replace(" ", "");
 
-  if (fullName.length < 1) return joinValues(cn(assertChildValue(name[0]), name[0]?.[1] ?? ""));
+  if (fullName.length < 1)
+    return joinValues(cn(assertChildValue(name[0]), name[0]?.[1] ?? ""));
 
   return joinValues(cn(assertChildValue(name[0]), assertChildValue(name[1])));
 };

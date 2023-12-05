@@ -8,7 +8,7 @@ class NotificationService extends BaseAPIService {
       throw new Error("User is undefined");
     }
 
-    const res = await API.get(`/notifications/user/${user.id}`);
+    const res = await API.get<DbNotification[]>(`/notifications/user/${user.id}`);
 
     return res.data;
   };

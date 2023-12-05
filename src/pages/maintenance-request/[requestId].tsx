@@ -2,7 +2,11 @@ import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import UserQuickInfoCard from "@/components/molecules/UserQuickInfoCard";
 import ChatBoxModal from "@/components/organisms/ChatboxModal";
-import { MaintenanceRequestArr, WorkingHoursOptions } from "@/constants";
+import {
+  MaintenanceRequestArr,
+  WorkingHours,
+  AllMaintenanceRequestStatus,
+} from "@/constants";
 import maintenanceApi from "@/utils/apis/maintenance";
 import Alert from "@/utils/base/alerts";
 import {
@@ -53,30 +57,30 @@ function MaintenanceRequestPage() {
     [data, requestId]
   );
 
-  const { control, formState, register, reset, handleSubmit, setValue } = useForm<Inputs>(
-    {
-      resolver: zodResolver(UpdateMaintenanceRequestSchema),
-      defaultValues: {
-        repair_date: new Date(selectedRequest?.repair_date ?? "") ?? undefined,
-        repair_time: selectedRequest?.repair_time
-          ? JSON.parse(selectedRequest?.repair_time)
-          : undefined,
-        status: MaintenanceRequestArr.find(
-          ({ value }) => value === selectedRequest?.status
-        ),
-      },
-    }
-  );
+  const maintenanceStatus = MaintenanceRequestArr.find((value) => {
+    const ele = formatWord(selectedRequest?.status?.toLowerCase() ?? "");
+
+    return value === ele;
+  });
+
+  const { control, formState, reset, handleSubmit } = useForm<Inputs>({
+    resolver: zodResolver(UpdateMaintenanceRequestSchema),
+    defaultValues: {
+      repair_date: new Date(selectedRequest?.repair_date ?? "") ?? undefined,
+      repair_time: selectedRequest?.repair_time
+        ? selectedRequest?.repair_time
+        : undefined,
+      status: maintenanceStatus,
+    },
+  });
 
   useEffect(() => {
     reset({
       repair_date: new Date(selectedRequest?.repair_date ?? "") ?? undefined,
       repair_time: selectedRequest?.repair_time
-        ? JSON.parse(selectedRequest?.repair_time)
+        ? selectedRequest?.repair_time
         : undefined,
-      status: MaintenanceRequestArr.find(
-        ({ value }) => value === selectedRequest?.status
-      ),
+      status: maintenanceStatus,
     });
   }, [selectedRequest]);
 
@@ -96,7 +100,13 @@ function MaintenanceRequestPage() {
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await maintenanceApi.updateMaintenanceRequest({
-        data,
+        data: {
+          ...data,
+          status:
+            AllMaintenanceRequestStatus.find(
+              (ele) => formatWord(ele.toLowerCase()) === data.status
+            ) ?? data.status,
+        },
         requestId: selectedRequest?.id ?? "n/a",
       });
       Alert.success("Maintenance request updated");
@@ -205,7 +215,7 @@ function MaintenanceRequestPage() {
                 name="repair_time"
                 render={({ field: { value, onChange } }) => (
                   <Select
-                    options={WorkingHoursOptions}
+                    options={WorkingHours}
                     placeholder="0:00 am"
                     label="Repair Time"
                     btnClassName="h-14 mt-1"

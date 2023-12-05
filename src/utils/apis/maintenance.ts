@@ -30,8 +30,8 @@ class MaintenanceService extends BaseAPIService {
       const { status, repair_time, repair_date } = data;
 
       const res = await API.patch(`/maintenance/${requestId}`, {
-        repair_time: JSON.stringify(repair_time),
-        status: status.value,
+        repair_time,
+        status,
         repair_date,
       });
       return res.data;

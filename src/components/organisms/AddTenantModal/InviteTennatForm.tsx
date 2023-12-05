@@ -40,7 +40,7 @@ const InviteTenantForm = ({ onSubmit }: Props) => {
 
   return (
     <form
-      className="w-full space-y-6 max-md:text-sm"
+      className="-mt-10 w-full space-y-6 max-md:text-sm"
       onSubmit={handleSubmit(onFormSubmit)}
     >
       <Input

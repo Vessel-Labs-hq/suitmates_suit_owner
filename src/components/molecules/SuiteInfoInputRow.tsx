@@ -1,8 +1,8 @@
 import { InferSchema } from "@/utils/schema/helpers";
 import { SuiteDetailSchema, SuiteInfoSchema } from "@/utils/schema/details";
 import { Input, Select } from "@the_human_cipher/components-library";
-import { Control, Controller, FormState, UseFormRegister, useForm } from "react-hook-form";
-import { capitalizeFirstLetter } from "@/utils";
+import { Control, Controller, FormState, UseFormRegister } from "react-hook-form";
+import { capitalizeFirstLetter, cn } from "@/utils";
 
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
@@ -46,23 +46,24 @@ interface Props {
   register: UseFormRegister<FormValues>;
   idx: number;
   formState: FormState<FormValues>;
+  wrapperClass?: string;
 }
 
-const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
-  const getFormError = (key: keyof Inputs) => {
-    if (["timing", "suite_type"].includes(key)) {
-      const err = (
-        (formState.errors?.suites?.[idx]?.[key] as any)?.value?.message as string
-      )?.replace("Value", key.replace("suite_", ""));
+const SuiteInfoInputRow = (props: Props) => {
+  const { control, register, idx, formState, wrapperClass } = props;
 
-      return err ? capitalizeFirstLetter(String(err)) : undefined;
-    }
+  const getFormError = (key: keyof Inputs) => {
     const err = formState.errors?.suites?.[idx]?.[key]?.message;
     return err ? String(err) : undefined;
   };
 
   return (
-    <div className="grid grid-cols-1 gap-x-4 gap-y-2 max-md:text-sm xs:gap-x-10 sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-x-4 gap-y-2 max-md:text-sm xs:gap-x-10 sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4",
+        wrapperClass
+      )}
+    >
       {fields.slice(0, 2).map(({ name, label, ...ele }) => (
         <Input
           {...ele}
@@ -82,10 +83,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
             {/* remove this class */}
             <Select
               label="Suite Type"
-              options={[
-                { label: "Single", value: "single" },
-                { label: "Double", value: "double" },
-              ]}
+              options={["Single", "Double"]}
               placeholder="Suite Type"
               onChange={onChange}
               value={value}
@@ -116,11 +114,7 @@ const SuiteInfoInputRow = ({ control, register, idx, formState }: Props) => {
             name={`suites.${idx}.timing`}
             render={({ field: { name, onChange, value } }) => (
               <Select
-                options={[
-                  { label: "Daily", value: "Daily" },
-                  { label: "Weekly", value: "Weekly" },
-                  { label: "Monthly", value: "Monthly" },
-                ]}
+                options={["Daily", "Weekly", "Monthly"]}
                 placeholder="Range"
                 onChange={onChange}
                 value={value}
