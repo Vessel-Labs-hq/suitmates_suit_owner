@@ -112,3 +112,57 @@ export function DashboardRentHistoryChart() {
     />
   );
 }
+
+const MissedRentData = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+  datasets: [
+    {
+      label: "Rent",
+      data: [1000, 1400, 1300, 2001, 3000, 3500],
+      borderColor: "#3BAF75",
+      backgroundColor: "#3BAF75",
+    },
+  ],
+};
+
+export function MissedRentHistoryChart() {
+  const scalesOption = {
+    beginAtZero: true,
+    border: {
+      color: "#fffff",
+    },
+    ticks: {
+      color: "#fffff",
+    },
+    grid: {
+      display: true,
+    },
+  };
+
+  return (
+    <Line
+      data={MissedRentData}
+      options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            ...scalesOption,
+          },
+          x: {
+            ...scalesOption,
+          },
+        },
+        line: {},
+        plugins: {
+          legend: {
+            display: true,
+          },
+          title: {
+            display: true,
+          },
+        },
+      }}
+    />
+  );
+}

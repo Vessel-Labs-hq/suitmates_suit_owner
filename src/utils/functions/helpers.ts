@@ -98,7 +98,9 @@ export const getFormStateError = <Inputs extends FieldValues>(
 
 export const assertQuery = (str: unknown): str is string => str !== undefined;
 
-export const clampText = (str: string, maxLen = 23) => {
+export const clampText = (str?: string, maxLen = 23) => {
+  if (!str) return "";
+
   if (str.length > maxLen) {
     return str.slice(0, maxLen - 3) + "...";
   }

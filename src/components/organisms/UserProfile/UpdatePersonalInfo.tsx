@@ -42,11 +42,13 @@ const fields: Fields[] = [
 ];
 
 const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProps) => {
-  const { register, formState, handleSubmit, control, setValue } = useForm<Inputs>({
-    resolver: zodResolver(EditPersonalInfoSchema),
-    mode: "onChange",
-    values: userProfile,
-  });
+  const { register, formState, handleSubmit, control, watch, setValue } = useForm<Inputs>(
+    {
+      resolver: zodResolver(EditPersonalInfoSchema),
+      mode: "onChange",
+      values: userProfile,
+    }
+  );
 
   const queryClient = useQueryClient();
 
@@ -238,10 +240,11 @@ const UpdatePersonalInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileP
 
             <div className="flex justify-end">
               <Button
-                className={cn(
-                  "flex h-12 max-w-[200px] items-center justify-center",
-                  isEditMode && "bg-gray"
-                )}
+                className={`w-28 rounded-xl ${
+                  isEditMode
+                    ? "cursor-not-allowed bg-[#f9f7f7]"
+                    : "bg-green-500 hover:bg-green-600"
+                } text-lg font-medium text-white`}
                 disabled={isEditMode}
                 type="submit"
                 loading={isLoading}
