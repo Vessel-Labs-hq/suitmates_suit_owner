@@ -1,6 +1,8 @@
 import { Label, LabelProps } from "@the_human_cipher/components-library";
-import Avatar, { AvatarProps } from "../../atoms/Avatar";
 import { cn } from "@/utils";
+import Avatar from "@/components/atoms/Avatar";
+
+type AvatarProps = ComponentProps<typeof Avatar>;
 
 type RowAvatarProps = Omit<AvatarProps, "className"> & {
   avatarStyle?: string;
@@ -23,7 +25,14 @@ const NotificationContent = (props: NotificationContentProps) => {
 
   return (
     <div className={cn("flex items-center gap-2", wrapperStyle)}>
-      <Avatar size={34} src="https://picsum.photos/id/30/400/300" {...avatarProps} />
+      <Avatar
+        size={34}
+        src={
+          avatarProps.src ??
+          "https://suite-mate.s3.eu-north-1.amazonaws.com/weirdcat.jpeg"
+        }
+        {...avatarProps}
+      />
       <div className={cn("text-xs font-medium text-borderNegative", contentStyle)}>
         <h4 className={cn("mb-0.5 text-base  font-bold text-suite-dark", titleStyle)}>
           {title}

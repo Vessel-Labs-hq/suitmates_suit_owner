@@ -106,6 +106,18 @@ class AuthService extends BaseAPIService {
       throw error;
     }
   }
+
+  async resendEmail() {
+    const user = this.getSession();
+
+    try {
+      const res = await API.post(`/auth/resend-tenant-invite/${user?.id}`);
+
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 /**

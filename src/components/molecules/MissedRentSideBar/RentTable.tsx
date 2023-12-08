@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useTable, Column } from "react-table";
 import NotificationUI from "../Notifications/NotificationUI";
 import { IconBox } from "@the_human_cipher/components-library";
-import { useGetAllRentHistory } from "@/utils/hooks/api/rent-history";
+import {
+  useGetAllRentHistory,
+  useGetRentChartHistory,
+} from "@/utils/hooks/api/rent-history";
 
 type Row = { empty: string; from: string; amount: string; date: string; status: string };
 const columns = [
@@ -28,8 +31,10 @@ const RentHistoryTable = () => {
     data: rentData,
   });
 
-  const { data: rentHistoryData, isLoading, isError } = useGetAllRentHistory();
-  console.log("rent history", rentHistoryData);
+  const { data: rentHistoryData } = useGetAllRentHistory();
+
+  const { data } = useGetRentChartHistory();
+  console.log("Chart Data", data);
 
   useEffect(() => {
     if (rentHistoryData && rentHistoryData.length > 0) {

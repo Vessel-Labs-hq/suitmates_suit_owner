@@ -11,3 +11,14 @@ export const useGetAllRentHistory = () => {
 
   return response;
 };
+
+export const useGetRentChartHistory = () => {
+  const response = useQuery({
+    queryKey: ["get-rent-chart-history"],
+    queryFn: rentHistoryApi.getRentChartHistory,
+    staleTime: 15 * (60 * 1000),
+    cacheTime: 20 * (60 * 1000),
+  });
+
+  return response;
+};

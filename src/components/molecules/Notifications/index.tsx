@@ -10,10 +10,9 @@ dayjs.extend(relativeTime);
 interface NotificationsProps {
   notifications: DbNotification[];
   hasNewNotifications?: boolean;
-  tenants: DbGetAllTenants[] | readonly DbGetAllTenants[];
 }
 const Notifications = (props: NotificationsProps) => {
-  const { notifications, hasNewNotifications, tenants } = props;
+  const { notifications, hasNewNotifications } = props;
 
   return (
     <Popover.Root>
@@ -59,42 +58,34 @@ const Notifications = (props: NotificationsProps) => {
             "data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade",
             "w-[300px] rounded-xl border border-black border-opacity-[0.05] bg-light-gray p-4",
             "overflow-y-auto shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] outline-none xs:w-[360px]",
-            "max-h-[400px]",
+            "max-h-[400px] overflow-x-hidden",
             notifications.length < 1 && "h-[400px]"
           )}
         >
           {notifications.length > 0 ? (
             <ul className="space-y-6">
-              {notifications?.map(({ created_at, id, text, service, user_id }) => {
-                const selectedTenant = tenants.find(
-                  ({ id: tenantId }) => tenantId == user_id
-                );
-
-                const { first_name, last_name } = selectedTenant ?? {};
-
-                return (
-                  <li key={id} className="w-full">
-                    <NotificationUI className="w-full">
-                      <NotificationUI.Content
-                        title={text}
-                        style={{
-                          titleStyle: "text-sm",
-                          wrapperStyle: "w-full overflow-hidden",
-                        }}
-                        avatarProps={{ name: cn(first_name, last_name) }}
-                      >
-                        <div className="mt-1 flex items-center gap-1">
-                          <span>{dayjs().to(dayjs(created_at))}</span>
-                          <span className="text-suite-dark">•</span>
-                          <span className="capitalize text-suite-dark">
-                            {service.replaceAll("-", " ")}
-                          </span>
-                        </div>
-                      </NotificationUI.Content>
-                    </NotificationUI>
-                  </li>
-                );
-              })}
+              {notifications.map(({ created_at, id, text, service }, idx) => (
+                <li key={id} className="w-full">
+                  <NotificationUI className="w-full">
+                    <NotificationUI.Content
+                      title={text}
+                      style={{
+                        titleStyle: "text-sm",
+                        wrapperStyle: "w-full overflow-hidden [&>img]:hidden",
+                      }}
+                      avatarProps={{ name: "Suite 14c" }}
+                    >
+                      <div className="mt-1 flex items-center gap-1">
+                        <span>{dayjs().to(dayjs(created_at))}</span>
+                        <span className="text-suite-dark">•</span>
+                        <span className="capitalize text-suite-dark">
+                          {service.replaceAll("-", " ")}
+                        </span>
+                      </div>
+                    </NotificationUI.Content>
+                  </NotificationUI>
+                </li>
+              ))}
             </ul>
           ) : (
             <div className="grid h-full place-content-center text-center">

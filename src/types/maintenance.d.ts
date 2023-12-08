@@ -82,3 +82,12 @@ interface DbCreateCommentRes {
   created_at: string;
   updated_at: string;
 }
+
+interface DbGetAllSpaceChatData {
+  totalOccupiedSuites: number;
+  totalVacantSuites: number;
+}
+
+interface DbSpaceChatData {
+  data: DbGetAllSpaceChatData;
+}

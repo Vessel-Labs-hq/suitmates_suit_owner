@@ -25,6 +25,17 @@ class MaintenanceService extends BaseAPIService {
     }
   }
 
+  async getSpaceChartData() {
+    try {
+      type ResponseBody = APIResponse<DbGetAllSpaceChatData>;
+      const res = await API.get<ResponseBody>("/space/analyzed");
+      console.log("Analyzing data", res);
+      return res.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateMaintenanceRequest({ requestId, data }: UpdateMaintenancePayload) {
     try {
       const { status, repair_time, repair_date } = data;
