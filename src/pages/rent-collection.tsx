@@ -3,15 +3,27 @@ import DashboardLayout from "@/components/layouts/DashboardLayout";
 import MissedRentSideBar, {
   RentBentoWrapper,
 } from "@/components/molecules/MissedRentSideBar";
-import { MissedRentHistoryChart } from "@/components/organisms/DashboardCharts";
+// import { MissedRentHistoryChart } from "@/components/organisms/DashboardCharts";
 import { Select, Title } from "@the_human_cipher/components-library";
 import { SortOptions } from "@/constants";
 import RentHistoryTable from "@/components/molecules/MissedRentSideBar/RentTable";
-import { useGetAllRentHistory } from "@/utils/hooks/api/rent-history";
+import {
+  useGetAllRentHistory,
+  useGetRentChartHistory,
+} from "@/utils/hooks/api/rent-history";
 import { FaviconLoader } from "@/components/atoms/Loader";
+import { MissedRentHistoryChart } from "@/components/organisms/RentHistoryChart";
 
 const RentCollectionPage = () => {
   const { isLoading, isError } = useGetAllRentHistory();
+
+  const { data } = useGetRentChartHistory();
+
+  if (!data?.yearly) {
+    return;
+  }
+
+  const { yearly } = data;
 
   if (isLoading) {
     return (
@@ -41,7 +53,7 @@ const RentCollectionPage = () => {
             <div className="h-80 w-full">
               <div className="flex flex-col">
                 <span>Total Income</span>
-                <span className="text-2xl font-bold text-[#3BAF75]">$ 350,007.89</span>
+                <span className="text-2xl font-bold text-[#3BAF75]">{`$${yearly[2023].toLocaleString()}`}</span>
               </div>
 
               <div className="h-64 w-full">

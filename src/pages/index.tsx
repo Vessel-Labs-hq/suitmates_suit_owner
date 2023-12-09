@@ -12,9 +12,13 @@ import {
 } from "@/components/atoms/HomeSharedUI";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
 import { FaviconLoader } from "@/components/atoms/Loader";
+import { useGetAllAnalyzedSpaceData } from "@/utils/hooks/api/useGetSpace";
 
 const HomePage = () => {
-  const { data, isLoading, isError, error } = useGetAllMaintenance();
+  const { data, isLoading, isError } = useGetAllMaintenance();
+
+  const { data: analyzedData } = useGetAllAnalyzedSpaceData();
+  console.log("analyzed data", analyzedData);
 
   if (isLoading) {
     return (
@@ -42,8 +46,14 @@ const HomePage = () => {
         <div className="grid w-full grid-cols-1 gap-4 max-xl:items-center xxl:grid-cols-2">
           <HomeBentoWrapper className="xxl:min-h-[190px]">
             <div className="space-y-2 xxl:space-y-4">
-              <HomeInfoCard title="Vacant Spaces" value={10} />
-              <HomeInfoCard title="Occupied Spaces" value={12} />
+              <HomeInfoCard
+                title="Vacant Spaces"
+                value={analyzedData?.totalVacantSuites ?? "N/A"}
+              />
+              <HomeInfoCard
+                title="Occupied Spaces"
+                value={analyzedData?.totalOccupiedSuites ?? "N/A"}
+              />
             </div>
             <div className="absolute right-0 top-1/2 mt-1 h-[120px] w-[120px] -translate-x-5 -translate-y-1/2 xxl:h-[180px] xxl:w-[180px] xxl:translate-x-3">
               <DashboardSuiteInfoChart />

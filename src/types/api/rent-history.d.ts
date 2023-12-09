@@ -36,3 +36,16 @@ interface DbPaymentHistory {
 interface DbPayment {
   data: DbPaymentHistory;
 }
+
+interface DbRentChartHistory {
+  monthly?: {
+    [key: string]: number;
+  };
+  yearly?: {
+    [key: string]: number;
+  };
+}
+
+interface DbChart {
+  data: DbRentChartHistory;
+}
