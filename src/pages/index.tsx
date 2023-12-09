@@ -13,12 +13,14 @@ import {
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
 import { FaviconLoader } from "@/components/atoms/Loader";
 import { useGetAllAnalyzedSpaceData } from "@/utils/hooks/api/useGetSpace";
+import { useGetAllRentHistory } from "@/utils/hooks/api/rent-history";
 
 const HomePage = () => {
   const { data, isLoading, isError } = useGetAllMaintenance();
 
   const { data: analyzedData } = useGetAllAnalyzedSpaceData();
-  console.log("analyzed data", analyzedData);
+
+  const { data: rentHistory, isLoading: isLoadingRent } = useGetAllRentHistory();
 
   if (isLoading) {
     return (
@@ -92,7 +94,7 @@ const HomePage = () => {
       <div className="flex flex-col items-start gap-4 xl:flex-row">
         <MaintenanceRequestTable maintenanceRequests={data?.maintenanceRequests} />
         <SidebarElement className="rounded-3xl">
-          <RentHistorySidebar />
+          <RentHistorySidebar rentHistory={rentHistory} isFetching={isLoadingRent} />
         </SidebarElement>
       </div>
     </DashboardLayout>

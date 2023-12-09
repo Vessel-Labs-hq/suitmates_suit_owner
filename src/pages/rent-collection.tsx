@@ -75,7 +75,7 @@ const RentCollectionPage = () => {
           </RentBentoWrapper>
         </div>
 
-        <MissedRentSideBar length={4} />
+        {false && <MissedRentSideBar length={4} />}
       </div>
 
       <div className="max-md:mt-10">
