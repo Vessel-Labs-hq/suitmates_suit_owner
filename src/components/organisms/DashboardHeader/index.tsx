@@ -52,7 +52,6 @@ const DashboardHeader = (props: DashboardHeaderProps) => {
           <Notifications
             notifications={notifications ?? []}
             hasNewNotifications={notifications && notifications.length > 0}
-            tenants={tenants}
           />
           <HeaderProfile
             email={email}
