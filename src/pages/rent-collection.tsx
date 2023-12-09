@@ -1,29 +1,41 @@
-import { HomeBentoWrapper, HomeRentGraph } from "@/components/atoms/HomeSharedUI";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import MissedRentSideBar, {
   RentBentoWrapper,
 } from "@/components/molecules/MissedRentSideBar";
-// import { MissedRentHistoryChart } from "@/components/organisms/DashboardCharts";
-import { Select, Title } from "@the_human_cipher/components-library";
+import { Label, Select } from "@the_human_cipher/components-library";
 import { SortOptions } from "@/constants";
-import RentHistoryTable from "@/components/molecules/MissedRentSideBar/RentTable";
 import {
   useGetAllRentHistory,
   useGetRentChartHistory,
 } from "@/utils/hooks/api/rent-history";
 import { FaviconLoader } from "@/components/atoms/Loader";
 import { MissedRentHistoryChart } from "@/components/organisms/RentHistoryChart";
+import { cn, formatNumberToCurrency } from "@/utils";
+import dayjs from "dayjs";
+import { TrendIcon } from "@/components/atoms/TrendIcon";
+import EmptyScreen from "@/components/molecules/EmptyScreen";
+
+const TableRow = ({ children, className }: IProps) => {
+  return (
+    <div className={cn("grid grid-cols-4 gap-2 p-2 py-3 text-center", className)}>
+      {children}
+    </div>
+  );
+};
+
+const Tablist = [
+  { name: "From", className: "" },
+  { name: "Amount", className: "" },
+  { name: "Date", className: "" },
+  { name: "Status", className: "" },
+];
 
 const RentCollectionPage = () => {
-  const { isLoading, isError } = useGetAllRentHistory();
+  const { isLoading, isError, data: rentHistory } = useGetAllRentHistory();
+
+  console.log(rentHistory);
 
   const { data } = useGetRentChartHistory();
-
-  if (!data?.yearly) {
-    return;
-  }
-
-  const { yearly } = data;
 
   if (isLoading) {
     return (
@@ -37,7 +49,7 @@ const RentCollectionPage = () => {
     );
   }
 
-  if (isError) {
+  if (isError && !data) {
     return (
       <DashboardLayout headerDesc="Track maintenance on your dashboard ">
         <div>Oops an error occurred</div>
@@ -53,7 +65,7 @@ const RentCollectionPage = () => {
             <div className="h-80 w-full">
               <div className="flex flex-col">
                 <span>Total Income</span>
-                <span className="text-2xl font-bold text-[#3BAF75]">{`$${yearly[2023].toLocaleString()}`}</span>
+                <span className="text-2xl font-bold text-[#3BAF75]">{`$${data?.yearly?.[2023].toLocaleString()}`}</span>
               </div>
 
               <div className="h-64 w-full">
@@ -61,10 +73,16 @@ const RentCollectionPage = () => {
               </div>
             </div>
           </RentBentoWrapper>
+        </div>
 
-          <div className="lg:mt-30 xxs:mb-2 xxs:mt-2 md:mt-12">
-            <div className="flex items-center justify-between">
-              <span className="text-base font-bold">Rent History</span>
+        <MissedRentSideBar length={4} />
+      </div>
+
+      <div className="max-md:mt-10">
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <span className="text-base font-bold">Rent History</span>
+            {false && (
               <Select
                 placeholder="This Month"
                 btnClassName="p-2 h-[40px] w-full rounded-md max-md:h-auto max-md:[&_svg]:hidden max-md:py-1"
@@ -72,14 +90,71 @@ const RentCollectionPage = () => {
                 wrapperClassName="md:w-24 xxl:w-28 text-[10px] md:text-xs lg:text-sm"
                 optionClassName="max-md:p-2"
               />
-            </div>
+            )}
           </div>
         </div>
-
-        <MissedRentSideBar length={6} />
+        <TableRow className="rounded-t-lg bg-suite-dark py-4 text-white max-md:hidden">
+          {Tablist.map((tab) => (
+            <div key={tab.name}>{tab.name}</div>
+          ))}
+        </TableRow>
+        <div className="space-y-3">
+          {rentHistory && rentHistory.length > 0 ? (
+            rentHistory.map(({ dateOfPayment, amount, status, paid, suiteNumber }) => {
+              return (
+                <TableRow
+                  key={dateOfPayment}
+                  className="grid-cols-3 items-center bg-[#F8F8FC] md:grid-cols-4"
+                >
+                  <div className="mx-auto flex w-full items-center gap-2 max-md:mr-auto max-xs:text-sm md:relative md:w-full md:justify-center md:pl-6">
+                    <div className="left-0 md:absolute">
+                      <TrendIcon positive={paid} />
+                    </div>
+                    <p className="">Suite {suiteNumber}</p>
+                  </div>
+                  <div>
+                    <p
+                      className={cn(
+                        "font-bold max-xs:text-sm",
+                        !paid ? "text-borderNegative" : "text-primary"
+                      )}
+                    >
+                      {formatNumberToCurrency(amount, "USD")}
+                    </p>
+                    <p className="whitespace-nowrap text-[11px] md:hidden">
+                      {/* Jan 13, 2022 23:21 */}
+                      {dayjs(dateOfPayment).format("MMM D, YYYY h:mm A")}
+                    </p>
+                  </div>
+                  <p className="hidden whitespace-nowrap md:block">
+                    {dayjs(dateOfPayment).format("MMM D, YYYY h:mm A")}
+                  </p>
+                  <div className="ml-auto w-fit md:mx-auto">
+                    <Label
+                      className="h-8 px-4 capitalize max-sm:hidden md:text-base"
+                      type={!paid ? "danger" : "success"}
+                      label={status}
+                      dots
+                    />
+                    <Label
+                      className="h-8 max-w-fit px-4 capitalize max-sm:px-2 max-sm:py-1 sm:hidden md:text-base"
+                      type={!paid ? "danger" : "success"}
+                      label={status}
+                      dots
+                      small
+                    />
+                  </div>
+                </TableRow>
+              );
+            })
+          ) : (
+            <EmptyScreen
+              title="No rent record"
+              desc="You are yet to make any rent payment"
+            />
+          )}
+        </div>
       </div>
-
-      <RentHistoryTable />
     </DashboardLayout>
   );
 };
