@@ -6,7 +6,7 @@ class RentHistoryService extends BaseAPIService {
     try {
       type ResponseBody = APIResponse<DbPaymentHistory[]>;
       const res = await API.get<ResponseBody>("/space/owner/rent-history");
-      return res.data.data;
+      return res.data.data as DbPaymentHistory[];
     } catch (error) {
       throw error;
     }

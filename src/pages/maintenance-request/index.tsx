@@ -3,13 +3,15 @@ import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import HomeBento from "@/components/molecules/Cards/HomeBento";
 import MaintenanceRequestCard from "@/components/molecules/Cards/MaintenanceRequestCard";
-import DueRequestSideBar from "@/components/molecules/DueRequestSideBar";
 import MaintenanceRequestActionRow from "@/components/molecules/MaintenanceActionRow";
+import RentHistorySidebar from "@/components/molecules/RentHistory";
 import { dateFn } from "@/utils";
 import { useGetAllMaintenance } from "@/utils/hooks/api/maintenance";
+import { useGetAllRentHistory } from "@/utils/hooks/api/rent-history";
 
 const MaintenanceRequestPage = () => {
   const { data, isLoading, isError, error } = useGetAllMaintenance();
+  const { data: rentHistory, isLoading: isLoadingRent } = useGetAllRentHistory();
 
   if (isLoading) {
     return (
@@ -70,7 +72,7 @@ const MaintenanceRequestPage = () => {
         </div>
         <div className="space-y-4">
           <MaintenanceRequestActionRow />
-          <div className="flex items-start gap-4">
+          <div className="flex gap-4">
             <div className="grid w-full grid-cols-1 gap-6">
               {data && data.maintenanceRequests.length > 0 ? (
                 data?.maintenanceRequests.map(
@@ -110,7 +112,9 @@ const MaintenanceRequestPage = () => {
                 </div>
               )}
             </div>
-            <DueRequestSideBar />
+            <aside className="sticky top-4 max-h-[90vh] w-full rounded-3xl bg-light-gray p-3 max-lg:hidden lg:max-w-[350px] xl:p-6 @desktop:max-w-[365px]">
+              <RentHistorySidebar rentHistory={rentHistory} isFetching={isLoadingRent} />
+            </aside>
           </div>
         </div>
       </main>

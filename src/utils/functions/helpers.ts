@@ -175,3 +175,19 @@ export const getMaintenanceRequestStatusIcon = (status: MaintenanceRequestStatus
 };
 
 export const dateFn = (date: string) => dayjs(date);
+
+export const formatNumberToCurrency = (
+  amount: number,
+  identifier?: string,
+  currencySymbol?: string
+) => {
+  const newAmount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: identifier ?? "NGN",
+    maximumFractionDigits: 0,
+  })
+    .format(amount)
+    .replace("NGN", currencySymbol ?? "₦");
+
+  return newAmount;
+};
