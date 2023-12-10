@@ -9,12 +9,16 @@ const config: Config = {
       center: true,
     },
     screens: {
+      xsl: "320px",
+      sl: "375px",
+      xxs: "425px",
       xs: "450px",
       sm: "576px",
       md: "768px",
       lg: "992px",
       xl: "1024px",
       xxl: "1280px",
+      "@desktop": "1440px",
       "2xl": "1536px",
     },
     extend: {
@@ -49,6 +53,32 @@ const config: Config = {
         },
         suite: { dark: "#333333" },
         dark200: "#A6A6A6",
+      },
+      keyframes: {
+        overlayShow: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        contentShow: {
+          from: {
+            opacity: "0",
+            transform: "translate(-50%, -48%) scale(0.96)",
+          },
+          to: { opacity: "1", transform: "translate(-50%, -50%) scale(1)" },
+        },
+        slideUp: {
+          from: {
+            bottom: "-100px",
+          },
+          to: {
+            bottom: "0",
+          },
+        },
+      },
+      animation: {
+        overlayShow: "overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+        contentShow: "contentShow 300ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideUp: "slideUp 300ms cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },

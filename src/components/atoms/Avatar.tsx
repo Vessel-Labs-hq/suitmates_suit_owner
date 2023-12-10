@@ -1,7 +1,7 @@
 import { cn } from "@/utils";
 import Image from "next/image";
 
-interface AvatarProps {
+export interface AvatarProps {
   src?: string;
   name: string;
   className?: string;
@@ -11,9 +11,14 @@ interface AvatarProps {
 const getPlaceholder = (name: string) => {
   const fullName = name.split(" ");
 
-  if (fullName.length < 1) return cn(name[0][0], name[0]?.[1] ?? "").replace(" ", "");
+  const assertChildValue = (str?: string) => (str ? (str.length > 1 ? str[0] : str) : "");
 
-  return cn(name[0][0], name[1][0]).replace(" ", "");
+  const joinValues = (str: string) => str.replace(" ", "");
+
+  if (fullName.length < 1)
+    return joinValues(cn(assertChildValue(name[0]), name[0]?.[1] ?? ""));
+
+  return joinValues(cn(assertChildValue(name[0]), assertChildValue(name[1])));
 };
 
 const Avatar = ({ name, className, src, size = 50 }: AvatarProps) =>
@@ -23,7 +28,10 @@ const Avatar = ({ name, className, src, size = 50 }: AvatarProps) =>
       alt={name}
       width={size}
       height={size}
-      className={cn("rounded-full object-cover max-md:max-h-10 max-md:max-w-10", className)}
+      className={cn(
+        "h-[50px] w-[50px] rounded-full object-cover max-md:h-10 max-md:w-10",
+        className
+      )}
     />
   ) : (
     <div

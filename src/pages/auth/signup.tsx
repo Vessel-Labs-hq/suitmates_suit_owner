@@ -7,10 +7,11 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 import Banner from "image/loginBanner.png";
-import Logo from "public/logoDark.png";
+import Logo from "public/logo-dark.png";
 import { LoginSchema } from "@/utils/schema/login";
 import Alert from "@/utils/base/alerts";
 import authService from "@/utils/apis/auth";
+import SEO from "@/components/layouts/SEO";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
@@ -42,6 +43,7 @@ const SignUp = () => {
 
   return (
     <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-6">
+      <SEO title="Sign Up | Suitemates" />
       <div className="col-span-4 mx-auto my-auto flex h-full w-full flex-col items-center justify-start px-3 pb-5 pt-14">
         <Image
           src={Logo}

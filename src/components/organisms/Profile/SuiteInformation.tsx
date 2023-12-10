@@ -5,48 +5,65 @@ import { Button, Text, Title } from "@the_human_cipher/components-library";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Icons from "@/assets/icons";
+import Alert from "@/utils/base/alerts";
+import onBoardingService from "@/utils/apis/onboarding";
+import { onFormError } from "@/utils/functions/react-hook-form";
 
 interface Props {
   onSubmit(): void;
+  spaceId: string | null;
 }
 
 type Inputs = InferSchema<typeof SuiteInfoSchema>;
 
 const DefaultValues = {
-  suiteCost: "",
-  suiteNumber: "",
-  suiteSize: "",
-  suiteType: { label: "", value: "" },
-  suiteDuration: { label: "", value: "" },
+  suite_cost: "",
+  suite_number: "",
+  suite_size: "",
+  suite_type: "",
+  timing: "",
 };
-
-type FormValues = {};
 
 /**
  * guide on how to do multiple fields
  *
  * https://www.cluemediator.com/dynamic-form-with-react-hook-form-using-usefieldarray
  */
-const SuiteInformation = ({ onSubmit }: Props) => {
+const SuiteInformation = ({ onSubmit, spaceId }: Props) => {
   const { control, handleSubmit, register, formState } = useForm<Inputs>({
     resolver: zodResolver(SuiteInfoSchema),
     mode: "onChange",
     defaultValues: {
-      suiteInfo: [DefaultValues],
+      suites: [DefaultValues],
     },
   });
   const { fields, append, remove } = useFieldArray<Inputs>({
     control,
-    name: "suiteInfo",
+    name: "suites",
   });
 
-  const onFormSubmit: SubmitHandler<Inputs> = (data) => {
-    onSubmit();
+  const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (spaceId) {
+      try {
+        const res = await onBoardingService.createSuite({
+          spaceId,
+          suites: data.suites,
+        });
+
+        if (res) {
+          onSubmit();
+        }
+      } catch (error) {
+        Alert.error(error);
+      }
+    } else {
+      Alert.error("Space Id is undefined, error creating Suite");
+    }
   };
 
   return (
     <div className="mx-auto my-4 mt-16 max-w-[1200px] pt-10">
-      <form onSubmit={handleSubmit(onFormSubmit)}>
+      <form onSubmit={handleSubmit(onFormSubmit, onFormError)}>
         <div className="ml-4 sm:ml-8">
           <Title weight="bold" level={2}>
             Tell us about the suites in this space
@@ -90,7 +107,7 @@ const SuiteInformation = ({ onSubmit }: Props) => {
         </div>
 
         <div className="mx-auto mt-8 max-w-sm">
-          <Button className="" type="submit" primary>
+          <Button className="" type="submit" loading={formState.isSubmitting}>
             Submit
           </Button>
         </div>

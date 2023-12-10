@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "public/logoDark.png";
+import Logo from "public/logo-dark.png";
 import { useRouter } from "next/router";
 import { formatWord } from "@/utils";
 import PersonalInformation from "@/components/organisms/Profile/PersonalInfo";
@@ -8,6 +8,11 @@ import SuiteInformation from "@/components/organisms/Profile/SuiteInformation";
 import AccountInformation from "@/components/organisms/Profile/AccountInfo";
 import { useEffect, useState } from "react";
 import { StepProgressIndicator } from "@the_human_cipher/components-library";
+import SEO from "@/components/layouts/SEO";
+import { SpinnerLoader } from "@/components/atoms/Loader";
+import onBoardingService from "@/utils/apis/onboarding";
+import Alert from "@/utils/base/alerts";
+import useSession from "@/utils/hooks/useSession";
 
 const AllSteps = [
   "personal-information",
@@ -20,28 +25,52 @@ type Step = (typeof AllSteps)[number];
 
 type IndexedStep = Step | (string & {});
 
-const SigUpPage = () => {
+const UpdateUserPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const step = router.query.step;
+  const [shouldVerify, setShouldVerify] = useState(false);
+
+  const { step, spaceId } = router.query;
+
+  const space_id = spaceId ? String(spaceId) : null;
+
+  const user = useSession();
 
   useEffect(() => {
     setLoading(false);
   }, []);
 
+  const updateUserProfile = async () => {
+    setShouldVerify(true);
+
+    try {
+      await onBoardingService.completeUserOnboarding(String(user?.id));
+      Alert.success("Profile Updated successfully");
+      router.push("/");
+    } catch (error) {
+      Alert.error(error);
+    } finally {
+      setShouldVerify(false);
+    }
+  };
+
   const renderStep = (query: Extract<IndexedStep, Step>): JSX.Element => {
     switch (query) {
       case "personal-information":
-        return <PersonalInformation onSubmit={handleQueryUpdate} />;
+        return <PersonalInformation onSubmit={handleQueryUpdate} personId={user?.id} />;
       case "space-information":
-        return <SpaceInfo onSubmit={handleQueryUpdate} />;
+        return <SpaceInfo onSubmit={(spaceId) => handleQueryUpdate({ spaceId })} />;
       case "suite-information":
-        return <SuiteInformation onSubmit={handleQueryUpdate} />;
+        return <SuiteInformation onSubmit={handleQueryUpdate} spaceId={space_id} />;
       case "account-information":
-        return <AccountInformation onSubmit={() => console.log("Submitted")} />;
+        return (
+          <AccountInformation onSubmit={() => updateUserProfile()} spaceId={space_id} />
+        );
       default:
-        throw new Error(`${step} is invalid, step should be of either ${AllSteps.join(", ")}`);
+        throw new Error(
+          `${step} is invalid, step should be of either ${AllSteps.join(", ")}`
+        );
     }
   };
 
@@ -51,11 +80,14 @@ const SigUpPage = () => {
     return idx + 1;
   };
 
-  function handleQueryUpdate() {
+  type HandleQueryUpdate = typeof router.query;
+  function handleQueryUpdate(args?: HandleQueryUpdate) {
     const idx = getCurrentStep(String(step));
 
     router.push({
       query: {
+        ...router.query,
+        ...args,
         step: AllSteps[idx],
       },
     });
@@ -64,16 +96,31 @@ const SigUpPage = () => {
   /**
    * handle loading state better
    */
-  if (loading) return <div />;
+  if (loading)
+    return (
+      <>
+        <div />
+        <SEO title="Update Profile" />
+      </>
+    );
 
-  if (!step) return <div>{/* 404 page if step is undefined*/}</div>;
+  if (!step)
+    return (
+      <div>
+        <SEO title="Update Profile" />
+        {/* 404 page if step is undefined*/}
+      </div>
+    );
 
   /**
    * default page step should be personal-information
    */
 
+  const PAGE_TITLE = AllSteps.at(getCurrentStep(String(step)) - 1) ?? "Update Profile";
+
   return (
     <section className="space-y-4">
+      <SEO title={`${formatWord(PAGE_TITLE)} | Suitemates`} />
       <header className="container py-10">
         <Image src={Logo} className="max-w-40" alt="Suitemates" priority />
       </header>
@@ -101,8 +148,17 @@ const SigUpPage = () => {
           {renderStep(String(step) as Step)}
         </div>
       </div>
+
+      {shouldVerify && (
+        <div className="fixed inset-0 z-10 grid place-items-center bg-white/80">
+          <div className="items-center space-y-4">
+            <SpinnerLoader className="h-10 w-10" wrapperClass="w-fit mx-auto" />
+            <div>Your profile is being updated...</div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
 
-export default SigUpPage;
+export default UpdateUserPage;

@@ -8,7 +8,7 @@ import { Title, Text, Input, Button, Select } from "@the_human_cipher/components
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 interface Props {
-  onSubmit(): void;
+  onSubmit(spaceId: string): void;
 }
 
 type Inputs = InferSchema<typeof SpaceInfoSchema>;
@@ -45,17 +45,17 @@ const fields: Field[] = [
 ];
 
 const SpaceInformation = ({ onSubmit }: Props) => {
-  const { register, formState, handleSubmit, control, watch } = useForm<Inputs>({
+  const { register, formState, handleSubmit, control } = useForm<Inputs>({
     resolver: zodResolver(SpaceInfoSchema),
     mode: "onChange",
   });
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const res = await onBoardingService.createSuite(data);
+      const res = await onBoardingService.createSpace(data);
 
       if (res) {
-        onSubmit();
+        onSubmit(String(res.data.id));
       }
     } catch (error) {
       Alert.error(error);
@@ -70,8 +70,6 @@ const SpaceInformation = ({ onSubmit }: Props) => {
   const assertError = (key: keyof Inputs): boolean => {
     return Boolean(formState.errors[key]?.message);
   };
-
-  const watchAmenities = watch("space_amenities");
 
   const { isSubmitting } = formState;
 
@@ -100,30 +98,27 @@ const SpaceInformation = ({ onSubmit }: Props) => {
               control={control}
               name="space_amenities"
               render={({ field: { value, onChange, ...rest } }) => (
-                <div>
-                  <Select
-                    {...rest}
-                    options={SuiteAmenities}
-                    label="Space amenities"
-                    placeholder="Select..."
-                    onChange={(e) => onChange(e)}
-                    value={watchAmenities}
-                    multiple
-                    isError={assertError("space_amenities")}
-                    hint={getFormError("space_amenities") ?? "Select all that is offered"}
-                    hideMultipleSelectedValue
-                    multipleSelectedLabel={
-                      <span className="lowercase first-letter:uppercase">
-                        Selected +{watchAmenities?.length} option(s)
-                      </span>
-                    }
-                  />
-                </div>
+                <Select
+                  {...rest}
+                  options={SuiteAmenities}
+                  label="Space amenities"
+                  placeholder="Select..."
+                  onChange={(e) => onChange(e)}
+                  value={value}
+                  multiple
+                  isError={assertError("space_amenities")}
+                  hint={getFormError("space_amenities") ?? "Select all that is offered"}
+                  hideMultipleSelectedValue
+                />
               )}
             />
           </div>
-          <Button type="submit" className="mx-auto mt-10 block max-w-xs" disabled={isSubmitting}>
-            {isSubmitting ? "Loading..." : "Next"}
+          <Button
+            type="submit"
+            className="mx-auto mt-10 block max-w-xs"
+            loading={isSubmitting}
+          >
+            Next
           </Button>
         </form>
       </div>

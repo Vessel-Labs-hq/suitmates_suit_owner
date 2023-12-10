@@ -1,23 +1,49 @@
 import authService from "@/utils/apis/auth";
-import { useRouter } from "next/router";
+import { SpinnerLoader } from "../atoms/Loader";
+import { useQuery, useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function ProtectedLayout({ children }: IChildren) {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+
+  const { isLoading, isError } = useQuery({
+    queryFn: () => authService.validateSession(),
+    queryKey: ["validate-session"],
+    staleTime: 45 * (60 * 1000), // 30 mins
+    cacheTime: 60 * (60 * 1000), // 60 mins
+    retry: false,
+  });
+
+  const [loading, setLoading] = useState(isLoading);
 
   useEffect(() => {
-    const user = authService.getSession();
-
-    if (!user) {
+    if (isError) {
+      queryClient.invalidateQueries();
       authService.redirectLogin({ router });
-    } else {
-      setLoading(false);
     }
-  }, []);
+  }, [isError]);
 
-  if (loading) return <div />;
+  /** prevent glitch of other components showing */
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (!isLoading) {
+      timeoutId = setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isLoading]);
+
+  if (loading) return <SpinnerLoader fullScreen />;
 
   return children;
 }

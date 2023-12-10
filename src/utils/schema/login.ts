@@ -12,6 +12,10 @@ export const LoginSchema = z.object({
 
 export type LoginType = z.infer<typeof LoginSchema>;
 
+/** 
+ * name: z.string(),
+  avatar: z.string(),
+ */
 export const AuthResponseSchema = z.object({
   role: z.union([z.literal("owner"), z.literal("tenant")]),
   email: z.string(),
@@ -19,6 +23,8 @@ export const AuthResponseSchema = z.object({
   onboarded: z.boolean(),
   verified: z.boolean(),
   accessToken: z.string(),
+  name: z.optional(z.string()),
+  avatar: z.string().nullable(),
 });
 
 /**

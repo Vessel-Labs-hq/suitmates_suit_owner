@@ -2,7 +2,7 @@ import axios from "axios";
 import { clientENV } from "./env";
 import authService from "../apis/auth";
 import { handleAxiosError } from "../functions/axios.helpers";
-import Alert from "./alerts";
+import Alert from "../base/alerts";
 
 /**
  *
@@ -22,6 +22,10 @@ API.interceptors.request.use(
   (config) => {
     const user = authService.getSession();
 
+    // if (config.method?.toLowerCase() === "get") {
+    //   config.headers["ngrok-skip-browser-warning"] = "69420";
+    // }
+
     if (user) {
       config.headers.Authorization = `Bearer ${user.accessToken}`;
     }
@@ -37,17 +41,14 @@ API.interceptors.response.use(
     let message = handleAxiosError(error);
 
     if (error?.response?.status === 401) {
+      message = "DO_NOT_ERROR";
+
       /** Runs only the client */
       if (typeof window !== "undefined") {
         Alert.info("Please sign in to continue");
+
         authService.logOut();
-
-        const currentLocation = encodeURIComponent(window.location.href);
-
-        return window.location.replace(`/auth/signin?callbackUrl=${currentLocation}`);
       }
-
-      message = "Sign in to continue";
     }
 
     return Promise.reject(message);

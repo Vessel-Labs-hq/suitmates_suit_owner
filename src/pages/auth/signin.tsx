@@ -5,16 +5,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/router";
 import Banner from "image/loginBanner.png";
-import Logo from "public/logoDark.png";
+import Logo from "public/logo-dark.png";
 import { LoginSchema } from "@/utils/schema/login";
 import Link from "next/link";
 import authService from "@/utils/apis/auth";
 import Alert from "@/utils/base/alerts";
+import SEO from "@/components/layouts/SEO";
+import { useEffect, useState } from "react";
 
 type Inputs = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
   const router = useRouter();
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   const { register, handleSubmit, formState } = useForm<Inputs>({
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
@@ -48,8 +57,11 @@ const LoginPage = () => {
 
   const { isSubmitting } = formState;
 
+  if (!loaded) return <div />;
+
   return (
     <section className="grid min-h-screen grid-flow-row-dense grid-cols-1 grid-rows-1 md:grid-cols-7">
+      <SEO title="Sign In | Suitemates" />
       <div className="col-span-4 mx-auto my-auto flex h-full w-full flex-col items-center justify-start px-3 pb-5 pt-14">
         <Image
           src={Logo}

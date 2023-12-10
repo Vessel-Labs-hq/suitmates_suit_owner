@@ -1,7 +1,7 @@
 import type { NextRouter } from "next/router";
 import { API } from "../base/axios";
-import { encryptionHandler } from "../functions/encrypt";
 import { LoginType, AuthResponse, AuthResponseSchema } from "../schema/login";
+import { BaseAPIService } from "./base";
 
 interface SignUpType extends LoginType {
   role: "owner";
@@ -12,19 +12,8 @@ interface RedirectLoginArgs {
   router: NextRouter;
 }
 
-class AuthService {
-  private storeIndex = "d-suite-owner";
-
-  private storeUser(user: AuthResponse) {
-    const res = encryptionHandler({
-      action: "encrypt",
-      data: JSON.stringify(user),
-    });
-
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem(this.storeIndex, res);
-    }
-  }
+class AuthService extends BaseAPIService {
+  public getSession = this.handleUserSession;
 
   async signup(data: SignUpType): Promise<AuthResponse> {
     try {
@@ -46,27 +35,22 @@ class AuthService {
     }
   }
 
-  getSession(): AuthResponse | undefined {
-    if (typeof localStorage !== "undefined") {
-      const user = localStorage.getItem(this.storeIndex);
+  async validateSession() {
+    const data = this.getSession();
 
-      if (!user) return;
+    try {
+      const res = await API.post("auth/verify-token", { token: data?.accessToken });
 
-      const data = encryptionHandler({ action: "decrypt", data: user });
-
-      const res = AuthResponseSchema.safeParse(JSON.parse(data));
-
-      if (res.success) {
-        return res.data;
-      }
+      return res.data;
+    } catch (error) {
+      throw error;
     }
   }
 
+  /** pass router for clean redirect(as an SPA), it wont clear cached data */
   redirectLogin(args?: Partial<RedirectLoginArgs>) {
     if (typeof window !== "undefined") {
       const currentLocation = encodeURIComponent(window.location.href);
-
-      this.logOut();
 
       if (args?.effect) {
         args.effect();
@@ -74,20 +58,64 @@ class AuthService {
 
       const url = `/auth/signin?callbackUrl=${currentLocation}`;
 
+      if (typeof localStorage !== "undefined") {
+        localStorage.removeItem(this.storeIndex);
+      }
+
       return args?.router ? args.router.push(url) : window.location.replace(url);
     }
   }
 
   /**
+   * logout is an explicit method, it clears the cache
    * @example```tsx
    *  <button onClick={()=> authService.logOut()}>Logout</button>
    * ```
    */
   logOut(): void {
     if (typeof localStorage !== "undefined") {
-      localStorage.removeItem(this.storeIndex);
+      if (typeof window !== "undefined") {
+        const currentLocation = window.location.href;
+        const locationToRedirectTo = "/auth/signin";
 
-      window.location.replace("/auth/signin");
+        localStorage.removeItem(this.storeIndex);
+
+        /**
+         * don't run on sign-in page
+         */
+        if (currentLocation.includes(locationToRedirectTo)) {
+          return window.location.replace(locationToRedirectTo);
+        }
+
+        const url = `${locationToRedirectTo}?callbackUrl=${encodeURIComponent(
+          currentLocation
+        )}`;
+
+        return window.location.replace(url);
+      }
+    }
+  }
+
+  async getUserDetails() {
+    const user = this.getSession();
+
+    try {
+      const res = await API.get<APIResponse<DbGetUserDetails>>(`/user/${user?.id}`);
+      return res.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async resendEmail() {
+    const user = this.getSession();
+
+    try {
+      const res = await API.post(`/auth/resend-tenant-invite/${user?.id}`);
+
+      return res.data;
+    } catch (error) {
+      throw error;
     }
   }
 }

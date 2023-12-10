@@ -1,3 +1,13 @@
+interface SEOobject {
+  readonly title: string;
+  readonly description: string;
+  readonly image: string;
+  readonly twitterCard: string;
+  readonly noindex: boolean;
+  readonly ogType: TemplateType;
+}
+type TemplateType = "website" | "article";
+
 interface IChildren {
   children: React.ReactNode;
 }
@@ -35,4 +45,41 @@ interface APIResponse<TData> {
   success: boolean;
   data: Readonly<TData>;
   message: string;
+}
+
+interface IChatMessage {
+  message: string;
+  contact?: string;
+  isSender?: boolean;
+  status?: "sending" | "delivered";
+}
+
+interface IChats extends IChatMessage {
+  id: number | string;
+}
+
+type SN = string | number;
+
+type SelectData<Type = string> = {
+  label: Type;
+  value: Type;
+};
+
+type TMaintenanceRequestPriority = "critical" | "trivial" | "medium";
+
+type RequestPriority =
+  | TMaintenanceRequestPriority
+  | Capitalize<TMaintenanceRequestPriority>;
+
+type MaintenanceRequestStatus = "IN_PROGRESS" | "PENDING" | "COMPLETED";
+
+interface DbNotification {
+  id: number;
+  text: string;
+  user_id: number;
+  opened: boolean;
+  service: string;
+  serviceId: number;
+  created_at: string;
+  updated_at: string;
 }

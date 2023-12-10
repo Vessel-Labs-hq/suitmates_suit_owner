@@ -1,4 +1,6 @@
+import { MRCProps } from "@/components/molecules/Cards/MaintenanceRequestCard";
 import { NextPageWithLayout } from "@/pages/_app";
+import { formatWord } from "@/utils";
 import { AppProps } from "next/app";
 
 export interface AppPropsWithLayout extends AppProps {
@@ -23,7 +25,7 @@ while (time < 25) {
   time++;
 }
 
-export const WorkingHours = timeArr;
+export const WorkingHours = timeArr.map((ele) => ele.label);
 
 export const DaysOfTheWeek = [
   "monday",
@@ -55,14 +57,40 @@ export const SalonOccupations: TSalonOccupations[] = [
 ];
 
 export const SuiteAmenities = [
-  { label: "Event/conference room", value: "Event/conference room" },
-  { label: "Wifi / high-speed internet", value: "Wifi / high-speed internet" },
-  { label: "Laundry room", value: "Laundry room" },
-  { label: "24/7hr door access", value: "24/7hr door access" },
-  { label: "Cleaning services", value: "Cleaning services" },
-  { label: "Parking", value: "Parking" },
-  { label: "Utilities", value: "Utilities" },
-  { label: "Security", value: "Security" },
-  { label: "Furniture", value: "Furniture" },
-  { label: "Pet friendly", value: "Pet friendly" },
+  "Event/conference room",
+  "Wifi / high-speed internet",
+  "Laundry room",
+  "24/7hr door access",
+  "Cleaning services",
+  "Parking",
+  "Utilities",
+  "Security",
+  "Furniture",
+  "Pet friendly",
 ];
+
+export const MaintenanceQueries = {
+  add_request: "add_request",
+  requestId: "requestId",
+} as const;
+
+export const MaintenanceRequestCategory = [
+  "Appliance",
+  "Cleaning",
+  "Electrical",
+  "General",
+  "Painting ",
+  "Plumbing",
+];
+
+export const SortOptions = ["Date", "Status"];
+
+export const AllMaintenanceRequestStatus: MaintenanceRequestStatus[] = [
+  "IN_PROGRESS",
+  "PENDING",
+  "COMPLETED",
+];
+
+export const MaintenanceRequestArr = AllMaintenanceRequestStatus.map((ele) =>
+  formatWord(ele.toLowerCase())
+);
