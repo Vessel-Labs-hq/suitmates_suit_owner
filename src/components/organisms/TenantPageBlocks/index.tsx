@@ -141,7 +141,7 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
             )}
           </div>
         </Tabs.Content>
-        <Tabs.Content value={tablist[1]}>
+        <Tabs.Content className="space-y-2" value={tablist[1]}>
           {inActiveTenants.length > 0 ? (
             inActiveTenants.map(({ email, created_at }) => (
               <div
