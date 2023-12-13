@@ -39,35 +39,37 @@ interface TenantPageHeaderProp {
 export const TenantPageHeader = ({
   occupiedSuites,
   vacantSuites,
-}: TenantPageHeaderProp) => (
-  <section className="flex items-start justify-between gap-4">
-    <div className="flex h-full w-full flex-col gap-4">
-      <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
-        <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
-          <HomeInfoCard title="Vacant Suites" value={vacantSuites} />
-          <HomeInfoCard title="Occupied Suites" value={occupiedSuites} />
+}: TenantPageHeaderProp) => {
+  return (
+    <section className="flex items-start justify-between gap-4">
+      <div className="flex h-full w-full flex-col gap-4">
+        <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
+            <HomeInfoCard title="Vacant Suites" value={vacantSuites} />
+            <HomeInfoCard title="Occupied Suites" value={occupiedSuites} />
+          </div>
+          <DashboardSuiteInfoChart />
         </div>
-        <DashboardSuiteInfoChart />
-      </div>
-      <div className="mt-auto hidden w-fit md:block">
-        <div className="flex items-center gap-4">
-          <IconButton
-            icon="Plus"
-            text="Add Tenant"
-            href={{ query: { add_tenant: "true" } }}
-          />
+        <div className="mt-auto hidden w-fit md:block">
+          <div className="flex items-center gap-4">
+            <IconButton
+              icon="Plus"
+              text="Add Tenant"
+              href={{ query: { add_tenant: "true" } }}
+            />
 
-          <IconButton
-            icon="Edit05"
-            text="Edit Suite"
-            href={{ query: { edit_suite: true } }}
-          />
+            <IconButton
+              icon="Edit05"
+              text="Edit Suite"
+              href={{ query: { edit_suite: true } }}
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <DueRequestSideBar length={3} />
-  </section>
-);
+      <DueRequestSideBar length={3} />
+    </section>
+  );
+};
 
 interface TenantPageTabProps {
   activeTenants: DbGetAllTenants[];

@@ -18,6 +18,7 @@ const config: Config = {
       lg: "992px",
       xl: "1024px",
       xxl: "1280px",
+      "@smXL": "1320px",
       "@desktop": "1440px",
       "2xl": "1536px",
     },
