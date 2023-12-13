@@ -8,8 +8,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
 
-dayjs.extend(relativeTime);
-
 interface DueRequestSideBarProps {
   length?: number;
 }
@@ -54,7 +52,8 @@ const DueRequestSideBar = (_: DueRequestSideBarProps) => {
                 { images, suite: { suite_number }, category, status, created_at },
                 idx
               ) => {
-                const img0 = images?.[0]?.url ?? createAvatarUrl(suite_number);
+                const img0 =
+                  images?.[0]?.url ?? createAvatarUrl(category ?? "New Request");
 
                 return (
                   <li key={idx}>

@@ -19,7 +19,6 @@ const TenantSinglePage = () => {
     () => (data ?? []).find(({ id }) => String(id) === tenant_id),
     [data, tenant_id]
   );
-  console.log("tenant", selectedTenant);
 
   if (isLoading) {
     return (

@@ -33,8 +33,6 @@ const Tablist = [
 const RentCollectionPage = () => {
   const { isLoading, isError, data: rentHistory } = useGetAllRentHistory();
 
-  console.log(rentHistory);
-
   const { data } = useGetRentChartHistory();
 
   if (isLoading) {

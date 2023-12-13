@@ -5,8 +5,6 @@ import { IconSlot } from "@/assets/icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-dayjs.extend(relativeTime);
-
 interface NotificationsProps {
   notifications: DbNotification[];
   hasNewNotifications?: boolean;

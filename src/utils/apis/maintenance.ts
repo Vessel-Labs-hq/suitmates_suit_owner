@@ -29,7 +29,6 @@ class MaintenanceService extends BaseAPIService {
     try {
       type ResponseBody = APIResponse<DbGetAllSpaceChatData>;
       const res = await API.get<ResponseBody>("/space/analyzed");
-      console.log("Analyzing data", res);
       return res.data.data;
     } catch (error) {
       throw error;
