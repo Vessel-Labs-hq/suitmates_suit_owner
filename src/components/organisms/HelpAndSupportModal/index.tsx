@@ -16,15 +16,15 @@ export const HelpAndSupportModal = ({ ...props }: ModalProps) => {
             </h3>
             <p className="text-xl text-suite-dark">
               If you have any issues, kindly contact us through the information below. Our
-              support will reply as soon as possible.
+              support team will reply as soon as possible.
             </p>
 
             <div className="mt-24 flex justify-center gap-8">
-              <span className="flex gap-2 rounded-lg bg-[#D0FCE6] px-6 py-3">
+              <span className="flex items-center gap-2 rounded-lg bg-[#D0FCE6] px-6 py-3">
                 {Icons.Mail}
                 help@suitemates.com
               </span>
-              <span className="flex gap-2 rounded-lg bg-[#D0FCE6] px-6 py-3">
+              <span className="flex items-center gap-2 rounded-lg bg-[#D0FCE6] px-6 py-3">
                 {Icons.PhoneIcon}
                 +190792654779
               </span>
