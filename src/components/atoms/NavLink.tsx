@@ -11,16 +11,14 @@ interface NavLinkProps {
   isActive?: boolean;
   className?: string;
   textStyles?: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const NavLink = (props: NavLinkProps) => {
-  const { icon, link, text, isActive, className, textStyles, onClick } = props;
+  const { icon, link, text, isActive, className, textStyles } = props;
 
   return (
     <Link
       href={link}
-      onClick={onClick}
       className={cn(
         "flex items-center gap-3 rounded-xl px-4 py-3 text-suite-dark [word-spacing:-0.1ch] lg:text-lg",
         className,
