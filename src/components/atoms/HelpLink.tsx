@@ -1,36 +1,34 @@
 import { cn } from "@/utils";
 import { IconBox } from "@the_human_cipher/components-library";
-import Link from "next/link";
+import { IconButton } from "../organisms/TenantPageBlocks";
 
 type Icons = React.ComponentProps<typeof IconBox>["icon"];
 
 interface NavLinkProps {
-  link: string;
   text: string;
   icon: Icons;
+  href: string;
   isActive?: boolean;
   className?: string;
   textStyles?: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const NavLink = (props: NavLinkProps) => {
-  const { icon, link, text, isActive, className, textStyles, onClick } = props;
+const HelpLink = (props: NavLinkProps) => {
+  const { icon, isActive, className } = props;
 
   return (
-    <Link
-      href={link}
-      onClick={onClick}
+    <IconButton
+      icon={icon}
+      text="Help & Support"
+      href={{ query: { help_and_support: "true" } }}
       className={cn(
         "flex items-center gap-3 rounded-xl px-4 py-3 text-suite-dark [word-spacing:-0.1ch] lg:text-lg",
         className,
         isActive && "bg-primary text-white"
       )}
-    >
-      <IconBox icon={icon} size={22} className="w-[22px]" />
-      <span className={cn("w-[calc(100%-30px)]", textStyles)}>{text}</span>
-    </Link>
+    />
   );
 };
 
-export default NavLink;
+export default HelpLink;

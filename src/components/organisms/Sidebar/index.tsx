@@ -1,6 +1,6 @@
 import NavLink from "@/components/atoms/NavLink";
 import { SideBarData } from "@/constants/navdata";
-import { checkIfNavLinkIsActive, cn } from "@/utils";
+import { assertQuery, checkIfNavLinkIsActive, cn } from "@/utils";
 import authService from "@/utils/apis/auth";
 import { IconBox } from "@the_human_cipher/components-library";
 import Image from "next/image";
@@ -8,14 +8,21 @@ import { useRouter } from "next/router";
 import Logo from "public/logo-dark.png";
 import IconLogo from "@/assets/images/logo-icon.png";
 import { Fragment, useEffect, useState } from "react";
+import { HelpAndSupportModal } from "../HelpAndSupportModal";
+import HelpLink from "@/components/atoms/HelpLink";
 
 const Sidebar = () => {
   const { pathname } = useRouter();
+  const router = useRouter();
+
+  const { help_and_support } = router.query;
 
   const [open, setOpen] = useState(false);
   const [showText, setShowText] = useState(false);
 
   const getNavLinkState = checkIfNavLinkIsActive(pathname);
+
+  const handleClose = () => router.push({ query: {} });
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -108,10 +115,10 @@ const Sidebar = () => {
           </ul>
 
           <div className="mt-auto space-y-4">
-            <NavLink
+            <HelpLink
               icon="User01"
+              href=""
               text="Help & Support"
-              link="#"
               className={cn(baseClassStyle, "bg-[#E6E6E6] xxl:w-fit", open && "w-fit")}
               textStyles={cn(textStyles, showText && "delay-100")}
             />
@@ -137,8 +144,13 @@ const Sidebar = () => {
           open && "z-[1] w-full bg-black/30 duration-100 ease-out",
           "max-md:hidden"
         )}
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+        }}
       ></div>
+      {assertQuery(help_and_support) && (
+        <HelpAndSupportModal open onOpenChange={handleClose} />
+      )}
     </Fragment>
   );
 };
