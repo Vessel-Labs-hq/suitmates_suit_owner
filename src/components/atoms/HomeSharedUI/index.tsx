@@ -30,11 +30,7 @@ export const HomeInfoCard = ({ title, value }: HomeInfoCard) => (
 export const HomeRentGraph = () => {
   const { data } = useGetRentChartHistory();
 
-  if (!data?.yearly) {
-    return;
-  }
-
-  const { yearly } = data;
+  const { yearly } = data ?? {};
 
   return (
     <div className="flex w-full flex-col rounded-2xl bg-[#3BAF75] px-3 py-2 md:max-w-[350px] xxl:space-y-3 xxl:rounded-3xl">
@@ -47,7 +43,7 @@ export const HomeRentGraph = () => {
         </Title>
       </div>
       <h2 className="mt-1 text-xl font-bold text-white md:text-4xl xxl:text-center">
-        {`$${yearly[2023].toLocaleString()}`}
+        {yearly && yearly[2023] ? `$${yearly?.[2023]?.toLocaleString()}` : "$0"}
       </h2>
       <div className="mt-auto h-20 min-h-[100px] w-full max-xxl:mt-3 md:h-full xxl:h-[100px]">
         <DashboardRentHistoryChart />
