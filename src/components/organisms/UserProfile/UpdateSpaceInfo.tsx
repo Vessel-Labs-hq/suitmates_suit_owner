@@ -27,7 +27,7 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
       space_address: userProfile.space?.space_address,
       space_size: String(userProfile.space?.space_size ?? ""),
       space_amenities: createAmenities(userProfile.space?.space_amenities) ?? [],
-    },
+    } as any,
   });
   const [amenities, setAmenities] = useState(
     createAmenities(userProfile.space?.space_amenities) ?? []
@@ -41,11 +41,10 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const { space_name, space_address, space_size } = data;
+      const { space_name, space_address } = data;
       const updatedData = {
         space_name,
         space_address,
-        space_size,
         space_amenities: amenities,
       };
 

@@ -42,7 +42,8 @@ export const SpaceInfoSchema = z.object({
 });
 
 export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({
-  space_size: z.optional(createInputNumberSchema("Size")),
+  space_size_one: z.optional(createInputNumberSchema("Size")),
+  space_size_two: z.optional(createInputNumberSchema("Size")),
 });
 
 export const SuiteDetailSchema = z.object({

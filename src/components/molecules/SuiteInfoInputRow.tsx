@@ -21,6 +21,7 @@ type Field = {
   name: Name;
   label: LoosenString<Label>;
   placeholder: LoosenString<`Enter ${Lowercase<Label>}`>;
+  isAmount?: true;
 };
 
 const fields: Field[] = [
@@ -38,6 +39,7 @@ const fields: Field[] = [
     label: "Suite Cost",
     name: "suite_cost",
     placeholder: "Enter suite cost",
+    isAmount: true,
   },
 ];
 

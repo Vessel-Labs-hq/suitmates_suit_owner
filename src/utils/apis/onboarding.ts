@@ -158,7 +158,7 @@ class Details extends BaseAPIService {
   async updateSpace(payload: InferSchema<typeof UpdateSpaceInfoSchema>) {
     type ResponseBody = APIResponse<DbCreateSpace>;
 
-    const { space_amenities, space_size, ...rest } = payload;
+    const { space_amenities, ...rest } = payload;
 
     const data: Record<string, unknown> = {
       ...rest,
