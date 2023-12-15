@@ -41,10 +41,10 @@ const Sidebar = () => {
   }, [open]);
 
   const textStyles = cn(
-    "origin-left whitespace-nowrap duration-300 xxl:block",
+    "origin-left whitespace-nowrap duration-300 @smXL:block",
     showText && "block opacity-100",
     !showText &&
-      "max-xxl:sr-only max-xxl:-m-1 max-xxl:max-w-0 max-xxl:overflow-hidden max-xxl:opacity-0"
+      "max-@smXL:sr-only max-@smXL:-m-1 max-@smXL:max-w-0 max-@smXL:overflow-hidden max-@smXL:opacity-0"
   );
 
   const arrowStyles = cn(
@@ -52,13 +52,13 @@ const Sidebar = () => {
     open && "rotate-180"
   );
 
-  const baseClassStyle = "h-12 w-fit overflow-hidden lg:text-base xxl:w-full";
+  const baseClassStyle = "h-12 w-fit overflow-hidden lg:text-base @smXL:w-full";
 
   return (
     <Fragment>
       <aside
         className={cn(
-          "fixed top-0 z-[4] hidden h-screen w-full max-w-[100px] bg-light-gray px-2 md:flex xxl:sticky xxl:max-w-[350px] xxl:border-r-0 xxl:pr-10 xxl:shadow-none",
+          "fixed top-0 z-[4] hidden h-screen w-full max-w-[100px] bg-light-gray px-2 md:flex @smXL:sticky @smXL:max-w-[350px] @smXL:border-r-0 @smXL:pr-10 @smXL:shadow-none",
           open && "max-w-[350px] pr-10",
           "duration-700 max-md:py-14"
         )}
@@ -66,7 +66,7 @@ const Sidebar = () => {
         <div className="ml-auto flex h-full w-full max-w-[80%] flex-col">
           <button
             type="button"
-            className="cursor-pointer xxl:hidden"
+            className="cursor-pointer @smXL:hidden"
             onClick={() => setOpen(!open)}
           >
             <div className={arrowStyles}>
@@ -84,7 +84,7 @@ const Sidebar = () => {
               className={cn(
                 "absolute top-0 opacity-0 ",
                 open && "opacity-100 transition-opacity delay-300 duration-300",
-                "xxl:opacity-100"
+                "@smXL:opacity-100"
               )}
               width={197}
               height={30}
@@ -97,7 +97,7 @@ const Sidebar = () => {
               className={cn(
                 "absolute top-0 ml-2 block h-10 w-fit opacity-0",
                 !open && "opacity-100",
-                "xxl:opacity-0"
+                "@smXL:opacity-0"
               )}
             />
           </div>
@@ -119,7 +119,7 @@ const Sidebar = () => {
               icon="User01"
               text="Help & Support"
               link="#"
-              className={cn(baseClassStyle, "bg-[#E6E6E6] xxl:w-fit", open && "w-fit")}
+              className={cn(baseClassStyle, "bg-[#E6E6E6] @smXL:w-fit", open && "w-fit")}
               textStyles={cn(textStyles, showText && "delay-100")}
               onClick={() => setOpenModal(true)}
             />
@@ -129,7 +129,7 @@ const Sidebar = () => {
               className={cn(
                 baseClassStyle,
                 "flex items-center gap-3 rounded-xl bg-[#E6E6E6] px-4 py-3 text-suite-dark [word-spacing:-0.1ch]",
-                "xxl:w-fit",
+                "@smXL:w-fit",
                 open && "w-fit"
               )}
             >
@@ -141,7 +141,7 @@ const Sidebar = () => {
       </aside>
       <div
         className={cn(
-          "fixed inset-0 z-[-1] bg-transparent xxl:hidden",
+          "fixed inset-0 z-[-1] bg-transparent @smXL:hidden",
           open && "z-[1] w-full bg-black/30 duration-100 ease-out",
           "max-md:hidden"
         )}
