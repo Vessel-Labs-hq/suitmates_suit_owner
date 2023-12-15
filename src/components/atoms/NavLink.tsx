@@ -11,6 +11,7 @@ interface NavLinkProps {
   isActive?: boolean;
   className?: string;
   textStyles?: string;
+  onClick?(): void;
 }
 
 const NavLink = (props: NavLinkProps) => {

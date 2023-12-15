@@ -1,6 +1,6 @@
 import NavLink from "@/components/atoms/NavLink";
 import { SideBarData } from "@/constants/navdata";
-import { assertQuery, checkIfNavLinkIsActive, cn } from "@/utils";
+import { checkIfNavLinkIsActive, cn } from "@/utils";
 import authService from "@/utils/apis/auth";
 import { IconBox } from "@the_human_cipher/components-library";
 import Image from "next/image";
@@ -9,7 +9,6 @@ import Logo from "public/logo-dark.png";
 import IconLogo from "@/assets/images/logo-icon.png";
 import { Fragment, useEffect, useState } from "react";
 import { HelpAndSupportModal } from "../HelpAndSupportModal";
-import HelpLink from "@/components/atoms/HelpLink";
 
 const Sidebar = () => {
   const { pathname } = useRouter();
@@ -19,6 +18,7 @@ const Sidebar = () => {
 
   const [open, setOpen] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getNavLinkState = checkIfNavLinkIsActive(pathname);
 
@@ -115,12 +115,13 @@ const Sidebar = () => {
           </ul>
 
           <div className="mt-auto space-y-4">
-            <HelpLink
+            <NavLink
               icon="User01"
-              href=""
               text="Help & Support"
+              link="#"
               className={cn(baseClassStyle, "bg-[#E6E6E6] xxl:w-fit", open && "w-fit")}
               textStyles={cn(textStyles, showText && "delay-100")}
+              onClick={() => setOpenModal(true)}
             />
             <button
               type="button"
@@ -148,9 +149,8 @@ const Sidebar = () => {
           setOpen(false);
         }}
       ></div>
-      {assertQuery(help_and_support) && (
-        <HelpAndSupportModal open onOpenChange={handleClose} />
-      )}
+
+      <HelpAndSupportModal open={openModal} onOpenChange={handleClose} />
     </Fragment>
   );
 };
