@@ -26,7 +26,7 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
       space_name: userProfile.space?.space_name,
       space_address: userProfile.space?.space_address,
       space_size: String(userProfile.space?.space_size ?? ""),
-      space_amenities: [],
+      space_amenities: createAmenities(userProfile.space?.space_amenities) ?? [],
     },
   });
   const [amenities, setAmenities] = useState(
