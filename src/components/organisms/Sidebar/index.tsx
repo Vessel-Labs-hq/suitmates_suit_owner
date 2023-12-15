@@ -22,7 +22,7 @@ const Sidebar = () => {
 
   const getNavLinkState = checkIfNavLinkIsActive(pathname);
 
-  const handleClose = () => router.push({ query: {} });
+  const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
