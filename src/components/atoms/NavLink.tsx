@@ -25,6 +25,7 @@ const NavLink = (props: NavLinkProps) => {
         className,
         isActive && "bg-primary text-white"
       )}
+      onClick={onClick}
     >
       <IconBox icon={icon} size={22} className="w-[22px]" />
       <span className={cn("w-[calc(100%-30px)]", textStyles)}>{text}</span>
