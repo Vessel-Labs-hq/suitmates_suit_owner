@@ -15,7 +15,7 @@ interface NavLinkProps {
 }
 
 const NavLink = (props: NavLinkProps) => {
-  const { icon, link, text, isActive, className, textStyles } = props;
+  const { icon, link, text, isActive, className, textStyles, onClick } = props;
 
   return (
     <Link
