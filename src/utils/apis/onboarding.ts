@@ -102,7 +102,7 @@ class Details extends BaseAPIService {
       ({ suite_cost, suite_size_length, suite_size_breadth, ...rest }) => ({
         ...rest,
         suite_cost: Number(suite_cost),
-        space_size: `${suite_size_length} by ${suite_size_breadth} ft`,
+        suite_size: `${suite_size_length} by ${suite_size_breadth} ft`,
       })
     );
 
@@ -124,7 +124,7 @@ class Details extends BaseAPIService {
     const payload = {
       ...rest,
       suite_cost: Number(suite_cost),
-      space_size: `${suite_size_length} by ${suite_size_breadth} ft`,
+      suite_size: `${suite_size_length} by ${suite_size_breadth} ft`,
     };
 
     const res = await API.post<RES>(`/space/update/suite/${suiteId}`, payload);

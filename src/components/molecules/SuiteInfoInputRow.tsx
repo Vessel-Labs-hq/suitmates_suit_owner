@@ -99,7 +99,7 @@ const SuiteInfoInputRow = (props: Props) => {
         control={control}
         name={`suites.${idx}.suite_type`}
         render={({ field: { name, onChange, value } }) => (
-          <div className="mt-2.5">
+          <div className="mt-2.5 min-w-[200px]">
             {/* remove this class */}
             <Select
               label="Suite Type"
