@@ -5,6 +5,7 @@ import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
+import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 interface Props {
@@ -111,7 +112,7 @@ const SpaceInformation = ({ onSubmit }: Props) => {
                 hint={getFormError("space_size_one")}
                 isError={Boolean(getFormError("space_size_one"))}
               />
-              <span className="mt-2 text-sm">By</span>
+              <span className="mt-2 text-sm">by</span>
               <Input
                 {...spaceFields[1]}
                 wrapperClass="w-full"

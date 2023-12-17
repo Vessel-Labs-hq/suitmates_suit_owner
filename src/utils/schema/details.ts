@@ -48,7 +48,8 @@ export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({
 
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
-  suite_size: createStringSchema("Size"),
+  suite_size_length: createStringSchema("Size"),
+  suite_size_breadth: createStringSchema("Size"),
   suite_cost: createInputNumberSchema("Cost"),
   suite_type: createStringSchema("Type"),
   timing: createStringSchema("Duration"),
