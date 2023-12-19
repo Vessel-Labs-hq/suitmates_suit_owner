@@ -72,7 +72,6 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
 
   return (
     <section>
-      <Input isAmount onChange={(e) => setTest(e.target.value)} />
       <div className="my-4 mt-16">
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="mx-auto max-w-[1180px]">
