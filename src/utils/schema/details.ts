@@ -33,19 +33,23 @@ export const SpaceInfoSchema = z.object({
   /**
    * https://github.com/colinhacks/zod/discussions/330#discussioncomment-7097769
    */
-  space_size: createInputNumberSchema("Size"),
+  // space_size: createInputNumberSchema("Size"),
+  space_size_one: createInputNumberSchema("Space length"),
+  space_size_two: createInputNumberSchema("Space breadth"),
   space_amenities: z
     .array(createStringSchema("Amenities"))
     .min(1, "Space Amenities cannot be empty"),
 });
 
 export const UpdateSpaceInfoSchema = SpaceInfoSchema.extend({
-  space_size: z.optional(createInputNumberSchema("Size")),
+  space_size_one: z.optional(createInputNumberSchema("Size")),
+  space_size_two: z.optional(createInputNumberSchema("Size")),
 });
 
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
-  suite_size: createStringSchema("Size"),
+  suite_size_length: createStringSchema("Size"),
+  suite_size_breadth: createStringSchema("Size"),
   suite_cost: createInputNumberSchema("Cost"),
   suite_type: createStringSchema("Type"),
   timing: createStringSchema("Duration"),

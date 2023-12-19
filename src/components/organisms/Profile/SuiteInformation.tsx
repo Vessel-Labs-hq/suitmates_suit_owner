@@ -19,7 +19,8 @@ type Inputs = InferSchema<typeof SuiteInfoSchema>;
 const DefaultValues = {
   suite_cost: "",
   suite_number: "",
-  suite_size: "",
+  suite_size_length: "",
+  suite_size_breadth: "",
   suite_type: "",
   timing: "",
 };

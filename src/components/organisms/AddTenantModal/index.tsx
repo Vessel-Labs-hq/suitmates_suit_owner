@@ -20,9 +20,12 @@ interface ModalCustomProps extends ModalProps {
 
 const ModalWrapper = ({ children, title, ...props }: ModalCustomProps) => (
   <Modal {...props}>
-    <Modal.Body enableBottomSheet className="md:max-w-[600px]">
+    <Modal.Body
+      enableBottomSheet
+      className="hide-scrollbar overflow-scroll md:max-w-[600px]"
+    >
       <Modal.Title title={title ?? "Add Tenants"} />
-      <Modal.Content className="mx-auto grid min-h-[400px] w-full max-w-sm place-items-center">
+      <Modal.Content className="hide-scrollbar mx-auto grid min-h-[300px] w-full max-w-sm place-items-center overflow-scroll">
         {children}
       </Modal.Content>
     </Modal.Body>

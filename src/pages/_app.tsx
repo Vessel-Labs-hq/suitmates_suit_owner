@@ -7,6 +7,10 @@ import { ToastContainer } from "react-toastify";
 import { useState, type ReactElement, type ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppPropsWithLayout } from "@/constants";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

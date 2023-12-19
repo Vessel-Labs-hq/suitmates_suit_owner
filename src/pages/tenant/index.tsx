@@ -17,12 +17,14 @@ import {
 } from "@/components/organisms/TenantPageBlocks";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
 import { EditSuiteModal } from "@/components/organisms/EditSuiteModal";
+import { useGetAllAnalyzedSpaceData } from "@/utils/hooks/api/useGetSpace";
 
 const TenantPage = () => {
   const router = useRouter();
 
   const { data: allTenants, isLoading, isError, error } = useGetAllTenants();
   const { data: profile } = useGetProfile();
+  const { data: analyzedData } = useGetAllAnalyzedSpaceData();
 
   const { add_tenant, suite_tenant, intent, edit_suite } = router.query;
 
@@ -81,8 +83,8 @@ const TenantPage = () => {
     <DashboardLayout>
       <main>
         <TenantPageHeader
-          vacantSuites={profile?.space.suite?.length ?? 0}
-          occupiedSuites={profile?.space.suite?.length ?? 0}
+          vacantSuites={analyzedData?.totalVacantSuites ?? 0}
+          occupiedSuites={analyzedData?.totalOccupiedSuites ?? 0}
         />
         <section className="mt-10 md:mt-6">
           <div className="flex items-center justify-between">

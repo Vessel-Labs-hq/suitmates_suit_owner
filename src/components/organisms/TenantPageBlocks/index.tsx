@@ -39,35 +39,37 @@ interface TenantPageHeaderProp {
 export const TenantPageHeader = ({
   occupiedSuites,
   vacantSuites,
-}: TenantPageHeaderProp) => (
-  <section className="flex items-start justify-between gap-4">
-    <div className="flex h-full w-full flex-col gap-4">
-      <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
-        <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
-          <HomeInfoCard title="Vacant Suites" value={vacantSuites} />
-          <HomeInfoCard title="Occupied Suites" value={occupiedSuites} />
+}: TenantPageHeaderProp) => {
+  return (
+    <section className="flex items-start justify-between gap-4">
+      <div className="flex h-full w-full flex-col gap-4">
+        <div className="grid max-h-44 w-full grid-cols-2 items-center gap-4 rounded-xl bg-light-gray p-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-2">
+            <HomeInfoCard title="Vacant Suites" value={vacantSuites} />
+            <HomeInfoCard title="Occupied Suites" value={occupiedSuites} />
+          </div>
+          <DashboardSuiteInfoChart />
         </div>
-        <DashboardSuiteInfoChart />
-      </div>
-      <div className="mt-auto hidden w-fit md:block">
-        <div className="flex items-center gap-4">
-          <IconButton
-            icon="Plus"
-            text="Add Tenant"
-            href={{ query: { add_tenant: "true" } }}
-          />
+        <div className="mt-auto hidden w-fit md:block">
+          <div className="flex items-center gap-4">
+            <IconButton
+              icon="Plus"
+              text="Add Tenant"
+              href={{ query: { add_tenant: "true" } }}
+            />
 
-          <IconButton
-            icon="Edit05"
-            text="Edit Suite"
-            href={{ query: { edit_suite: true } }}
-          />
+            <IconButton
+              icon="Edit05"
+              text="Edit Suite"
+              href={{ query: { edit_suite: true } }}
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <DueRequestSideBar length={3} />
-  </section>
-);
+      <DueRequestSideBar length={3} />
+    </section>
+  );
+};
 
 interface TenantPageTabProps {
   activeTenants: DbGetAllTenants[];
@@ -80,6 +82,7 @@ const tablist = ["Onboarded", "Pending Invites"] as const;
 export const TenantPageTab = (props: TenantPageTabProps) => {
   const [loading, setLoading] = useState(false);
   const { activeTenants, inActiveTenants, onSuiteChange, onAddSuite } = props;
+  const [pendingInvite, setPendingInvite] = useState<SN[]>([]);
 
   const queryClient = useQueryClient();
 
@@ -93,6 +96,21 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
       Alert.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResend = async (id: SN) => {
+    const newArr = [...pendingInvite, id].filter(Boolean);
+
+    try {
+      setPendingInvite(newArr);
+      const res = await tenantAPI.resendInviteEmail(id);
+      Alert.success("Invite sent successfully");
+    } catch (error) {
+      Alert.error(error);
+    } finally {
+      const rmArr = newArr.filter((idx) => id !== idx);
+      setPendingInvite(rmArr);
     }
   };
 
@@ -141,21 +159,28 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
             )}
           </div>
         </Tabs.Content>
-        <Tabs.Content value={tablist[1]}>
+        <Tabs.Content className="space-y-2" value={tablist[1]}>
           {inActiveTenants.length > 0 ? (
-            inActiveTenants.map(({ email, created_at }) => (
+            inActiveTenants.map(({ email, created_at, id }) => (
               <div
                 className="relative grid grid-cols-2 items-center gap-5 gap-y-3 rounded-md bg-light-gray p-4 text-sm lg:grid-cols-3"
                 key={email}
               >
-                <div className="text-xs md:text-sm">{email}</div>
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-xs max-xs:w-[150px] md:text-sm">
+                  {email}
+                </p>
                 <div className="mx-auto w-48 max-lg:hidden">
-                  Sent: {dayjs(created_at).format("MMMM D, YYYY")}
+                  Invited: {dayjs(created_at).fromNow()}
                 </div>
-                <div className="ml-auto w-fit">
+                <div className="ml-auto w-full max-w-[100px] sm:max-w-[140px]">
                   <Button
-                    className="relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]"
+                    className={cn(
+                      "relative flex h-12 items-center gap-1 whitespace-nowrap bg-suite-dark px-3 py-2 text-sm max-md:h-8 max-md:rounded-md max-md:px-2 max-md:text-[10px]",
+                      "[&_svg]:h-5 [&_svg]:w-5"
+                    )}
                     variant="dark"
+                    onClick={() => handleResend(id)}
+                    loading={pendingInvite.includes(id)}
                   >
                     <IconBox icon="RefreshCw03" className="max-md:h-3 max-md:w-3" />
                     <span>Resend Email</span>

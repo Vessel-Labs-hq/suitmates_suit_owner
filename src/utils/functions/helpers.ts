@@ -191,3 +191,12 @@ export const formatNumberToCurrency = (
 
   return newAmount;
 };
+
+export const createAvatarUrl = (url: string) => {
+  if (url.includes("http")) return url;
+
+  const params = new URLSearchParams();
+  params.append("name", url);
+  params.append("size", "256");
+  return `https://ui-avatars.com/api.jpg?${params.toString()}`;
+};
