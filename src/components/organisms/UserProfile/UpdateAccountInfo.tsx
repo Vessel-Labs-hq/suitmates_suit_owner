@@ -86,11 +86,10 @@ const UpdateAccountInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfilePr
             </div>
             <div className="mt-4 flex justify-end">
               <Button
-                className={`h-16 w-28 rounded-xl ${
-                  isEditMode
-                    ? "cursor-not-allowed bg-[#f9f7f7]"
-                    : "bg-green-500 hover:bg-green-600"
-                } text-lg font-medium text-white`}
+                className={cn(
+                  "flex h-12 max-w-[200px] items-center justify-center",
+                  isEditMode && "bg-gray"
+                )}
                 disabled={isEditMode}
                 type="submit"
                 loading={isLoading}

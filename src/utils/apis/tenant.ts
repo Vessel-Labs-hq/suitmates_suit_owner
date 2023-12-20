@@ -56,6 +56,11 @@ class TenantService extends BaseAPIService {
     const res = await API.post(`/space/tenant/${tenantId}/suite/${suiteId}/change`);
     return res.data;
   }
+
+  async resendInviteEmail(tenantId: SN) {
+    const res = await API.post(`/auth/resend-tenant-invite/${tenantId}`);
+    return res.data;
+  }
 }
 
 const tenantAPI = new TenantService();

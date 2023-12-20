@@ -80,12 +80,12 @@ class Details extends BaseAPIService {
   async createSpace(payload: InferSchema<typeof SpaceInfoSchema>) {
     type ResponseBody = APIResponse<DbCreateSpace>;
 
-    const { space_amenities, space_size, ...rest } = payload;
+    const { space_amenities, space_size_one, space_size_two, ...rest } = payload;
 
     try {
       const res = await API.post<ResponseBody>("/space", {
         ...rest,
-        space_size: Number(space_size),
+        space_size: `${space_size_one} by ${space_size_two} ft`,
         space_amenities: JSON.stringify(space_amenities),
       });
       return res.data;
@@ -98,12 +98,13 @@ class Details extends BaseAPIService {
     const { spaceId, suites } = payload;
     type ResponseBody = APIResponse<DbCreateSuite[]>;
 
-    const data = suites.map(({ suite_cost, suite_type, timing, ...rest }) => ({
-      ...rest,
-      suite_type,
-      timing,
-      suite_cost: Number(suite_cost),
-    }));
+    const data = suites.map(
+      ({ suite_cost, suite_size_length, suite_size_breadth, ...rest }) => ({
+        ...rest,
+        suite_cost: Number(suite_cost),
+        suite_size: `${suite_size_length} by ${suite_size_breadth} ft`,
+      })
+    );
 
     try {
       const res = await API.post<ResponseBody>(`/space/${spaceId}/create-suit`, {
@@ -118,16 +119,13 @@ class Details extends BaseAPIService {
   async updateSuite({ suiteId, data }: UpdateSuitePayload) {
     type RES = APIResponse<unknown>;
 
-    const { suite_cost, timing, suite_type, ...rest } = data;
+    const { suite_cost, suite_size_breadth, suite_size_length, ...rest } = data;
 
     const payload = {
       ...rest,
       suite_cost: Number(suite_cost),
-      suite_type,
-      timing,
+      suite_size: `${suite_size_length} by ${suite_size_breadth} ft`,
     };
-
-    // space/update/suite
 
     const res = await API.post<RES>(`/space/update/suite/${suiteId}`, payload);
     return res.data.data;
@@ -158,7 +156,7 @@ class Details extends BaseAPIService {
   async updateSpace(payload: InferSchema<typeof UpdateSpaceInfoSchema>) {
     type ResponseBody = APIResponse<DbCreateSpace>;
 
-    const { space_amenities, space_size, ...rest } = payload;
+    const { space_amenities, ...rest } = payload;
 
     const data: Record<string, unknown> = {
       ...rest,

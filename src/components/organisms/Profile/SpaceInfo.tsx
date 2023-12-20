@@ -5,6 +5,7 @@ import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
+import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 interface Props {
@@ -37,9 +38,17 @@ const fields: Field[] = [
     label: "Space Address",
     placeholder: "Enter space address ",
   },
+];
+
+const spaceFields: Field[] = [
   {
-    name: "space_size",
-    label: "Space Size (sq. ft.)",
+    name: "space_size_one",
+    label: "Space Size Length (sq. ft.)",
+    placeholder: "Enter space size ",
+  },
+  {
+    name: "space_size_two",
+    label: "Space Size Breadth (sq. ft.)",
     placeholder: "Enter space size ",
   },
 ];
@@ -94,6 +103,25 @@ const SpaceInformation = ({ onSubmit }: Props) => {
                 isError={Boolean(getFormError(field.name))}
               />
             ))}
+            <div className="flex items-center gap-2">
+              <Input
+                {...spaceFields[0]}
+                className="py-3"
+                wrapperClass="w-full"
+                {...register("space_size_one")}
+                hint={getFormError("space_size_one")}
+                isError={Boolean(getFormError("space_size_one"))}
+              />
+              <span className="mt-2 text-sm">by</span>
+              <Input
+                {...spaceFields[1]}
+                wrapperClass="w-full"
+                className="py-3"
+                {...register("space_size_two")}
+                hint={getFormError("space_size_two")}
+                isError={Boolean(getFormError("space_size_two"))}
+              />
+            </div>
             <Controller
               control={control}
               name="space_amenities"

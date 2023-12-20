@@ -33,8 +33,6 @@ const Tablist = [
 const RentCollectionPage = () => {
   const { isLoading, isError, data: rentHistory } = useGetAllRentHistory();
 
-  console.log(rentHistory);
-
   const { data } = useGetRentChartHistory();
 
   if (isLoading) {
@@ -65,7 +63,11 @@ const RentCollectionPage = () => {
             <div className="h-80 w-full">
               <div className="flex flex-col">
                 <span>Total Income</span>
-                <span className="text-2xl font-bold text-[#3BAF75]">{`$${data?.yearly?.[2023].toLocaleString()}`}</span>
+                <span className="text-2xl font-bold text-[#3BAF75]">
+                  {data?.yearly
+                    ? `$${(data?.yearly?.[2023] ?? "")?.toLocaleString()}`
+                    : "--"}
+                </span>
               </div>
 
               <div className="h-64 w-full">
