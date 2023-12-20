@@ -84,7 +84,7 @@ const DueRequestSideBar = (_: DueRequestSideBarProps) => {
               }
             )
         ) : (
-          <div>aaa</div>
+          <div className="mt-10 text-center text-sm">You are have no pending request</div>
         )}
       </ul>
     </SidebarElement>
