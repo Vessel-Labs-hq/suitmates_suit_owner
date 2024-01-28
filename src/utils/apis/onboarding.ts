@@ -80,12 +80,11 @@ class Details extends BaseAPIService {
   async createSpace(payload: InferSchema<typeof SpaceInfoSchema>) {
     type ResponseBody = APIResponse<DbCreateSpace>;
 
-    const { space_amenities, space_size_one, space_size_two, ...rest } = payload;
+    const { space_amenities, ...rest } = payload;
 
     try {
       const res = await API.post<ResponseBody>("/space", {
         ...rest,
-        space_size: `${space_size_one} by ${space_size_two} ft`,
         space_amenities: JSON.stringify(space_amenities),
       });
       return res.data;

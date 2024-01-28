@@ -207,7 +207,9 @@ const PersonalInformation = ({ onSubmit, personId }: Props) => {
                   onChange={onChange}
                   value={value}
                   hint={getFormError("phone_number")}
+                  defaultCountry="US"
                   isError={Boolean(getFormError("phone_number"))}
+                  countryCallingCodeEditable={false}
                 />
               )}
             />
