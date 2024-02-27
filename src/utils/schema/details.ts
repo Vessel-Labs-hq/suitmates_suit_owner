@@ -5,6 +5,7 @@ import {
   createDefaultError,
   createSelectSchema,
   createInputNumberSchema,
+  createAmountSchema,
 } from "./helpers";
 
 export const PersonalInfoSchema = z.object({
@@ -33,7 +34,7 @@ export const SpaceInfoSchema = z.object({
   /**
    * https://github.com/colinhacks/zod/discussions/330#discussioncomment-7097769
    */
-  space_size: createInputNumberSchema("Size"),
+  space_size: createStringSchema("Size"),
   // space_size_one: createInputNumberSchema("Space length"),
   // space_size_two: createInputNumberSchema("Space breadth"),
   space_amenities: z
@@ -49,7 +50,7 @@ export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
   suite_size_length: createStringSchema("Size"),
   suite_size_breadth: createStringSchema("Size"),
-  suite_cost: createInputNumberSchema("Cost"),
+  suite_cost: createAmountSchema("Cost"),
   suite_type: createStringSchema("Type"),
   timing: createStringSchema("Duration"),
 });

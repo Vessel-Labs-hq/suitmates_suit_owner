@@ -10,7 +10,7 @@ import {
 } from "@/utils/hooks/api/rent-history";
 import { FaviconLoader } from "@/components/atoms/Loader";
 import { MissedRentHistoryChart } from "@/components/organisms/RentHistoryChart";
-import { cn, formatNumberToCurrency } from "@/utils";
+import { cn, formatNumberToCurrency, sortMonthlyRentDataset } from "@/utils";
 import dayjs from "dayjs";
 import { TrendIcon } from "@/components/atoms/TrendIcon";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
@@ -55,6 +55,18 @@ const RentCollectionPage = () => {
     );
   }
 
+  const getMonthlyRent = () => {
+    if (!data?.monthly) return "$0";
+
+    const { values } = sortMonthlyRentDataset(data.monthly);
+
+    const total = values.reduce((acc, curr) => {
+      return acc + curr;
+    }, 0);
+
+    return formatNumberToCurrency(total, "USD");
+  };
+
   return (
     <DashboardLayout>
       <div className="flex gap-x-8 md:mb-8">
@@ -62,11 +74,9 @@ const RentCollectionPage = () => {
           <RentBentoWrapper>
             <div className="h-80 w-full">
               <div className="flex flex-col">
-                <span>Total Income</span>
+                <span>Total Income(All Time)</span>
                 <span className="text-2xl font-bold text-[#3BAF75]">
-                  {data?.yearly
-                    ? `$${(data?.yearly?.[2023] ?? "")?.toLocaleString()}`
-                    : "--"}
+                  {getMonthlyRent()}
                 </span>
               </div>
 
@@ -76,8 +86,6 @@ const RentCollectionPage = () => {
             </div>
           </RentBentoWrapper>
         </div>
-
-        {false && <MissedRentSideBar length={4} />}
       </div>
 
       <div className="max-md:mt-10">
