@@ -28,7 +28,7 @@ export const createFileSchema = (args: FileArgs) => {
     .refine((file) => file?.size <= maxSize, `Max file size is 5MB`)
     .refine(
       (file) => formats.includes(file?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted"
+      "Only .jpg, .jpeg, .png and .webp files are accepted"
     );
 };
 
@@ -66,7 +66,9 @@ export const createStringSchema = (args: TCreateString, min = 1) => {
   });
 
   if (typeof args === "string") {
-    return z.string(createDefaultErr(args)).min(min, { message: `${args} cannot be blank` });
+    return z
+      .string(createDefaultErr(args))
+      .min(min, { message: `${args} cannot be blank` });
   }
 
   return z.string(createDefaultErr(args.key)).min(args.min ?? min, {
@@ -100,4 +102,19 @@ export const createInputNumberSchema = (key: string) =>
       },
       { message: `${key} should be a number` }
     )
+    .refine((v) => Number(v) > 0, { message: `${key} should be greater than 0` });
+/**
+ * used to assert values that should be number only but allow strings to be passed
+ */
+export const createAmountSchema = (key: string) =>
+  createStringSchema(key)
+    .refine(
+      (v) => {
+        let n = Number(v.replaceAll(",", ""));
+        /** https://zod.dev/?id=refine */
+        return !isNaN(n);
+      },
+      { message: `${key} should be a number` }
+    )
+    .transform((n) => n.replaceAll(",", ""))
     .refine((v) => Number(v) > 0, { message: `${key} should be greater than 0` });

@@ -31,7 +31,7 @@ const DefaultValues = {
  * https://www.cluemediator.com/dynamic-form-with-react-hook-form-using-usefieldarray
  */
 const SuiteInformation = ({ onSubmit, spaceId }: Props) => {
-  const { control, handleSubmit, register, formState } = useForm<Inputs>({
+  const { control, handleSubmit, register, formState, ...form } = useForm<Inputs>({
     resolver: zodResolver(SuiteInfoSchema),
     mode: "onChange",
     defaultValues: {

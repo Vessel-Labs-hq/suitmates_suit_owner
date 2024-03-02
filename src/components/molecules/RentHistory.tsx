@@ -58,7 +58,7 @@ const RentHistorySidebar = ({ rentHistory, isFetching }: RentHistorySidebarProps
     <div className="">
       <header className="flex items-center justify-between gap-4">
         <Title level={4}>Rent History</Title>
-        <Link href="/pay-rent" className="text-sm">
+        <Link href="/rent-collection" className="text-sm">
           See All
         </Link>
       </header>

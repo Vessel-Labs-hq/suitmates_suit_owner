@@ -115,19 +115,29 @@ const SuiteInfoInputRow = (props: Props) => {
         )}
       />
       <div className="relative flex items-start  max-lg:pt-10">
-        <div className="w-full">
-          {[fields[3]].map(({ name, label, ...ele }) => (
-            <Input
-              {...ele}
-              key={name}
-              label={label}
-              className="py-3"
-              {...register(`suites.${idx}.${name}`)}
-              hint={getFormError(name)}
-              isError={Boolean(getFormError(name))}
-            />
-          ))}
-        </div>
+        <Controller
+          name={`suites.${idx}.suite_cost`}
+          control={control}
+          render={({ field: { value, onChange } }) => {
+            return (
+              <div className="w-full">
+                {[fields[3]].map(({ name, label, ...ele }) => (
+                  <Input
+                    {...ele}
+                    key={name}
+                    label={label}
+                    className="py-3"
+                    {...register(`suites.${idx}.${name}`)}
+                    value={value}
+                    onChange={onChange}
+                    hint={getFormError(name)}
+                    isError={Boolean(getFormError(name))}
+                  />
+                ))}
+              </div>
+            );
+          }}
+        />
         <div className="absolute right-0 top-3 w-full max-w-fit md:max-w-[100px] lg:-top-6">
           <Controller
             control={control}

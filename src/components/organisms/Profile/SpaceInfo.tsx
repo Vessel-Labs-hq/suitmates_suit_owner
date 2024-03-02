@@ -1,12 +1,25 @@
+import Icons from "@/assets/icons";
 import { SuiteAmenities } from "@/constants";
 import onBoardingService from "@/utils/apis/onboarding";
 import Alert from "@/utils/base/alerts";
 import { SpaceInfoSchema } from "@/utils/schema/details";
 import { type InferSchema } from "@/utils/schema/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Title, Text, Input, Button, Select } from "@the_human_cipher/components-library";
+import {
+  Title,
+  Text,
+  Input,
+  Button,
+  Select,
+  IconBox,
+} from "@the_human_cipher/components-library";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+
+interface AmenitiesOnchangeArg {
+  amenities: string[];
+  selected: string;
+}
 
 interface Props {
   onSubmit(spaceId: string): void;
@@ -38,23 +51,15 @@ const fields: Field[] = [
     label: "Space Address",
     placeholder: "Enter space address ",
   },
-];
-
-const spaceFields: Field[] = [
   {
-    name: "space_size_one",
-    label: "Space Size Length (sq. ft.)",
-    placeholder: "Enter space size ",
-  },
-  {
-    name: "space_size_two",
-    label: "Space Size Breadth (sq. ft.)",
+    name: "space_size",
+    label: "Space Size (sq. ft.)",
     placeholder: "Enter space size ",
   },
 ];
 
 const SpaceInformation = ({ onSubmit }: Props) => {
-  const { register, formState, handleSubmit, control } = useForm<Inputs>({
+  const { register, formState, handleSubmit, control, setValue } = useForm<Inputs>({
     resolver: zodResolver(SpaceInfoSchema),
     mode: "onChange",
   });
@@ -82,6 +87,14 @@ const SpaceInformation = ({ onSubmit }: Props) => {
 
   const { isSubmitting } = formState;
 
+  const handleSelectedValueChange = (arg: AmenitiesOnchangeArg) => {
+    const { amenities, selected } = arg;
+
+    const newAmenities = amenities.filter((current) => selected !== current);
+
+    setValue("space_amenities", newAmenities);
+  };
+
   return (
     <section className="mx-auto max-w-[960px]">
       <div className="my-4 mt-16">
@@ -103,43 +116,53 @@ const SpaceInformation = ({ onSubmit }: Props) => {
                 isError={Boolean(getFormError(field.name))}
               />
             ))}
-            <div className="flex items-center gap-2">
-              <Input
-                {...spaceFields[0]}
-                className="py-3"
-                wrapperClass="w-full"
-                {...register("space_size_one")}
-                hint={getFormError("space_size_one")}
-                isError={Boolean(getFormError("space_size_one"))}
-              />
-              <span className="mt-2 text-sm">by</span>
-              <Input
-                {...spaceFields[1]}
-                wrapperClass="w-full"
-                className="py-3"
-                {...register("space_size_two")}
-                hint={getFormError("space_size_two")}
-                isError={Boolean(getFormError("space_size_two"))}
+
+            <div>
+              <Controller
+                control={control}
+                name="space_amenities"
+                render={({ field: { value, onChange, ...rest } }) => (
+                  <div>
+                    <Select
+                      {...rest}
+                      options={SuiteAmenities}
+                      label="Space amenities"
+                      placeholder="Select..."
+                      onChange={onChange}
+                      value={value}
+                      multiple
+                      isError={assertError("space_amenities")}
+                      hint={
+                        getFormError("space_amenities") ?? "Select all that is offered"
+                      }
+                      hideMultipleSelectedValue
+                    />
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {(value ?? []).map((opt) => (
+                        <label
+                          key={opt}
+                          className="flex items-center justify-between gap-2 rounded-lg bg-[#E8E8E8] px-2 py-1.5 text-sm"
+                        >
+                          <span className="opacity-60">{opt}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleSelectedValueChange({
+                                amenities: value,
+                                selected: opt,
+                              })
+                            }
+                          >
+                            <IconBox icon="X" />
+                          </button>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
               />
             </div>
-            <Controller
-              control={control}
-              name="space_amenities"
-              render={({ field: { value, onChange, ...rest } }) => (
-                <Select
-                  {...rest}
-                  options={SuiteAmenities}
-                  label="Space amenities"
-                  placeholder="Select..."
-                  onChange={(e) => onChange(e)}
-                  value={value}
-                  multiple
-                  isError={assertError("space_amenities")}
-                  hint={getFormError("space_amenities") ?? "Select all that is offered"}
-                  hideMultipleSelectedValue
-                />
-              )}
-            />
           </div>
           <Button
             type="submit"

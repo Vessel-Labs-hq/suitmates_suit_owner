@@ -2,7 +2,7 @@ import { useState } from "react";
 import UpdatePersonalInfo from "./UpdatePersonalInfo";
 import UpdateSpaceInfo from "./UpdateSpaceInfo";
 import UpdateAccountInfo from "./UpdateAccountInfo";
-import CardInfo from "./CardInfo";
+// import CardInfo from "./CardInfo";
 import authService from "@/utils/apis/auth";
 import { useQuery } from "react-query";
 
@@ -41,7 +41,7 @@ const UserProfile = () => {
         setIsEditMode={setIsEditMode}
         userProfile={userProfile}
       />
-      <CardInfo />
+      {/* <CardInfo /> */}
     </>
   ) : (
     <>

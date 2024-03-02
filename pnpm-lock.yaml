@@ -21,8 +21,8 @@ dependencies:
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
   '@the_human_cipher/components-library':
-    specifier: ^1.6.1
-    version: 1.6.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+    specifier: ^1.6.2
+    version: 1.6.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
   '@types/node':
     specifier: 20.5.9
     version: 20.5.9
@@ -1447,8 +1447,8 @@ packages:
       tailwindcss: 3.3.3
     dev: false
 
-  /@the_human_cipher/components-library@1.6.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-B9Q73cftEi9Zw1AFd9uwDHVYSpn5XAgBMOdOc0VeZrXdt8y5exfm5WaIN7+xuwxSS1Mnbbw1ZiLI1CCX+vOftA==}
+  /@the_human_cipher/components-library@1.6.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-TOAscfWUVMC7RBmb6v0snlbjorCWj0+69Q1wm3S0DkoS3CAN19iXvgzystd5qP4PZFw4+PK09zteAiRsywdTkA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

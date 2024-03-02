@@ -31,7 +31,7 @@ export const SideBarData: ISideBarData[] = [
   {
     link: "/tenant",
     text: "Tenant",
-    icon: "User01",
+    icon: "Users01",
     pathname: "/tenant",
   },
 ];

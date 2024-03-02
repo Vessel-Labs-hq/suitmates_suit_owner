@@ -33,8 +33,6 @@ const UpdateSpaceInfo = ({ isEditMode, userProfile }: ProfileProps) => {
     createAmenities(userProfile.space?.space_amenities) ?? []
   );
 
-  const [test, setTest] = useState("");
-
   const handleCloseAmenities = (index: number) => {
     const newArr = amenities.filter((_, idx) => idx !== index);
 

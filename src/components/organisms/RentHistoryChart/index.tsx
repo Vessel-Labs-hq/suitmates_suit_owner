@@ -1,6 +1,4 @@
 import React from "react";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import {
   Chart as ChartJS,
@@ -15,6 +13,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useGetRentChartHistory } from "@/utils/hooks/api/rent-history";
+import { sortMonthlyRentDataset } from "@/utils";
 
 ChartJS.register(
   ArcElement,
@@ -26,32 +25,6 @@ ChartJS.register(
   LineElement,
   Title
 );
-
-dayjs.extend(customParseFormat);
-const sortMonthlyRentDataset = (monthly: Record<string, number>) => {
-  const unsortedKeys = Object.keys(monthly);
-  const values = [];
-
-  // sort the keys
-  const sortedKeys = unsortedKeys.sort((a, b) => {
-    const dateA = dayjs(a, "MM-YYYY");
-    const dateB = dayjs(b, "MM-YYY");
-
-    return dateA.toDate().getTime() - dateB.toDate().getTime();
-  });
-
-  // use the sortedKeys to retrieve the corresponding in the right order
-  for (const key of sortedKeys) {
-    const value = monthly[key];
-    values.push(value);
-  }
-
-  const labels = sortedKeys.map((key) => {
-    return dayjs(key, "MM YYYY").format("MMM YYYY");
-  });
-
-  return { labels, values };
-};
 
 export function MissedRentHistoryChart() {
   const missedRentData = {
@@ -75,8 +48,8 @@ export function MissedRentHistoryChart() {
 
   const { labels, values } = sortMonthlyRentDataset(monthly);
 
-  missedRentData.labels = labels;
-  missedRentData.datasets[0].data = values;
+  missedRentData.labels = labels.reverse();
+  missedRentData.datasets[0].data = values.reverse();
 
   const scalesOption = {
     beginAtZero: true,

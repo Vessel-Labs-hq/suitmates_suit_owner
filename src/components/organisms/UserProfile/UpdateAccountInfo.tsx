@@ -26,6 +26,10 @@ type Field = {
 
 const fields: Field[] = [
   {
+    name: "account_name",
+    label: "Account Name",
+  },
+  {
     name: "account_number",
     label: "Account Number",
   },
@@ -35,7 +39,7 @@ const fields: Field[] = [
   },
 ];
 
-const UpdateAccountInfo = ({ isEditMode, setIsEditMode, userProfile }: ProfileProps) => {
+const UpdateAccountInfo = ({ isEditMode, userProfile }: ProfileProps) => {
   const { register, formState, handleSubmit } = useForm<Inputs>({
     resolver: zodResolver(AccountInoSchema),
     mode: "onChange",

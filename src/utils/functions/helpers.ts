@@ -2,6 +2,9 @@ import clsx, { type ClassValue } from "clsx";
 import type { FieldValues, FormState } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const isLocal =
   typeof window === "undefined" ? true : !!window.origin.includes("localhost");
@@ -199,4 +202,29 @@ export const createAvatarUrl = (url: string) => {
   params.append("name", url);
   params.append("size", "256");
   return `https://ui-avatars.com/api.jpg?${params.toString()}`;
+};
+
+export const sortMonthlyRentDataset = (monthly: Record<string, number>) => {
+  const unsortedKeys = Object.keys(monthly);
+  const values = [];
+
+  // sort the keys
+  const sortedKeys = unsortedKeys.sort((a, b) => {
+    const dateA = dayjs(a, "MM-YYYY");
+    const dateB = dayjs(b, "MM-YYY");
+
+    return dateA.toDate().getTime() - dateB.toDate().getTime();
+  });
+
+  // use the sortedKeys to retrieve the corresponding in the right order
+  for (const key of sortedKeys) {
+    const value = monthly[key];
+    values.push(value);
+  }
+
+  const labels = sortedKeys.map((key) => {
+    return dayjs(key, "M YYYY").format("MMM YYYY");
+  });
+
+  return { labels, values, sortedKeys };
 };
