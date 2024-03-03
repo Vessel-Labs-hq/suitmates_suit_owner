@@ -19,8 +19,7 @@ type Inputs = InferSchema<typeof SuiteInfoSchema>;
 const DefaultValues = {
   suite_cost: "",
   suite_number: "",
-  suite_size_length: "",
-  suite_size_breadth: "",
+  suite_size: "",
   suite_type: "",
   timing: "",
 };
@@ -99,7 +98,6 @@ const SuiteInformation = ({ onSubmit, spaceId }: Props) => {
           </div>
           <Button
             type="button"
-            dark
             className="mt-4 flex max-w-[140px] items-center justify-center gap-4 bg-[#333333] max-sm:py-3 max-sm:text-sm"
             onClick={() => append(DefaultValues)}
           >

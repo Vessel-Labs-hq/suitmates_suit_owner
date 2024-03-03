@@ -2,7 +2,7 @@ import { InferSchema } from "@/utils/schema/helpers";
 import { SuiteDetailSchema, SuiteInfoSchema } from "@/utils/schema/details";
 import { Input, Select } from "@the_human_cipher/components-library";
 import { Control, Controller, FormState, UseFormRegister } from "react-hook-form";
-import { cn } from "@/utils";
+import { capitalizeFirstLetter, cn } from "@/utils";
 
 type FormValues = InferSchema<typeof SuiteInfoSchema>;
 
@@ -31,14 +31,9 @@ const fields: Field[] = [
     placeholder: "Enter suite number",
   },
   {
-    label: "Suite Size(Length)",
-    name: "suite_size_length",
-    placeholder: "Enter width",
-  },
-  {
-    label: "Suite Size(Breadth)",
-    name: "suite_size_breadth",
-    placeholder: "Enter length",
+    label: "Suite Size",
+    name: "suite_size",
+    placeholder: "Enter suite size",
   },
   {
     label: "Suite Cost",
@@ -67,11 +62,11 @@ const SuiteInfoInputRow = (props: Props) => {
   return (
     <div
       className={cn(
-        "w-full justify-between gap-4 gap-y-7 space-y-2 sm:space-y-5 lg:flex lg:space-y-0 lg:pt-5",
+        "grid grid-cols-1 gap-x-4 gap-y-2 max-md:text-sm xs:gap-x-10 sm:grid-cols-2 sm:gap-y-8 lg:grid-cols-4",
         wrapperClass
       )}
     >
-      {[fields[0]].map(({ name, label, ...ele }) => (
+      {fields.slice(0, 2).map(({ name, label, ...ele }) => (
         <Input
           {...ele}
           key={name}
@@ -82,24 +77,11 @@ const SuiteInfoInputRow = (props: Props) => {
           isError={Boolean(getFormError(name))}
         />
       ))}
-      <div className="grid grid-cols-1 gap-4 xxs:grid-cols-2">
-        {[fields[1], fields[2]].map(({ name, label, ...ele }) => (
-          <Input
-            {...ele}
-            key={name}
-            label={label}
-            className="py-3"
-            {...register(`suites.${idx}.${name}`)}
-            hint={getFormError(name)}
-            isError={Boolean(getFormError(name))}
-          />
-        ))}
-      </div>
       <Controller
         control={control}
         name={`suites.${idx}.suite_type`}
         render={({ field: { name, onChange, value } }) => (
-          <div className="mt-2.5 min-w-[200px]">
+          <div className="mt-2.5">
             {/* remove this class */}
             <Select
               label="Suite Type"
@@ -114,31 +96,21 @@ const SuiteInfoInputRow = (props: Props) => {
           </div>
         )}
       />
-      <div className="relative flex items-start  max-lg:pt-10">
-        <Controller
-          name={`suites.${idx}.suite_cost`}
-          control={control}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <div className="w-full">
-                {[fields[3]].map(({ name, label, ...ele }) => (
-                  <Input
-                    {...ele}
-                    key={name}
-                    label={label}
-                    className="py-3"
-                    {...register(`suites.${idx}.${name}`)}
-                    value={value}
-                    onChange={onChange}
-                    hint={getFormError(name)}
-                    isError={Boolean(getFormError(name))}
-                  />
-                ))}
-              </div>
-            );
-          }}
-        />
-        <div className="absolute right-0 top-3 w-full max-w-fit md:max-w-[100px] lg:-top-6">
+      <div className="relative mt-1 flex items-start max-sm:mt-8">
+        <div className="w-full">
+          {fields.slice(2).map(({ name, label, ...ele }) => (
+            <Input
+              {...ele}
+              key={name}
+              label={label}
+              className="py-3"
+              {...register(`suites.${idx}.${name}`)}
+              hint={getFormError(name)}
+              isError={Boolean(getFormError(name))}
+            />
+          ))}
+        </div>
+        <div className="absolute -top-7 right-0 w-full max-w-fit md:-top-6 md:max-w-[100px]">
           <Controller
             control={control}
             name={`suites.${idx}.timing`}
