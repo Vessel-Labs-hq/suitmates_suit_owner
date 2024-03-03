@@ -48,8 +48,7 @@ export const UpdateSpaceInfoSchema = SpaceInfoSchema.omit({
 
 export const SuiteDetailSchema = z.object({
   suite_number: createStringSchema("Number"),
-  suite_size_length: createStringSchema("Size"),
-  suite_size_breadth: createStringSchema("Size"),
+  suite_size: createStringSchema("Size"),
   suite_cost: createAmountSchema("Cost"),
   suite_type: createStringSchema("Type"),
   timing: createStringSchema("Duration"),

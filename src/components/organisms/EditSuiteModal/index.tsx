@@ -26,8 +26,7 @@ const DefaultValues = {
   id: "new-element",
   suite_cost: "",
   suite_number: "",
-  suite_size_length: "",
-  suite_size_breadth: "",
+  suite_size: "",
   suite_type: "",
   timing: "",
 };
