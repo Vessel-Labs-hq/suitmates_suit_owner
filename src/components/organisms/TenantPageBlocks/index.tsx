@@ -123,21 +123,18 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
           <div className="mt-4 space-y-4">
             {/* <span>Sort</span> */}
             {activeTenants.length > 0 ? (
-              activeTenants.map(
-                (
-                  { avatar, first_name, last_name, suite, businesses, id, ...rest },
-                  idx
-                ) => (
+              activeTenants.map((row, idx) => {
+                const { avatar, first_name, last_name, suite, businesses, id, ...rest } =
+                  row;
+
+                return (
                   <TenantDetailCard
                     key={idx}
                     {...rest}
                     onRemove={() => handleRemove(id)}
                     onSuiteChange={(hasSuite) => {
-                      if (hasSuite) {
-                        onSuiteChange(id);
-                      } else {
-                        onAddSuite(id);
-                      }
+                      if (hasSuite) onSuiteChange(id);
+                      else onAddSuite(id);
                     }}
                     href="#"
                     status={idx % 2 === 0 ? "paid" : "due"}
@@ -148,8 +145,8 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                     business={businesses[0]}
                     suite={suite}
                   />
-                )
-              )
+                );
+              })
             ) : (
               <EmptyScreen
                 desc="Your invitees are yet to signup, check back later"

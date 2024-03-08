@@ -40,13 +40,22 @@ API.interceptors.response.use(
   (error) => {
     let message = handleAxiosError(error);
 
+    const DO_NOT_TOAST = [
+      "/space/owner/rent-history",
+      "/space/analyzed",
+      "/maintenance/owner",
+    ];
+
+    const callUrl = error?.config?.url;
+
     if (error?.response?.status === 401) {
       message = "DO_NOT_ERROR";
 
       /** Runs only the client */
       if (typeof window !== "undefined") {
-        Alert.info("Please sign in to continue");
-
+        if (!DO_NOT_TOAST.includes(callUrl ?? "")) {
+          Alert.info("Please sign in to continue");
+        }
         authService.logOut();
       }
     }

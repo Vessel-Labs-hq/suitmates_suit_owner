@@ -14,6 +14,7 @@ import { cn, formatNumberToCurrency, sortMonthlyRentDataset } from "@/utils";
 import dayjs from "dayjs";
 import { TrendIcon } from "@/components/atoms/TrendIcon";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
+import Link from "next/link";
 
 const TableRow = ({ children, className }: IProps) => {
   return (
@@ -92,15 +93,7 @@ const RentCollectionPage = () => {
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <span className="text-base font-bold">Rent History</span>
-            {false && (
-              <Select
-                placeholder="This Month"
-                btnClassName="p-2 h-[40px] w-full rounded-md max-md:h-auto max-md:[&_svg]:hidden max-md:py-1"
-                options={SortOptions}
-                wrapperClassName="md:w-24 xxl:w-28 text-[10px] md:text-xs lg:text-sm"
-                optionClassName="max-md:p-2"
-              />
-            )}
+            <Link href="/rent-collection/manual-payment">View Manual Payments</Link>
           </div>
         </div>
         <TableRow className="rounded-t-lg bg-suite-dark py-4 text-white max-md:hidden">

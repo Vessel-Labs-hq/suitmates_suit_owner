@@ -21,6 +21,11 @@ class RentHistoryService extends BaseAPIService {
       throw error;
     }
   }
+
+  async getManualRentUpload() {
+    const res = await API.get("/user/manual/payments");
+    return res.data;
+  }
 }
 
 const rentHistoryApi = new RentHistoryService();

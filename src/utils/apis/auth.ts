@@ -99,11 +99,13 @@ class AuthService extends BaseAPIService {
   async getUserDetails() {
     const user = this.getSession();
 
-    try {
-      const res = await API.get<APIResponse<DbGetUserDetails>>(`/user/${user?.id}`);
-      return res.data.data;
-    } catch (error) {
-      throw error;
+    if (user) {
+      try {
+        const res = await API.get<APIResponse<DbGetUserDetails>>(`/user/${user?.id}`);
+        return res.data.data;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 
