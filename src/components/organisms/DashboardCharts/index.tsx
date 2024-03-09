@@ -90,8 +90,6 @@ export function DashboardRentHistoryChart() {
 
   const { labels, values } = sortMonthlyRentDataset(monthly);
 
-  console.log({ data });
-
   missedRentData.labels = labels.reverse();
   missedRentData.datasets[0].data = values.reverse();
 

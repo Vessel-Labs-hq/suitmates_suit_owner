@@ -127,8 +127,6 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                 const { avatar, first_name, last_name, suite, businesses, id, ...rest } =
                   row;
 
-                console.log({ row });
-
                 return (
                   <TenantDetailCard
                     key={idx}

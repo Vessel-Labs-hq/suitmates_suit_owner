@@ -92,7 +92,6 @@ export const EditSuiteModal = ({ suites, ...props }: EditSuiteModalProps) => {
       }
     } catch (error) {
       Alert.error("An error occurred while updating one or more suites");
-      console.error("At least one request failed", error);
     } finally {
       requestStatus.current = false;
     }
