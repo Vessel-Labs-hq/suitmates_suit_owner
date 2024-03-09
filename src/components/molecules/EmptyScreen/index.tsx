@@ -1,6 +1,8 @@
 import { IconSlot } from "@/assets/icons";
 import { cn } from "@/utils";
 
+type IconType = React.ComponentProps<typeof IconSlot>["icon"];
+
 interface EmptyScreenProps extends IClass {
   icon?: React.ReactNode;
   title: string;
@@ -10,10 +12,11 @@ interface EmptyScreenProps extends IClass {
     titleStyle: string;
     defaultIconStyle: string;
   }>;
+  iconKey?: IconType;
 }
 
 const EmptyScreen = (props: EmptyScreenProps) => {
-  const { desc, icon, title, className, style } = props;
+  const { desc, icon, title, className, style, iconKey = "UsersPlus" } = props;
 
   const { defaultIconStyle, descStyle, titleStyle } = style ?? {};
 
@@ -29,7 +32,7 @@ const EmptyScreen = (props: EmptyScreenProps) => {
       ) : (
         <IconSlot
           className={cn("h-20 w-20 md:h-36 md:w-36", defaultIconStyle)}
-          icon="UsersPlus"
+          icon={iconKey}
         />
       )}
       <h4 className={cn("mt-4 text-lg font-bold", titleStyle)}>{title}</h4>

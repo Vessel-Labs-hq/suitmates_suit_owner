@@ -58,7 +58,7 @@ const RentCollectionPage = () => {
           </div>
         </div>
 
-        <Tabs>
+        <Tabs defaultValue={tabs[0]}>
           <Tabs.Header tablist={tabs} />
           <Tabs.Content value={tabs[0]}>
             <TableHeader />

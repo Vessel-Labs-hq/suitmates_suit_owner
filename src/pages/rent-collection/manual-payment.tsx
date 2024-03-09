@@ -1,11 +1,15 @@
 import { FaviconLoader } from "@/components/atoms/Loader";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
+import EmptyScreen from "@/components/molecules/EmptyScreen";
 import { ManualPaymentTenantRow } from "@/components/molecules/ManualPaymentTenantRow";
 import { cn } from "@/utils";
 import { useGetManualRentUpload } from "@/utils/hooks/api/rent-history";
+import { IconBox } from "@the_human_cipher/components-library";
 import { Fragment } from "react";
 
-const header = ["Tenant", "Payment Info", "Image", "Actions"];
+const hasPendingPayments = (manual_payments: DbGetManualPaymentsManualPayment[]) => {
+  return manual_payments.some((record) => record.status === "pending");
+};
 
 const HeaderDesc = "View and manage all pending manual tenant payments";
 
@@ -22,6 +26,30 @@ const Page = () => {
     );
 
   const { suite: suites } = manualRent.space;
+
+  const isEmpty = suites.filter((suite) => {
+    const isPending = suite.tenant.manual_payments.some(
+      (record) => record.status === "pending"
+    );
+    return isPending;
+  });
+
+  if (isEmpty)
+    return (
+      <DashboardLayout headerDesc={HeaderDesc}>
+        <EmptyScreen
+          className="h-[70vh]"
+          title="You are all caught up"
+          icon={
+            <IconBox
+              icon="FileAttachment04"
+              className="-mb-4 h-20 w-20 text-dark200/30 md:h-28 md:w-28"
+            />
+          }
+          desc="New manual records would appear here when tenants upload any payment"
+        />
+      </DashboardLayout>
+    );
 
   return (
     <DashboardLayout headerDesc={HeaderDesc}>
