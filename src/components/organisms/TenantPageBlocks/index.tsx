@@ -127,6 +127,8 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                 const { avatar, first_name, last_name, suite, businesses, id, ...rest } =
                   row;
 
+                console.log({ row });
+
                 return (
                   <TenantDetailCard
                     key={idx}
@@ -137,7 +139,7 @@ export const TenantPageTab = (props: TenantPageTabProps) => {
                       else onAddSuite(id);
                     }}
                     href="#"
-                    status={idx % 2 === 0 ? "paid" : "due"}
+                    status={row.rent_status ?? ("due" as any)}
                     user={{
                       avatar,
                       name: cn(first_name ?? "-", last_name ?? "-"),

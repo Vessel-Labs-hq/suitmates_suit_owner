@@ -23,8 +23,9 @@ class RentHistoryService extends BaseAPIService {
   }
 
   async getManualRentUpload() {
-    const res = await API.get("/user/manual/payments");
-    return res.data;
+    type Response = APIResponse<DbGetManualPayments>;
+    const res = await API.get<Response>("/user/manual/payments");
+    return res.data.data;
   }
 }
 

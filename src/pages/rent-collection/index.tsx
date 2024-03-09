@@ -1,9 +1,6 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import MissedRentSideBar, {
-  RentBentoWrapper,
-} from "@/components/molecules/MissedRentSideBar";
+import { RentBentoWrapper } from "@/components/molecules/MissedRentSideBar";
 import { Label, Select } from "@the_human_cipher/components-library";
-import { SortOptions } from "@/constants";
 import {
   useGetAllRentHistory,
   useGetRentChartHistory,
@@ -15,14 +12,7 @@ import dayjs from "dayjs";
 import { TrendIcon } from "@/components/atoms/TrendIcon";
 import EmptyScreen from "@/components/molecules/EmptyScreen";
 import Link from "next/link";
-
-const TableRow = ({ children, className }: IProps) => {
-  return (
-    <div className={cn("grid grid-cols-4 gap-2 p-2 py-3 text-center", className)}>
-      {children}
-    </div>
-  );
-};
+import { TableRow } from "@/components/atoms/blocks";
 
 const Tablist = [
   { name: "From", className: "" },
