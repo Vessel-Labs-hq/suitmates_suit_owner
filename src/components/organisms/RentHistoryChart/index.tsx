@@ -12,7 +12,6 @@ import {
   CategoryScale,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { useGetRentChartHistory } from "@/utils/hooks/api/rent-history";
 import { sortMonthlyRentDataset } from "@/utils";
 
 ChartJS.register(
@@ -26,7 +25,7 @@ ChartJS.register(
   Title
 );
 
-export function MissedRentHistoryChart() {
+export function MissedRentHistoryChart(props: { data: DbRentChartHistory }) {
   const missedRentData = {
     labels: [""],
     datasets: [
@@ -38,15 +37,10 @@ export function MissedRentHistoryChart() {
       },
     ],
   };
-  const { data } = useGetRentChartHistory();
 
-  if (!data?.monthly) {
-    return;
-  }
+  const { monthly } = props.data;
 
-  const { monthly } = data;
-
-  const { labels, values } = sortMonthlyRentDataset(monthly);
+  const { labels, values } = sortMonthlyRentDataset(monthly ?? {});
 
   missedRentData.labels = labels.reverse();
   missedRentData.datasets[0].data = values.reverse();

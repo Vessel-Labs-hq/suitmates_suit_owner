@@ -20,6 +20,7 @@ interface DbGetAllTenants {
   deleted: any;
   suite?: DbSuite;
   businesses: DbBusiness[];
+  rent_status: unknown;
 }
 
 interface DbBusiness {
