@@ -88,3 +88,5 @@ interface DbGetManualPaymentsManualPayment {
   created_at: string;
   updated_at: string;
 }
+
+type DbGetManualTarget = "declined" | "approved";

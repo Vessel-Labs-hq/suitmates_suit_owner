@@ -6,7 +6,7 @@ import { useGetManualRentUpload } from "@/utils/hooks/api/rent-history";
 
 const header = ["Tenant", "Payment Info", "Image", "Actions"];
 
-const HeaderDesc = "View and manage all manual tenant payments";
+const HeaderDesc = "View and manage all pending manual tenant payments";
 
 const Page = () => {
   const { data: manualRent, isLoading } = useGetManualRentUpload();
@@ -35,18 +35,20 @@ const Page = () => {
                 ${suite.suite_cost}/{suite.timing}
               </p>
             </div>
-            {manual_payments.map((record) => {
-              return (
-                <ManualPaymentTenantRow
-                  key={record.id}
-                  user={{
-                    name: cn(tenant.first_name, tenant.last_name),
-                    avatar: tenant.avatar,
-                  }}
-                  payment={record}
-                />
-              );
-            })}
+            {manual_payments
+              .filter((record) => record.status === "pending")
+              .map((record) => {
+                return (
+                  <ManualPaymentTenantRow
+                    key={record.id}
+                    user={{
+                      name: cn(tenant.first_name, tenant.last_name),
+                      avatar: tenant.avatar,
+                    }}
+                    payment={record}
+                  />
+                );
+              })}
           </div>
         );
       })}

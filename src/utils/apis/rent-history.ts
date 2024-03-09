@@ -27,6 +27,11 @@ class RentHistoryService extends BaseAPIService {
     const res = await API.get<Response>("/user/manual/payments");
     return res.data.data;
   }
+
+  async approveOrDeclineManualPayment(id: SN, status: DbGetManualTarget) {
+    const res = await API.post(`/user/manual/payment/update/${id}/${status}`);
+    return res.data;
+  }
 }
 
 const rentHistoryApi = new RentHistoryService();

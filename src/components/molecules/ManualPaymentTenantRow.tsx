@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { LightBox } from "../organisms/Lightbox";
 import { renderSkeltonLoader } from "../atoms/blocks";
+import rentHistoryApi from "@/utils/apis/rent-history";
+import Alert from "@/utils/base/alerts";
 
 interface TenantDetailCardProps {
   user: {
@@ -39,7 +41,6 @@ const StyledButton = (props: StyledButtonProps) => {
   );
 };
 
-type Target = "declined" | "approved";
 export const ManualPaymentTenantRow = (props: TenantDetailCardProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -48,8 +49,14 @@ export const ManualPaymentTenantRow = (props: TenantDetailCardProps) => {
 
   const { avatar, name } = user;
 
-  const handleDeclineOrAccept = (target: Target) => {
+  const handleDeclineOrAccept = async (target: DbGetManualTarget) => {
     setLoading(true);
+    try {
+      const res = await rentHistoryApi.approveOrDeclineManualPayment(payment.id, target);
+      Alert.success(`You ${target} for payment ${user.name}`);
+    } catch (error) {
+      Alert.error(error);
+    }
   };
 
   const renderButton = (node: React.ReactNode) =>
@@ -123,10 +130,7 @@ export const ManualPaymentTenantRow = (props: TenantDetailCardProps) => {
           open={open}
           close={() => setOpen(false)}
           slides={[{ src: payment.image_url }]}
-          render={{
-            iconPrev: () => <></>,
-            iconNext: () => <></>,
-          }}
+          render={{ iconPrev: () => <></>, iconNext: () => <></> }}
         />
       )}
     </>
