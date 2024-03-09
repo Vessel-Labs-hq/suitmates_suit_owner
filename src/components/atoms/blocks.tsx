@@ -7,3 +7,17 @@ export const TableRow = ({ children, className }: IProps) => {
     </div>
   );
 };
+
+export type SkeletonProps = React.HTMLAttributes<HTMLDivElement>;
+export function Skeleton({ className, ...props }: SkeletonProps) {
+  return (
+    <div className={cn("animate-pulse rounded-lg bg-dark200/20", className)} {...props} />
+  );
+}
+
+export const renderSkeltonLoader = (loading: boolean) => {
+  const renderSkeleton = (component: React.ReactNode, props?: SkeletonProps) =>
+    loading ? <Skeleton {...props} /> : component;
+
+  return { renderSkeleton };
+};
