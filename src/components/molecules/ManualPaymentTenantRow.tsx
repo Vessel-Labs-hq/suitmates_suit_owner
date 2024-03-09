@@ -14,6 +14,7 @@ interface TenantDetailCardProps {
     name: string;
   };
   payment: DbGetManualPaymentsManualPayment;
+  refetch?(): any | Promise<any>;
 }
 
 const FittedContainer = ({ className, children }: IProps) => (
@@ -42,9 +43,9 @@ const StyledButton = (props: StyledButtonProps) => {
 };
 
 export const ManualPaymentTenantRow = (props: TenantDetailCardProps) => {
+  const { payment, user, refetch } = props;
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { payment, user } = props;
   const { renderSkeleton } = renderSkeltonLoader(loading);
 
   const { avatar, name } = user;
@@ -53,9 +54,12 @@ export const ManualPaymentTenantRow = (props: TenantDetailCardProps) => {
     setLoading(true);
     try {
       const res = await rentHistoryApi.approveOrDeclineManualPayment(payment.id, target);
-      Alert.success(`You ${target} for payment ${user.name}`);
+      await refetch?.();
+      Alert.success(`You ${target} payment for ${user.name}`);
     } catch (error) {
       Alert.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
