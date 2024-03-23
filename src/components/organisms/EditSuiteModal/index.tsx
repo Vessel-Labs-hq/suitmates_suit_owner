@@ -31,18 +31,10 @@ const DefaultValues = {
   timing: "",
 };
 
-const aliasDimensions = (dimension: string) => {
-  return dimension.replace("ft", " ").trim();
-};
-
 const convertSuite = (suites: DbSuite[]) =>
   suites.map(({ suite_cost, suite_number, suite_size, suite_type, timing, id }) => {
-    const [length, breadth] = suite_size.split(" by ");
-
     return {
       suite_cost: String(suite_cost),
-      suite_size_length: aliasDimensions(length),
-      suite_size_breadth: aliasDimensions(breadth),
       suite_number,
       suite_size,
       suite_type,
